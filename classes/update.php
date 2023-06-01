@@ -38,13 +38,23 @@
                 echo "<div class='info'><p class='exist'>Update failed! <i class='fas fa-ban'></i></p></div>";
             } */
         }
-        //update double
+        //update tripple
         public function update_tripple($table, $column1, $value1, $column2, $value2, $column3, $value3, $condition, $condition_value){
             $update = $this->connectdb()->prepare("UPDATE $table SET $column1 = :$column1, $column2 = :$column2, $column3 = :$column3 WHERE $condition = :$condition");
             $update->bindValue("$column1", $value1);
             $update->bindValue("$column2", $value2);
             $update->bindValue("$column3", $value3);
             $update->bindValue("$condition", $condition_value);
+            $update->execute();
+        }
+        //update tripple with 2 condition
+        public function update_tripple2Cond($table, $column1, $value1, $column2, $value2, $column3, $value3, $condition1, $condition_value1, $condition2, $condition_value2){
+            $update = $this->connectdb()->prepare("UPDATE $table SET $column1 = :$column1, $column2 = :$column2, $column3 = :$column3 WHERE $condition1 = :$condition1 AND $condition2 =:$condition2");
+            $update->bindValue("$column1", $value1);
+            $update->bindValue("$column2", $value2);
+            $update->bindValue("$column3", $value3);
+            $update->bindValue("$condition1", $condition_value1);
+            $update->bindValue("$condition2", $condition_value2);
             $update->execute();
         }
         //update quadruple
@@ -65,6 +75,18 @@
             $update->bindValue("$column3", $value3);
             $update->bindValue("$column4", $value4);
             $update->bindValue("$column5", $value5);
+            $update->bindValue("$condition", $condition_value);
+            $update->execute();
+        }
+        //update six
+        public function update_six($table, $column1, $value1, $column2, $value2, $column3, $value3, $column4, $value4, $column5, $value5, $column6, $value6, $condition, $condition_value){
+            $update = $this->connectdb()->prepare("UPDATE $table SET $column1 = :$column1, $column2 = :$column2, $column3 = :$column3, $column4 = :$column4, $column5 = :$column5, $column6 = :$column6 WHERE $condition = :$condition");
+            $update->bindValue("$column1", $value1);
+            $update->bindValue("$column2", $value2);
+            $update->bindValue("$column3", $value3);
+            $update->bindValue("$column4", $value4);
+            $update->bindValue("$column5", $value5);
+            $update->bindValue("$column6", $value6);
             $update->bindValue("$condition", $condition_value);
             $update->execute();
         }

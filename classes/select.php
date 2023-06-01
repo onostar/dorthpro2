@@ -184,6 +184,19 @@
                 return $rows;
             }
         }
+        //fetch between two dates and a condition
+        public function fetch_details_date2Con($table, $column, $value1, $value2, $condition, $condition_value){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition = :$condition AND $column BETWEEN '$value1' AND '$value2'");
+            $get_user->bindValue("$condition",$condition_value);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
         //fetch between two dates and grouped
         public function fetch_details_dateGro($table, $condition1, $value1, $value2, $group){
             $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition1 BETWEEN '$value1' AND '$value2' GROUP BY $group");
@@ -405,9 +418,35 @@
                 return $rows;
             }
         }
+        //fetch sum of 2 columns multiplied and one condition
+        public function fetch_sum_2colCond($table, $column1, $column2, $condition, $value){
+            $get_user = $this->connectdb()->prepare("SELECT SUM($column1 * $column2) AS total FROM $table WHERE $condition = :$condition");
+            $get_user->bindValue("$condition", $value);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
         //fetch sum of column multiplied and current date
         public function fetch_sum_2colCurDate($table, $column1, $column2, $date){
             $get_user = $this->connectdb()->prepare("SELECT SUM($column1 * $column2) AS total FROM $table WHERE date($date) = CURDATE()");
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
+        //fetch sum of column multiplied and current date with condition
+        public function fetch_sum_2colCurDate1Con($table, $column1, $column2, $date, $condition, $value){
+            $get_user = $this->connectdb()->prepare("SELECT SUM($column1 * $column2) AS total FROM $table WHERE date($date) = CURDATE()AND $condition = :$condition");
+            $get_user->bindValue("$condition", $value);
             $get_user->execute();
             if($get_user->rowCount() > 0){
                 $rows = $get_user->fetchAll();

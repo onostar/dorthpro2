@@ -1,6 +1,11 @@
 <aside class="main_menu" id="mobile_log">
     
     <nav>
+        <h1 class="logo for_desktop">
+            <a href="users.php" title="Logistics">
+                <img src="../images/logo.png" alt="Logo" class="img-fluid">
+            </a>
+        </h1>
         <h3><a href="users.php" title="Home"><i class="fas fa-home"></i> Main menus</a></h3>
         <ul>
             <?php 
@@ -98,6 +103,13 @@
                         if($row > 0 || $role == "Admin"){
                     ?> 
                     <li><a href="javascript:void(0);" title="modify item names" class="page_navs" onclick="showPage('modify_item.php')"><i class="fas fa-folder"></i> Modify Item name</a></li>
+                    <?php }?>
+                    <?php 
+                        $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "52");
+                        if($row > 0 || $role == "Admin"){
+                    ?> 
+                    <li><a href="javascript:void(0);" title="modify item names" class="page_navs" onclick="showPage('update_barcode.php')"><i class="fas fa-barcode"></i> Update item barcode</a></li>
                     <?php }?>
                     <?php 
                         $get_rights = new selects();

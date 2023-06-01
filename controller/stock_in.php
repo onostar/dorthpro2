@@ -2,6 +2,7 @@
 
     $trans_type ="purchase";    
     $posted = htmlspecialchars(stripslashes($_POST['posted_by']));
+    $store = htmlspecialchars(stripslashes($_POST['store']));
     $item = htmlspecialchars(stripslashes($_POST['item_id']));
     $supplier = htmlspecialchars(stripslashes($_POST['supplier']));
     $invoice = htmlspecialchars(stripslashes($_POST['invoice_number']));
@@ -9,6 +10,8 @@
     $cost_price = htmlspecialchars(stripslashes($_POST['cost_price']));
     $sales_price = htmlspecialchars(stripslashes($_POST['sales_price']));
     $pack_price = htmlspecialchars(stripslashes($_POST['pack_price']));
+    $wholesale = htmlspecialchars(stripslashes($_POST['wholesale_price']));
+    $wholesale_pack = htmlspecialchars(stripslashes($_POST['wholesale_pack']));
     $pack_size = htmlspecialchars(stripslashes($_POST['pack_size']));
     $expiration = htmlspecialchars(stripslashes($_POST['expiration_date']));
     // $guest_id = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
@@ -20,27 +23,45 @@
     include "../classes/select.php";
     // get item previous quantity in inventory;
     $get_prev_qty = new selects();
-    $prev_qtys = $get_prev_qty->fetch_details_cond('items', 'item_id', $item);
-    foreach($prev_qtys as $prev_qty){
-        $inv_qty = $prev_qty->quantity;
+    $prev_qtys = $get_prev_qty->fetch_details_2cond('inventory', 'item', 'store', $item, $store);
+    if(gettype($prev_qtys) === 'array'){
+        foreach($prev_qtys as $prev_qty){
+            $inv_qty = $prev_qty->quantity;
+        }
+    }
+    if(gettype($prev_qtys) === 'string'){
+        $inv_qty = 0;
     }
     //insert into audit trail
-    $inser_trail = new audit_trail($item, $trans_type, $inv_qty, $quantity, $posted);
+    $inser_trail = new audit_trail($item, $trans_type, $inv_qty, $quantity, $posted, $store);
     $inser_trail->audit_trail();
+    //check if item is in store inventory
+    $check_item = new selects();
+    if(gettype($prev_qtys) === 'array'){
+        //update current quantity in inventory
+        $new_qty = $inv_qty + $quantity;
+        $update_inventory = new Update_table();
+        $update_inventory->update_tripple2Cond('inventory', 'quantity', $new_qty, 'cost_price', $cost_price, 'expiration_date', $expiration, 'item', $item, 'store', $store);
+    }
+    if(gettype($prev_qtys) === 'string'){
+        //add to inventory
+        $insert_item = new add_inventory($item, $quantity, $cost_price, $expiration, $store);
+        $insert_item->insert_inventory();
+    }
     //stockin item
-    $stock_in = new stockins($item, $supplier, $invoice, $quantity, $cost_price, $sales_price, $pack_size, $pack_price, $expiration, $posted);
+    $stock_in = new stockins($item, $supplier, $invoice, $quantity, $cost_price, $sales_price, $expiration, $posted, $store);
 
     $stock_in->stockin();
+    
     if($stock_in){
-        //update quantity
+        
+        //update all prices and pack size
         $update_item = new Update_table();
-        $update_item->update_quantity($cost_price, $sales_price, $quantity, $item);
-        //update pack price and pack size
-        $update_item->update_double('items', 'pack_size', $pack_size, 'pack_price', $pack_price, 'item_id', $item);
+        $update_item->update_six('items', 'cost_price', $cost_price, 'sales_price', $sales_price, 'pack_price', $pack_price, 'wholesale', $wholesale, 'wholesale_pack', $wholesale_pack, 'pack_size', $pack_size, 'item_id', $item);
         if($update_item){
         //update expiration
-        $update_exp = new Update_table();
-        $update_exp->update('items', 'expiration_date', 'item_id', $expiration, $item);
+        /* $update_exp = new Update_table();
+        $update_exp->update('items', 'expiration_date', 'item_id', $expiration, $item); */
 
         
 ?>

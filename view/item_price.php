@@ -21,12 +21,14 @@
             <thead>
                 <tr style="background:var(--otherColor)">
                     <td>S/N</td>
-                    <td>Category</td>
+                    <!-- <td>Category</td> -->
                     <td>item</td>
                     <td>pack size</td>
                     <td>Cost Price</td>
-                    <td>Sales Price</td>
-                    <td>Pack Price</td>
+                    <td>Retail Price</td>
+                    <td>Retail pack</td>
+                    <td>Wholesale</td>
+                    <td>Wholesale Pack</td>
                     <td></td>
                 </tr>
             </thead>
@@ -42,14 +44,14 @@
                 <tr>
                     <td style="text-align:center;"><?php echo $n?></td>
                     
-                    <td>
+                    <!-- <td>
                         <?php 
                              //get category
                              $get_cat = new selects();
                              $detail = $get_cat->fetch_details_group('categories', 'category', 'category_id', $row->category);
                              echo $detail->category;
                         ?>
-                    </td>
+                    </td> -->
                     <td><?php echo $row->item_name?></td>
                     <td style="color:otherColor; text-align:center"><?php echo $row->pack_size?></td>
                     <td>
@@ -61,8 +63,14 @@
                     <td>
                         <?php echo "₦ ". number_format($row->pack_price);?>
                     </td>
+                    <td>
+                        <?php echo "₦ ". number_format($row->wholesale);?>
+                    </td>
+                    <td>
+                        <?php echo "₦ ". number_format($row->wholesale_pack);?>
+                    </td>
                     <td class="prices">
-                        <a style="background:var(--moreColor)!important; color:#fff!important; padding:5px; border-radius:5px;" href="javascript:void(0)" title="modify price" data-form="check<?php echo $row->item_id?>" class="each_prices" onclick="displayPriceForm('<?php echo $row->item_id?>');"><i class="fas fa-pen"></i></a>
+                        <a style="background:var(--moreColor)!important; color:#fff!important; padding:5px 8px; border-radius:5px;" href="javascript:void(0)" title="modify price" data-form="check<?php echo $row->item_id?>" class="each_prices" onclick="getForm('<?php echo $row->item_id?>', 'get_item_details.php');"><i class="fas fa-pen"></i></a>
                     </td>
                 </tr>
             </tbody>

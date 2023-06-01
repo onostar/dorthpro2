@@ -39,7 +39,6 @@
                 <img src="images/software.jpg" alt="login banner">
             </div> -->
             <div class="login_page">
-                
             
                 <h3 class="mobile_company"><?php echo $row->company?></h3>
                 <h2>Welcome User!</h2>

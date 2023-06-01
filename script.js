@@ -5,6 +5,7 @@ function displayMenu(){
      if(window.innerWidth <= "800"){
           $("#menu_icon").click(function(){
                if(main_menu.style.display == "block"){
+                 
                     $(".main_menu").hide();
                     $("#menu_icon").html("<a href='javascript:void(0)'><i class='fas fa-bars'></i></a>");
                }else{
@@ -15,18 +16,6 @@ function displayMenu(){
                
           
      }
-     // else{
-          /* $("#menu_icon").click(function(){
-               if(main_menu.style.display == "block"){
-               alert (window.innerWidth);
-
-                    main_menu.style.display == "none"
-                    $("#menu_icon").html("<a href='javascript:void(0)'><i class='fas fa-close'></i></a>");
-                    document.getElementById("contents").style.width = "100vw";
-                    document.getElementById("contents").style.marginLeft = "0";
-               }
-          })
-     } */
 }
 displayMenu();
 //checck the screen width 
@@ -138,6 +127,7 @@ function addUser(){
      let username = document.getElementById("username").value;
      let full_name = document.getElementById("full_name").value;
      let user_role = document.getElementById("user_role").value;
+     let store = document.getElementById("store").value;
      // alert(hotel_address);
      if(full_name.length == 0 || full_name.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please enter user full name!");
@@ -151,11 +141,15 @@ function addUser(){
           alert("Please select user role!");
           $("#user_role").focus();
           return;
+     }else if(store.length == 0 || store.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select store!");
+          $("#store").focus();
+          return;
      }else{
           $.ajax({
                type : "POST",
                url : "../controller/add_users.php",
-               data : {username:username, full_name:full_name, user_role:user_role},
+               data : {username:username, full_name:full_name, user_role:user_role, store:store},
                success : function(response){
                $(".info").html(response);
                }
@@ -164,6 +158,7 @@ function addUser(){
      $("#usernane").val('');
      $("#full_name").val('');
      $("#user_role").val('');
+     $("#store").val('');
      $("#full_name").focus();
      return false;
 }
@@ -745,45 +740,22 @@ function checkOut(){
      return false;
 }
 
-//display modify item name
-function modifyItemForm(item_id){
+//display any item form
+function getForm(item, link){
      // alert(item_id);
      $.ajax({
           type : "GET",
-          url : "../controller/get_item_name.php?item_id="+item_id,
+          url : "../controller/"+link+"?item_id="+item,
           success : function(response){
                $(".info").html(response);
+               window.scrollTo(0, 0);
           }
      })
      return false;
  
  }
-//display change item category form
-function changeCategoryForm(item_id){
-     // alert(item_id);
-     $.ajax({
-          type : "GET",
-          url : "../controller/get_item_category.php?item_id="+item_id,
-          success : function(response){
-               $(".info").html(response);
-          }
-     })
-     return false;
- 
- }
-//display change price for other items
-function displayPriceForm(item_id){
-     // alert(item_id);
-     $.ajax({
-          type : "GET",
-          url : "../controller/get_item_details.php?item_id="+item_id,
-          success : function(response){
-               $(".info").html(response);
-          }
-     })
-     return false;
- 
- }
+
+
 //display stockin form
 function displayStockinForm(item_id){
      // alert(item_id);
@@ -826,6 +798,7 @@ function checkStockinHistory(item_id){
  //stockin in items
 function stockin(){
      let posted_by = document.getElementById("posted_by").value;
+     let store = document.getElementById("store").value;
      let invoice_number = document.getElementById("invoice_number").value;
      let supplier = document.getElementById("supplier").value;
      let item_id = document.getElementById("item_id").value;
@@ -834,6 +807,8 @@ function stockin(){
      let sales_price = document.getElementById("sales_price").value;
      let pack_price = document.getElementById("pack_price").value;
      let pack_size = document.getElementById("pack_size").value;
+     let wholesale_price = document.getElementById("wholesale_price").value;
+     let wholesale_pack = document.getElementById("wholesale_pack").value;
      let expiration_date = document.getElementById("expiration_date").value;
      let todayDate = new Date();
      let today = todayDate.toLocaleDateString();
@@ -866,11 +841,15 @@ function stockin(){
           alert("Cost price cannot be greater than selling price!");
           $("#sales_price").focus();
           return;
+     }else if(cost_price >= wholesale_price){
+          alert("Cost price cannot be greater than wholesale price!");
+          $("#wholesale_price").focus();
+          return;
      }else{
           $.ajax({
                type : "POST",
                url : "../controller/stock_in.php",
-               data : {posted_by:posted_by,supplier:supplier, invoice_number:invoice_number, item_id:item_id, quantity:quantity, cost_price:cost_price, sales_price:sales_price, pack_price:pack_price, pack_size:pack_size, expiration_date:expiration_date},
+               data : {posted_by:posted_by, store:store, supplier:supplier, invoice_number:invoice_number, item_id:item_id, quantity:quantity, cost_price:cost_price, sales_price:sales_price, pack_price:pack_price, pack_size:pack_size, wholesale_price:wholesale_price, wholesale_pack:wholesale_pack, expiration_date:expiration_date},
                success : function(response){
                $(".stocked_in").html(response);
                }
@@ -1071,9 +1050,15 @@ function roomPriceForm(item_id){
      let sales_price = document.getElementById("sales_price").value;
      let pack_price = document.getElementById("pack_price").value;
      let pack_size = document.getElementById("pack_size").value;
+     let wholesale_price = document.getElementById("wholesale_price").value;
+     let wholesale_pack = document.getElementById("wholesale_pack").value;
      if(cost_price >= sales_price){
           alert("Selling price can not be lesser than cost price!");
           $("#sales_price").focus();
+          return;
+     }else if(cost_price >= wholesale_price){
+          alert("Wholesale price can not be lesser than cost price!");
+          $("#wholesale_price").focus();
           return;
      }else if(cost_price.length == 0 || cost_price.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please enter cost price!");
@@ -1083,6 +1068,10 @@ function roomPriceForm(item_id){
           alert("Please enter selling price!");
           $("#sales_price").focus();
           return;
+     /* }else if(wholesale_price.length == 0 || wholesale_price.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter wholesale price!");
+          $("#wholesale_price").focus();
+          return; */
      }else if(pack_price.length == 0 || pack_price.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please enter pack price!");
           $("#pack_price").focus();
@@ -1099,7 +1088,7 @@ function roomPriceForm(item_id){
           $.ajax({
                type : "POST",
                url : "../controller/edit_price.php",
-               data: {item_id:item_id, cost_price:cost_price, sales_price:sales_price, pack_price:pack_price, pack_size:pack_size},
+               data: {item_id:item_id, cost_price:cost_price, sales_price:sales_price, pack_price:pack_price, wholesale_price:wholesale_price, wholesale_pack:wholesale_pack, pack_size:pack_size},
                success : function(response){
                     $("#edit_item_price").html(response);
                }
@@ -1129,6 +1118,29 @@ function roomPriceForm(item_id){
           })
           setTimeout(function(){
                $("#edit_item_name").load("modify_item.php #edit_item_name");
+          }, 1500);
+          return false
+     }
+ }
+ //update item barcode
+ function updateBarcode(){
+     let item_id = document.getElementById("item_id").value;
+     let barcode = document.getElementById("barcode").value;
+     if(barcode.length == 0 || barcode.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input item barcode!");
+          $("#barcode").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/update_barcode.php",
+               data: {item_id:item_id, barcode:barcode},
+               success : function(response){
+                    $("#update_barcode").html(response);
+               }
+          })
+          setTimeout(function(){
+               $("#update_barcode").load("update_barcode.php #update_barcode");
           }, 1500);
           return false
      }
@@ -1412,32 +1424,6 @@ function getVendors(vendor){
           $("#vendors").html("<option value='' selected>No result</option>")
      }
      
-}
-
-//  search purchases 
-function searchPurchase(){
-     let purchase_from = document.getElementById("purchase_from").value;
-     let purchase_to = document.getElementById("purchase_to").value;
-     /* authentication */
-     if(purchase_from .length == 0 || purchase_from .replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date!");
-          $("#purchase_from").focus();
-          return;
-     }else if(purchase_to.length == 0 || purchase_to.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date range!");
-          $("#purchase_to").focus();
-          return;
-     }else{
-          $.ajax({
-               type: "POST",
-               url: "../controller/search_purchase.php",
-               data: {purchase_from:purchase_from, purchase_to:purchase_to},
-               success: function(response){
-               $(".new_data").html(response);
-               }
-          });
-     }
-     return false;
 }
 
 //show bill types forms

@@ -168,7 +168,7 @@
     <div class="daily_monthly">
         <!-- daily revenue summary -->
         <div class="daily_report allResults">
-            <h3>Daily Encounters</h3>
+            <h3 style="background:var(--otherColor)">Daily Encounters</h3>
             <table>
                 <thead>
                     <tr>
@@ -206,7 +206,7 @@
         </div>
         <!-- monthly revenue summary -->
         <div class="monthly_report allResults">
-            <h3 style="background:var(--otherColor)">Monthly Encounters</h3>
+            <h3>Monthly Encounters</h3>
             <table>
                 <thead>
                     <tr>

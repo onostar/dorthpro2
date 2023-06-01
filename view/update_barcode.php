@@ -1,4 +1,4 @@
-<div id="edit_item_name">
+<div id="update_barcode" style="width:80%">
 <?php
 
     include "../classes/dbh.php";
@@ -12,7 +12,7 @@
 
     <div class="info"></div>
     <div class="displays allResults" style="width:70%;">
-        <h2>Modify item names</h2>
+        <h2>Update item barcodes</h2>
         <hr>
         <div class="search">
             <input type="search" id="searchGuestPayment" placeholder="Enter keyword" onkeyup="searchData(this.value)">
@@ -22,8 +22,8 @@
                 <tr style="background:var(--otherColor)">
                     <td>S/N</td>
                     <td>Department</td>
-                    <td>Category</td>
                     <td>item</td>
+                    <td>Barcode</td>
                     <td></td>
                 </tr>
             </thead>
@@ -47,18 +47,10 @@
                             echo $detail->department;
                         ?>
                     </td>
-                    <td>
-                        <?php
-                            //get category
-                            $get_cat = new selects();
-                            $detail = $get_cat->fetch_details_group('categories', 'category', 'category_id', $row->category);
-                            echo $detail->category;
-                            
-                        ?>
-                    </td>
                     <td><?php echo $row->item_name?></td>
+                    <td><?php echo $row->barcode?></td>
                     <td class="prices">
-                        <a style="background:var(--moreColor)!important; color:#fff!important; padding:4px; border-radius:5px;" href="javascript:void(0)" data-form="check<?php echo $row->item_id?>" class="each_prices" onclick="getForm('<?php echo $row->item_id?>', 'get_item_name.php');">Modify <i class="fas fa-pen"></i></a>
+                        <a style="background:var(--moreColor)!important; color:#fff!important; padding:5px 8px; border-radius:5px;" href="javascript:void(0)" data-form="check<?php echo $row->item_id?>" class="each_prices" onclick="getForm('<?php echo $row->item_id?>', 'get_item_barcode.php');"><i class="fas fa-pen"></i></a>
                     </td>
                 </tr>
             </tbody>

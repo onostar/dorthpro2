@@ -13,6 +13,7 @@
             $fullname = $user->full_name;
             $role = $user->user_role;
             $user_id = $user->user_id;
+            $store_id = $user->store;
         }
         $_SESSION['user_id'] = $user_id;
 
@@ -28,10 +29,9 @@
     
         /* get store */
         $get_store = new selects();
-        $strs = $get_store->fetch_details('stores');
+        $strs = $get_store->fetch_details_cond('stores', 'store_id', $store_id);
         foreach($strs as $str){
             $store = $str->store;
-            $store_id = $str->store_id;
             $store_address = $str->store_address;
             $phone = $str->phone_number;
         }
@@ -59,40 +59,42 @@
 </head>
 <body>
     <main>
-        <header>
-            <div class="menu_icon" id="menu_icon">
-                <a href="javascript:void(0)"><i class="fas fa-bars"></i></a>
-            </div>
-            <h1 class="logo">
-                <a href="users.php" title="Logistics">
-                    <img src="../images/logo.png" alt="Logo" class="img-fluid">
-                </a>
-            </h1>
-            <h2><?php echo $company?></h2>
-            <!-- <div class="other_menu">
-                <a href="#" title="Our Gallery"><?php echo ucwords($role);?></a>
-            </div> -->
-            <a href="#" title="my role" class="other_menu"><?php echo ucwords($store);?></a>
-
-            <div class="login">
-                
-                <button id="loginDiv"><i class="far fa-user"></i> <?php echo ucwords($fullname);?> <i class="fas fa-chevron-down"></i><br><p><?php echo ucwords($role);?></p></button>
-                
-                <div class="login_option">
-                    <div>
-                        <a class="password_link page_navs" href="javascript:void(0)" data-page="update_password" onclick="showPage('update_password.php')">Change password <i class="fas fa-key"></i></a>
-                        <button id="loginBtn"><a href="../controller/logout.php">Log out <i class="fas fa-power-off"></i></a></button>
-                    </div>
-                </div>
-            </div>
-            
-        </header>
+        
         <div class="admin_main">
             
             <!-- side menu -->
             <?php include "side_menu.php"?>
             <!-- main contents -->
             <section id="contents">
+                <!-- header -->
+                <header>
+                    <div class="menu_icon" id="menu_icon">
+                        <a href="javascript:void(0)"><i class="fas fa-bars"></i></a>
+                    </div>
+                    <h1 class="logo for_mobile">
+                        <a href="users.php" title="Logistics">
+                            <img src="../images/logo.png" alt="Logo" class="img-fluid">
+                        </a>
+                    </h1>
+                    <h2 style="margin-left:50px!important"><?php echo $company?></h2>
+                    <!-- <div class="other_menu">
+                        <a href="#" title="Our Gallery"><?php echo ucwords($role);?></a>
+                    </div> -->
+                    <a href="#" title="my role" class="other_menu"><?php echo ucwords($store);?></a>
+
+                    <div class="login">
+                        
+                        <button id="loginDiv"><i class="far fa-user"></i> <?php echo ucwords($fullname);?> <i class="fas fa-chevron-down"></i><br><p><?php echo ucwords($role);?></p></button>
+                        
+                        <div class="login_option">
+                            <div>
+                                <a class="password_link page_navs" href="javascript:void(0)" data-page="update_password" onclick="showPage('update_password.php')">Change password <i class="fas fa-key"></i></a>
+                                <button id="loginBtn"><a href="../controller/logout.php">Log out <i class="fas fa-power-off"></i></a></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </header>
                 <!-- quick links -->
                 <div id="quickLinks">
                     <div class="quick_links">
@@ -152,7 +154,7 @@
                             <p style="color:red">
                                 <?php
                                     $out_stock = new selects();
-                                    $stock = $out_stock->fetch_count_cond('items', 'quantity', 0);
+                                    $stock = $out_stock->fetch_count_2cond('inventory', 'quantity', 0, 'store', $store_id);
                                     echo $stock;
                                 ?>
                             </p>

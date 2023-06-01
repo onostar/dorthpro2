@@ -1,14 +1,15 @@
 <?php
-
-    $from = htmlspecialchars(stripslashes($_POST['purchase_from']));
-    $to = htmlspecialchars(stripslashes($_POST['purchase_to']));
+    session_start();
+    $store = $_SESSION['store_id'];
+    $from = htmlspecialchars(stripslashes($_POST['from_date']));
+    $to = htmlspecialchars(stripslashes($_POST['to_date']));
 
     // instantiate classes
     include "../classes/dbh.php";
     include "../classes/select.php";
 
     $get_purchase = new selects();
-    $details = $get_purchase->fetch_details_date('purchases', 'date(post_date)', $from, $to);
+    $details = $get_purchase->fetch_details_date2Con('purchases', 'date(post_date)', $from, $to, 'store', $store);
     $n = 1;  
 ?>
 <h2>Purchase Register between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
@@ -76,7 +77,7 @@
     }
     // get sum
     $get_total = new selects();
-    $amounts = $get_total->fetch_sum_2col2date('purchases', 'cost_price', 'quantity', 'date(post_date)', $from, $to);
+    $amounts = $get_total->fetch_sum_2col2date1con('purchases', 'cost_price', 'quantity', 'date(post_date)', $from, $to, 'store', $store);
     foreach($amounts as $amount){
         echo "<p class='total_amount' style='color:green; text-align:center'>Total: ₦".number_format($amount->total, 2)."</p>";
     }

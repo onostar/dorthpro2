@@ -14,11 +14,12 @@
         }
 
         //insert user into database
-        protected function setUser($fullname, $username, $role, $password){
-            $set_user = $this->connectdb()->prepare("INSERT INTO users (full_name, username, user_role, user_password) VALUES (:full_name, :username, :user_role, :user_password)");
+        protected function setUser($fullname, $username, $role, $store, $password){
+            $set_user = $this->connectdb()->prepare("INSERT INTO users (full_name, username, user_role, store, user_password) VALUES (:full_name, :username, :user_role, :store, :user_password)");
             $set_user->bindValue("full_name", $fullname);
             $set_user->bindValue("username", $username);
             $set_user->bindValue("user_role", $role);
+            $set_user->bindValue("store", $store);
             $set_user->bindValue("user_password", $password);
             $set_user->execute();
             if($set_user){
@@ -97,14 +98,15 @@
             
         }
         //Insert into audit trail
-        protected function audit($item, $trans, $prev_qty, $qty, $posted){
+        protected function audit($item, $trans, $prev_qty, $qty, $posted, $store){
             
-            $audit = $this->connectdb()->prepare("INSERT INTO audit_trail (item, transaction, previous_qty, quantity, posted_by) VALUES (:item, :transaction, :previous_qty, :quantity, :posted_by)");
+            $audit = $this->connectdb()->prepare("INSERT INTO audit_trail (item, transaction, previous_qty, quantity, posted_by, store) VALUES (:item, :transaction, :previous_qty, :quantity, :posted_by, :store)");
             $audit->bindValue("item", $item);
             $audit->bindValue("transaction", $trans);
             $audit->bindValue("previous_qty", $prev_qty);
             $audit->bindValue("quantity", $qty);
             $audit->bindValue("posted_by", $posted);
+            $audit->bindValue("store", $store);
             $audit->execute();
             
         
@@ -311,29 +313,28 @@
         }
 
         //stock in item quantity
-        protected function stockin_item($posted, $item, $vendor, $invoice, $quantity, $cost, $sales, $pack_price, $pack_size, $expiration){
-            
-            //check if already checkin
-            // $confirm_check  = $this->connectdb()->prepare("SELECT * FROM purchases WHERE vendor = :vendor AND invoice = :invoice");
-            // $confirm_check->bindValue("vendor", $vendor);
-            // $confirm_check->bindValue("invoice", $invoice);
-            // $confirm_check->execute();
-            // if(!$confirm_check->rowCount() > 0){
-                $stockin = $this->connectdb()->prepare("INSERT INTO purchases (item, invoice, vendor, cost_price, sales_price, quantity, pack_price, pack_size, expiration_date, posted_by) VALUES (:item, :invoice, :vendor, :cost_price, :sales_price, :quantity, :pack_price, :pack_size, :expiration_date, :posted_by)");
-                $stockin->bindvalue("item", $item);
-                $stockin->bindvalue("invoice", $invoice);
-                $stockin->bindvalue("vendor", $vendor);
-                $stockin->bindvalue("cost_price", $cost);
-                $stockin->bindvalue("sales_price", $sales);
-                $stockin->bindvalue("pack_price", $pack_price);
-                $stockin->bindvalue("pack_size", $pack_size);
-                $stockin->bindvalue("quantity", $quantity);
-                $stockin->bindvalue("expiration_date", $expiration);
-                $stockin->bindvalue("posted_by", $posted);
-                $stockin->execute();
-            // }else{
-            //     echo "<p class='exist'>Invoice <span>$invoice</span> from the selected supplier already exists</p>";
-            // }
+        protected function stockin_item($posted, $store, $item, $vendor, $invoice, $quantity, $cost, $sales, $expiration){
+            $stockin = $this->connectdb()->prepare("INSERT INTO purchases (item, invoice, vendor, cost_price, sales_price, quantity, expiration_date, posted_by, store) VALUES (:item, :invoice, :vendor, :cost_price, :sales_price, :quantity, :expiration_date, :posted_by, :store)");
+            $stockin->bindvalue("item", $item);
+            $stockin->bindvalue("invoice", $invoice);
+            $stockin->bindvalue("vendor", $vendor);
+            $stockin->bindvalue("cost_price", $cost);
+            $stockin->bindvalue("sales_price", $sales);
+            $stockin->bindvalue("quantity", $quantity);
+            $stockin->bindvalue("expiration_date", $expiration);
+            $stockin->bindvalue("posted_by", $posted);
+            $stockin->bindvalue("store", $store);
+            $stockin->execute();
+        }
+        //add item quantity to inventory
+        protected function add_inventory($store, $item, $cost, $quantity, $expiration){   
+            $stockin = $this->connectdb()->prepare("INSERT INTO inventory (item, store, cost_price, quantity, expiration_date) VALUES (:item, :store, :cost_price, :quantity, :expiration_date)");
+            $stockin->bindvalue("item", $item);
+            $stockin->bindvalue("cost_price", $cost);
+            $stockin->bindvalue("quantity", $quantity);
+            $stockin->bindvalue("expiration_date", $expiration);
+            $stockin->bindvalue("store", $store);
+            $stockin->execute();
         }
         //add item to sales
         protected function post_sales($posted, $item, $invoice, $quantity, $price, $amount, $cost){
@@ -377,19 +378,21 @@
         private $fullname;
         private $username;
         private $role;
+        private $store;
         private $password;
 
-        public function __construct($fullname, $username, $role, $password)
+        public function __construct($fullname, $username, $role, $store, $password)
         {
             $this->fullname = $fullname;
             $this->username = $username;
             $this->role = $role;
+            $this->store = $store;
             $this->password = $password;
         }
 
         public function create_user(){
             $this->checkUser($this->username);
-            $this->setUser($this->fullname, $this->username, $this->role, $this->password);
+            $this->setUser($this->fullname, $this->username, $this->role, $this->store, $this->password);
         }
     }
 
@@ -448,17 +451,19 @@
         private $prev_qty;
         private $qty;
         private $posted;
+        private $store;
 
-        public function __construct($item, $trans, $prev_qty, $qty, $posted)
+        public function __construct($item, $trans, $prev_qty, $qty, $posted, $store)
         {
             $this->item = $item;
             $this->trans = $trans;
             $this->prev_qty = $prev_qty;
             $this->qty = $qty;
             $this->posted = $posted;
+            $this->store = $store;
         }
         public function audit_trail(){
-            $this->audit($this->item, $this->trans, $this->prev_qty, $this->qty, $this->posted);
+            $this->audit($this->item, $this->trans, $this->prev_qty, $this->qty, $this->posted, $this->store);
         }
     }
     //add bank controller
@@ -664,12 +669,11 @@
         private $quantity;
         private $cost;
         private $sales;
-        private $pack_price;
-        private $pack_size;
         private $expiration;
         private $posted;
+        private $store;
 
-        public function __construct($item, $vendor, $invoice, $quantity, $cost, $sales, $pack_size, $pack_price, $expiration, $posted)
+        public function __construct($item, $vendor, $invoice, $quantity, $cost, $sales, $expiration, $posted, $store)
         {
             $this->item = $item;
             $this->vendor = $vendor;
@@ -677,14 +681,34 @@
             $this->quantity = $quantity;
             $this->cost = $cost;
             $this->sales = $sales;
-            $this->pack_price = $pack_price;
-            $this->pack_size = $pack_size;
             $this->expiration = $expiration;
             $this->posted = $posted;
+            $this->store = $store;
         }
 
         public function stockin(){
-            $this->stockin_item($this->posted, $this->item, $this->vendor, $this->invoice, $this->quantity, $this->cost, $this->sales, $this->pack_price, $this->pack_size,$this->expiration);
+            $this->stockin_item($this->posted, $this->store, $this->item, $this->vendor, $this->invoice, $this->quantity, $this->cost, $this->sales, $this->expiration);
+        }
+    }
+    //controller for adding items to inventory
+    class add_inventory extends inserts{
+        private $item;
+        private $quantity;
+        private $cost;
+        private $expiration;
+        private $store;
+
+        public function __construct($item, $quantity, $cost, $expiration, $store)
+        {
+            $this->item = $item;
+            $this->quantity = $quantity;
+            $this->cost = $cost;
+            $this->expiration = $expiration;
+            $this->store = $store;
+        }
+
+        public function insert_inventory(){
+            $this->add_inventory($this->store, $this->item, $this->cost, $this->quantity, $this->expiration);
         }
     }
     //controller for adding sales

@@ -2,6 +2,7 @@
     session_start();
     if(isset($_SESSION['user_id'])){
         $user_id = $_SESSION['user_id'];
+        $store = $_SESSION['store_id'];
         if(isset($_GET['item'])){
             $item = $_GET['item'];
         
@@ -23,6 +24,7 @@
             <div class="inputs" style="flex-wrap:wrap;gap:.8rem 1.2rem;justify-content:start;">
                 <!-- <div class="data item_head"> -->
                     <input type="hidden" name="posted_by" id="posted_by" value="<?php echo $user_id?>" required>
+                    <input type="hidden" name="store" id="store" value="<?php echo $store?>" required>
                     <input type="hidden" name="invoice_number" id="invoice_number" value="<?php echo $invoice?>" required>
                     <input type="hidden" name="supplier" id="supplier" value="<?php echo $vendor?>" required>
                     <input type="hidden" name="item_id" id="item_id" value="<?php echo $row->item_id?>" required>
@@ -35,12 +37,20 @@
                     <input type="text" name="cost_price" id="cost_price" value="<?php echo $row->cost_price?>">
                 </div>
                 <div class="data" style="width:20%; margin:5px;">
-                    <label for="sales_price">Sales price (NGN)</label>
+                    <label for="sales_price">Retail price (NGN)</label>
                     <input type="text" name="sales_price" id="sales_price" value="<?php echo $row->sales_price?>">
                 </div>
                 <div class="data" style="width:20%; margin:5px;">
-                    <label for="sales_price">Pack price (NGN)</label>
+                    <label for="sales_price">Retail Pack price (NGN)</label>
                     <input type="text" name="pack_price" id="pack_price" value="<?php echo $row->pack_price?>">
+                </div>
+                <div class="data" style="width:20%; margin:5px;">
+                    <label for="sales_price">Wholesale price (NGN)</label>
+                    <input type="text" name="wholesale_price" id="wholesale_price" value="<?php echo $row->wholesale?>">
+                </div>
+                <div class="data" style="width:20%; margin:5px;">
+                    <label for="pack_price">Wholesale Pack (NGN)</label>
+                    <input type="text" name="wholesale_pack" id="wholesale_pack" value="<?php echo $row->wholesale_pack?>">
                 </div>
                 <div class="data" style="width:20%; margin:5px;">
                     <label for="sales_price">Pack size</label>
