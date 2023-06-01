@@ -32,7 +32,7 @@
             ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td style="color:var(--moreClor);">
+                <td>
                     <?php
                         //get item category first
                         $get_cat = new selects();

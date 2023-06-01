@@ -1,8 +1,8 @@
 <?php
-
+    session_start();
     include "../classes/dbh.php";
     include "../classes/select.php";
-
+    $store = $_SESSION['store_id'];
 
 ?>
     <div class="info"></div>
@@ -29,21 +29,29 @@
             <?php
                 $n = 1;
                 $get_items = new selects();
-                $details = $get_items->fetch_lesser_detail('items', 'quantity', 'reorder_level');
+                $details = $get_items->fetch_lesser_detailCond('inventory', 'quantity', 'reorder_level', 'store', $store);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
             <tr>
-                <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td style="color:var(--moreClor);">
+            <td style="text-align:center; color:red;"><?php echo $n?></td>
+                <td>
                     <?php
-                        //get category name
+                        //get item category first
+                        $get_cat = new selects();
+                        $item_cat = $get_cat->fetch_details_group('items', 'department', 'item_id', $detail->item);
+                        //get department name
                         $get_cat_name = new selects();
-                        $cat_name = $get_cat_name->fetch_details_group('categories', 'category', 'category_id', $detail->category);
-                        echo $cat_name->category;
+                        $cat_name = $get_cat_name->fetch_details_group('departments', 'department', 'department_id', $item_cat->department);
+                        echo $cat_name->department;
                     ?>
                 </td>
-                <td><?php echo $detail->item_name?></td>
+                <td style="color:var(--otherColor)"><?php 
+                    //get item name
+                    $get_name = new selects();
+                    $name = $get_name->fetch_details_group('items', 'item_name', 'item_id', $detail->item);
+                    echo $name->item_name;
+                ?></td>
                 <td style="text-align:center"><?php echo $detail->quantity?></td>
                 <td style="text-align:center; color:red"><?php echo $detail->reorder_level?></td>
                 <td>
@@ -72,7 +80,7 @@
 
         // get sum
         $get_total = new selects();
-        $amounts = $get_total->fetch_lesser_Sum('items', 'quantity', 'reorder_level', 'quantity', 'cost_price');
+        $amounts = $get_total->fetch_lesser_SumCon('inventory', 'quantity', 'reorder_level', 'store', $store, 'quantity', 'cost_price');
         foreach($amounts as $amount){
             $total_amount = $amount->total;
         }

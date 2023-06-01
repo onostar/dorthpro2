@@ -574,9 +574,10 @@
                 return $rows;
             }
         }
-        //fetch expired item
-        function fetch_expired($table, $column, $quantity){
-            $get_exp = $this->connectdb()->prepare("SELECT * FROM $table WHERE date($column) <= CURDATE() AND $quantity >= 1");
+        //fetch expired item with condition
+        function fetch_expired($table, $column, $quantity, $condition, $value){
+            $get_exp = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition = :$condition AND date($column) <= CURDATE() AND $quantity >= 1");
+            $get_exp->bindValue("$condition", $value);
             $get_exp->execute();
 
             if($get_exp->rowCount() > 0){
@@ -586,8 +587,9 @@
             }
         }
         //fetch expired item details
-        function fetch_expired_det($table, $column, $quantity){
-            $get_exp = $this->connectdb()->prepare("SELECT * FROM $table WHERE date($column) <= CURDATE() AND $quantity >= 1");
+        function fetch_expired_det($table, $column, $quantity, $condition, $value){
+            $get_exp = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition =:$condition AND date($column) <= CURDATE() AND $quantity >= 1");
+            $get_exp->bindValue("$condition", $value);
             $get_exp->execute();
 
             if($get_exp->rowCount() > 0){
@@ -599,8 +601,9 @@
             }
         }
         //fetch soon to expire item
-        function fetch_expire_soon($table, $column, $quantity){
-            $get_exp = $this->connectdb()->prepare("SELECT * FROM $table WHERE $quantity >= 1 AND date($column) BETWEEN CURDATE() AND CURDATE() + INTERVAL 3 MONTH");
+        function fetch_expire_soon($table, $column, $quantity, $condition, $value){
+            $get_exp = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition = :$condition AND $quantity >= 1 AND date($column) BETWEEN CURDATE() AND CURDATE() + INTERVAL 3 MONTH");
+            $get_exp->bindValue("$condition", $value);
             $get_exp->execute();
 
             if($get_exp->rowCount() > 0){
@@ -610,8 +613,9 @@
             }
         }
         //fetch soon to expire item details
-        function fetch_expire_soon_det($table, $column, $quantity){
-            $get_exp = $this->connectdb()->prepare("SELECT * FROM $table WHERE $quantity >= 1 AND date($column) BETWEEN CURDATE() AND CURDATE() + INTERVAL 3 MONTH");
+        function fetch_expire_soon_det($table, $column, $quantity, $condition, $value){
+            $get_exp = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition =:$condition AND $quantity >= 1 AND date($column) BETWEEN CURDATE() AND CURDATE() + INTERVAL 3 MONTH");
+            $get_exp->bindValue("$condition", $value);
             $get_exp->execute();
 
             if($get_exp->rowCount() > 0){
@@ -623,8 +627,9 @@
             }
         }
         //fetch soon to expire item sum
-        function fetch_expire_soonSum($table, $column, $column2, $column3){
-            $get_exp = $this->connectdb()->prepare("SELECT SUM($column2 * $column3) AS total FROM $table WHERE date($column) BETWEEN CURDATE() AND CURDATE() + INTERVAL 3 MONTH");
+        function fetch_expire_soonSum($table, $column, $column2, $column3, $condition, $value){
+            $get_exp = $this->connectdb()->prepare("SELECT SUM($column2 * $column3) AS total FROM $table WHERE $condition = :$condition AND date($column) BETWEEN CURDATE() AND CURDATE() + INTERVAL 3 MONTH");
+            $get_exp->bindValue("$condition", $value);
             $get_exp->execute();
 
             if($get_exp->rowCount() > 0){
@@ -636,8 +641,9 @@
             }
         }
         //fetch soon to expire item sum
-        function fetch_expired_Sum($table, $column, $column2, $column3){
-            $get_exp = $this->connectdb()->prepare("SELECT SUM($column2 * $column3) AS total FROM $table WHERE date($column) <= CURDATE()");
+        function fetch_expired_Sum($table, $column, $column2, $column3, $condition, $value){
+            $get_exp = $this->connectdb()->prepare("SELECT SUM($column2 * $column3) AS total FROM $table WHERE $condition = :$condition AND date($column) <= CURDATE()");
+            $get_exp->bindvalue("$condition", $value);
             $get_exp->execute();
 
             if($get_exp->rowCount() > 0){
@@ -659,6 +665,18 @@
                 return "0";
             }
         }
+        //fetch items lesser than a value from 2 tables with condition
+        function fetch_lesser_cond($table, $column, $value, $condition, $condition_value){
+            $get_item = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition = :$condition AND $column <= $value");
+            $get_item->bindValue("$condition", $condition_value);
+            $get_item->execute();
+
+            if($get_item->rowCount() > 0){
+                return $get_item->rowCount();
+            }else{
+                return "0";
+            }
+        }
         //fetch items lesser than a value details
         function fetch_lesser_detail($table, $column, $value){
             $get_item = $this->connectdb()->prepare("SELECT * FROM $table WHERE $column <= $value");
@@ -672,9 +690,36 @@
                 return $rows;
             }
         }
+        //fetch items lesser than a value with condition details
+        function fetch_lesser_detailCond($table, $column, $value, $condition, $cond_value){
+            $get_item = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition = :$condition AND $column <= $value");
+            $get_item->bindValue("$condition", $cond_value);
+            $get_item->execute();
+
+            if($get_item->rowCount() > 0){
+                $rows = $get_item->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No record found";
+                return $rows;
+            }
+        }
         //fetch items lesser than a value details
         function fetch_lesser_sum($table, $column, $value, $column1, $column2){
             $get_item = $this->connectdb()->prepare("SELECT SUM($column1 * $column2) as total FROM $table WHERE $column <= $value");
+            $get_item->execute();
+
+            if($get_item->rowCount() > 0){
+                $rows = $get_item->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No record found";
+                return $rows;
+            }
+        }
+        function fetch_lesser_sumCon($table, $column, $value, $condition, $con_value, $column1, $column2){
+            $get_item = $this->connectdb()->prepare("SELECT SUM($column1 * $column2) as total FROM $table WHERE $condition = :$condition AND $column <= $value");
+            $get_item->bindValue("$condition", $con_value);
             $get_item->execute();
 
             if($get_item->rowCount() > 0){

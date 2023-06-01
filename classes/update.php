@@ -6,11 +6,14 @@
             $update->bindValue("$column", $value);
             $update->bindValue("$condition", $condition_value);
             $update->execute();
-            /* if($update){
-                echo "<div class='info'><p>Updated successfully! <i class='fas fa-check'></i></p></div>";
-            }else{
-                echo "<div class='info'><p class='exist'>Update failed! <i class='fas fa-ban'></i></p></div>";
-            } */
+        }
+        //update single with 2 condition
+        public function update2cond($table, $column, $condition, $condition2, $value, $condition_value, $condition_value2){
+            $update = $this->connectdb()->prepare("UPDATE $table SET $column = :$column WHERE $condition = :$condition AND $condition2 = :$condition2");
+            $update->bindValue("$column", $value);
+            $update->bindValue("$condition", $condition_value);
+            $update->bindValue("$condition2", $condition_value2);
+            $update->execute();
         }
         //update with date
         public function checkOut($column1, $column2, $condition, $value1, $value2, $condition_value){

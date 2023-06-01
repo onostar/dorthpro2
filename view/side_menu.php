@@ -240,6 +240,13 @@
                     ?>
                     <li><a href="javascript:void(0);" title="Adjust item expiry date" class="page_navs" onclick="showPage('adjust_expiration.php')"><i class="fas fa-eject"></i> Adjust expiration</a></li>
                     <?php }?>
+                    <?php 
+                        $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "53");
+                        if($row > 0 || $role == "Admin"){
+                    ?>
+                    <li><a href="javascript:void(0);" title="Transfer items to store" class="page_navs" onclick="showPage('transfer_item.php')"><i class="fas fa-exchange"></i> Transfer items</a></li>
+                    <?php }?>
                     <li><a href="javascript:void(0);" title="Help and Faqs" class="page_navs" onclick="showPage('inventory_help.php')"><i class="fas fa-question-circle"></i> Help</a></li>
                 </ul>
             </li>

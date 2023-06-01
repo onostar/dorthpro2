@@ -124,7 +124,7 @@
                             <p>
                                 <?php
                                     $get_soon_expired = new selects();
-                                    $soon_expired = $get_soon_expired->fetch_expire_soon('items', 'expiration_date', 'quantity');
+                                    $soon_expired = $get_soon_expired->fetch_expire_soon('inventory', 'expiration_date', 'quantity', 'store', $store_id);
                                     echo $soon_expired;
                                 ?>
                             </p>
@@ -134,7 +134,7 @@
                             <p style="color:red">
                                 <?php
                                     $get_expired = new selects();
-                                    $expired = $get_expired->fetch_expired('items', 'expiration_date', 'quantity');
+                                    $expired = $get_expired->fetch_expired('inventory', 'expiration_date', 'quantity', 'store', $store_id);
                                     echo $expired;
                                 ?>
                             </p>
@@ -144,7 +144,7 @@
                             <p>
                                 <?php
                                     $get_level = new selects();
-                                    $levels = $get_level->fetch_lesser('items', 'quantity', 'reorder_level');
+                                    $levels = $get_level->fetch_lesser_cond('inventory',  'quantity', 'reorder_level', 'store', $store_id);
                                     echo $levels;
                                 ?>
                             </p>

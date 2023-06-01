@@ -775,6 +775,22 @@ function displayStockinForm(item_id){
      // }
      
  }
+//display transfer item form
+function addTransfer(item_id){
+     let item = item_id;
+          
+          $.ajax({
+               type : "GET",
+               url : "../controller/get_transfer_details.php?item="+item,
+               success : function(response){
+                    $(".info").html(response);
+               }
+          })
+          $("#sales_item").html("");
+          return false;
+     // }
+     
+ }
 
  //display item purchase history
 function checkStockinHistory(item_id){
@@ -837,11 +853,11 @@ function stockin(){
           alert("You can not stock in expired items!");
           $("#expiration_date").focus();
           return;
-     }else if(cost_price >= sales_price){
+     }else if(parseInt(cost_price) >= parseInt(sales_price)){
           alert("Cost price cannot be greater than selling price!");
           $("#sales_price").focus();
           return;
-     }else if(cost_price >= wholesale_price){
+     }else if(parseInt(cost_price) >= parseInt(wholesale_price)){
           alert("Cost price cannot be greater than wholesale price!");
           $("#wholesale_price").focus();
           return;
@@ -850,6 +866,38 @@ function stockin(){
                type : "POST",
                url : "../controller/stock_in.php",
                data : {posted_by:posted_by, store:store, supplier:supplier, invoice_number:invoice_number, item_id:item_id, quantity:quantity, cost_price:cost_price, sales_price:sales_price, pack_price:pack_price, pack_size:pack_size, wholesale_price:wholesale_price, wholesale_pack:wholesale_pack, expiration_date:expiration_date},
+               success : function(response){
+               $(".stocked_in").html(response);
+               }
+          })
+          /* $("#quantity").val('');
+          $("#expiration_date").val('');
+          $("#quantity").focus(); */
+          $(".info").html('');
+          return false; 
+     }
+}
+ //transfer in items
+function transfer(){
+     let posted_by = document.getElementById("posted_by").value;
+     let store_from = document.getElementById("store_from").value;
+     let store_to = document.getElementById("store_to").value;
+     let invoice = document.getElementById("invoice").value;
+     let item_id = document.getElementById("item_id").value;
+     let quantity = document.getElementById("quantity").value;
+     if(quantity.length == 0 || quantity.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input quantity purchased!");
+          $("#quantity").focus();
+          return;
+     }else if(quantity == "0"){
+          alert("Please input quantity purchased!");
+          $("#quantity").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/transfer.php",
+               data : {posted_by:posted_by, store_to:store_to, store_from:store_from, invoice:invoice, item_id:item_id, quantity:quantity},
                success : function(response){
                $(".stocked_in").html(response);
                }
@@ -885,19 +933,7 @@ function closeStockin(){
      $("#stockin").load("stockin_purchase.php #stockin");
 }
 
-//display adjust quantity form
-function displayQuantityForm(item_id){
-     // alert(item_id);
-     $.ajax({
-          type : "GET",
-          url : "../controller/get_item_qty.php?item_id="+item_id,
-          success : function(response){
-               $(".info").html(response);
-          }
-     })
-     return false;
- 
- }
+
  //adjust item quantity
  function adjustQty(){
      let item_id = document.getElementById("item_id").value;
@@ -921,32 +957,7 @@ function displayQuantityForm(item_id){
           return false
      }
  }
- //display remove item quantity form
-function displayRemovalForm(item_id){
-     // alert(item_id);
-     $.ajax({
-          type : "GET",
-          url : "../controller/get_removal.php?item_id="+item_id,
-          success : function(response){
-               $(".info").html(response);
-          }
-     })
-     return false;
  
- }
- //display adjust expiration form
-function displayExpiration(item_id){
-     // alert(item_id);
-     $.ajax({
-          type : "GET",
-          url : "../controller/get_expiration.php?item_id="+item_id,
-          success : function(response){
-               $(".info").html(response);
-          }
-     })
-     return false;
- 
- }
  //remove item quantity from store
  function removeQty(){
      let item_id = document.getElementById("item_id").value;
@@ -1505,24 +1516,55 @@ function getItemStockin(item_name){
           $("#vendor").focus();
           return;
      }else{
-     if(item.length >= 3){
-          if(item){
-               $.ajax({
-                    type : "POST",
-                    url :"../controller/get_item_stockin.php",
-                    data : {item:item, invoice:invoice, vendor:vendor},
-                    success : function(response){
-                         $("#sales_item").html(response);
-                    }
-               })
-               $("#invoice").attr("readonly", true);
-               $("#vendor").attr("readonly", true);
-               return false;
-          }else{
-               $("#sales_item").html("<p>Please enter atleast 3 letters</p>");
+          if(item.length >= 3){
+               if(item){
+                    $.ajax({
+                         type : "POST",
+                         url :"../controller/get_item_stockin.php",
+                         data : {item:item, invoice:invoice, vendor:vendor},
+                         success : function(response){
+                              $("#sales_item").html(response);
+                         }
+                    })
+                    $("#invoice").attr("readonly", true);
+                    $("#vendor").attr("readonly", true);
+                    return false;
+               }else{
+                    $("#sales_item").html("<p>Please enter atleast 3 letters</p>");
+               }
           }
      }
+     
 }
+//get item for transfer
+function getItemTransfer(item_name){
+     let item = item_name;
+     // alert(check_room);
+     // return;
+     let invoice = document.getElementById("invoice").value;
+     let store_to = document.getElementById("store_to").value;
+     if(store_to.length == 0 || store_to.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select a store!");
+          $("#store_to").focus();
+          return;
+     }else{
+          if(item.length >= 3){
+               if(item){
+                    $.ajax({
+                         type : "POST",
+                         url :"../controller/get_item_transfer.php",
+                         data : {item:item,  store_to:store_to, invoice:invoice},
+                         success : function(response){
+                              $("#sales_item").html(response);
+                         }
+                    })
+                    $("#store_to").attr("readonly", true);
+                    return false;
+               }else{
+                    $("#sales_item").html("<p>Please enter atleast 3 letters</p>");
+               }
+          }
+     }
      
 }
 //get item for stockin history
@@ -2058,19 +2100,7 @@ function printSalesOrder(){
      }
 }
 
-//display adjust reorder level form
-function displayReorderLevel(item_id){
-     // alert(item_id);
-     $.ajax({
-          type : "GET",
-          url : "../controller/get_reorder_level.php?item_id="+item_id,
-          success : function(response){
-               $(".info").html(response);
-          }
-     })
-     return false;
- 
- }
+
  //adjust item quantity
  function adjustReorderLevel(){
      let item_id = document.getElementById("item_id").value;

@@ -16,6 +16,7 @@
         //update quantity
         $change_level = new Update_table();
         $change_level->update('items', 'reorder_level', 'item_id', $rol, $item);
+        $change_level->update('inventory', 'reorder_level', 'item', $rol, $item);
         if($change_level){
              echo "<div class='success'><p>$item_name Reorder level adjusted successfully! <i class='fas fa-thumbs-up'></i></p></div>";
         }else{

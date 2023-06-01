@@ -235,26 +235,28 @@
             
         }
         //Adjust quantity
-        protected function adjust_qty($value1, $value2, $value3, $value4){
+        protected function adjust_qty($value1, $value2, $value3, $value4, $value5){
             
-            $adjust = $this->connectdb()->prepare("INSERT INTO stock_adjustments (item, adjusted_by, previous_qty, new_qty) VALUES (:item, :adjusted_by, :previous_qty, :new_qty)");
+            $adjust = $this->connectdb()->prepare("INSERT INTO stock_adjustments (item, adjusted_by, previous_qty, new_qty, store) VALUES (:item, :adjusted_by, :previous_qty, :new_qty, :store)");
             $adjust->bindValue("item", $value1);
             $adjust->bindValue("adjusted_by", $value2);
             $adjust->bindValue("previous_qty", $value3);
             $adjust->bindValue("new_qty", $value4);
+            $adjust->bindValue("store", $value5);
             $adjust->execute();
             
             
         }
         //Remove item quantity
-        protected function remove_qty($value1, $value2, $value3, $value4, $value5){
+        protected function remove_qty($value1, $value2, $value3, $value4, $value5, $value6){
             
-            $remove = $this->connectdb()->prepare("INSERT INTO remove_items (item, quantity, reason, removed_by, previous_qty) VALUES (:item, :quantity, :reason, :removed_by, :previous_qty)");
+            $remove = $this->connectdb()->prepare("INSERT INTO remove_items (item, quantity, reason, removed_by, previous_qty, store) VALUES (:item, :quantity, :reason, :removed_by, :previous_qty, :store)");
             $remove->bindValue("item", $value1);
             $remove->bindValue("quantity", $value2);
             $remove->bindValue("reason", $value3);
             $remove->bindValue("removed_by", $value4);
             $remove->bindValue("previous_qty", $value5);
+            $remove->bindValue("store", $value6);
             $remove->execute();
             
             
@@ -326,14 +328,26 @@
             $stockin->bindvalue("store", $store);
             $stockin->execute();
         }
+        //Transfer item to store
+        protected function transfer_item($posted, $store_from, $store_to, $item, $invoice, $quantity){
+            $transfer = $this->connectdb()->prepare("INSERT INTO transfers (item, invoice, store_from, store_to, quantity, posted_by) VALUES (:item, :invoice, :store_from, :store_to, :quantity, :posted_by)");
+            $transfer->bindvalue("item", $item);
+            $transfer->bindvalue("invoice", $invoice);
+            $transfer->bindvalue("quantity", $quantity);
+            $transfer->bindvalue("posted_by", $posted);
+            $transfer->bindvalue("store_from", $store_from);
+            $transfer->bindvalue("store_to", $store_to);
+            $transfer->execute();
+        }
         //add item quantity to inventory
-        protected function add_inventory($store, $item, $cost, $quantity, $expiration){   
-            $stockin = $this->connectdb()->prepare("INSERT INTO inventory (item, store, cost_price, quantity, expiration_date) VALUES (:item, :store, :cost_price, :quantity, :expiration_date)");
+        protected function add_inventory($store, $item, $cost, $quantity, $expiration, $reorder){   
+            $stockin = $this->connectdb()->prepare("INSERT INTO inventory (item, store, cost_price, quantity, expiration_date, reorder_level) VALUES (:item, :store, :cost_price, :quantity, :expiration_date, :reorder_level)");
             $stockin->bindvalue("item", $item);
             $stockin->bindvalue("cost_price", $cost);
             $stockin->bindvalue("quantity", $quantity);
             $stockin->bindvalue("expiration_date", $expiration);
             $stockin->bindvalue("store", $store);
+            $stockin->bindvalue("reorder_level", $reorder);
             $stockin->execute();
         }
         //add item to sales
@@ -628,24 +642,6 @@
         private $value2;
         private $value3;
         private $value4;
-
-        public function __construct($value1, $value2, $value3, $value4)
-        {
-            $this->value1 = $value1;
-            $this->value2 = $value2;
-            $this->value3 = $value3;
-            $this->value4 = $value4;
-        }
-        public function adjust(){
-            $this->adjust_qty($this->value1, $this->value2, $this->value3, $this->value4);
-        }
-    }
-    // controller for remove item quantity
-    class remove_qty extends inserts{
-        private $value1;
-        private $value2;
-        private $value3;
-        private $value4;
         private $value5;
 
         public function __construct($value1, $value2, $value3, $value4, $value5)
@@ -656,8 +652,30 @@
             $this->value4 = $value4;
             $this->value5 = $value5;
         }
+        public function adjust(){
+            $this->adjust_qty($this->value1, $this->value2, $this->value3, $this->value4, $this->value5);
+        }
+    }
+    // controller for remove item quantity
+    class remove_qty extends inserts{
+        private $value1;
+        private $value2;
+        private $value3;
+        private $value4;
+        private $value5;
+        private $value6;
+
+        public function __construct($value1, $value2, $value3, $value4, $value5, $value6)
+        {
+            $this->value1 = $value1;
+            $this->value2 = $value2;
+            $this->value3 = $value3;
+            $this->value4 = $value4;
+            $this->value5 = $value5;
+            $this->value6 = $value6;
+        }
         public function remove(){
-            $this->remove_qty($this->value1, $this->value2, $this->value3, $this->value4, $this->value5);
+            $this->remove_qty($this->value1, $this->value2, $this->value3, $this->value4, $this->value5, $this->value6);
         }
     }
 
@@ -690,6 +708,29 @@
             $this->stockin_item($this->posted, $this->store, $this->item, $this->vendor, $this->invoice, $this->quantity, $this->cost, $this->sales, $this->expiration);
         }
     }
+    //controller for transfer of items
+    class transfers extends inserts{
+        private $item;
+        private $invoice;
+        private $quantity;
+        private $posted;
+        private $store_from;
+        private $store_to;
+
+        public function __construct($item, $invoice, $quantity, $posted, $store_from, $store_to)
+        {
+            $this->item = $item;
+            $this->invoice = $invoice;
+            $this->quantity = $quantity;
+            $this->posted = $posted;
+            $this->store_from = $store_from;
+            $this->store_to = $store_to;
+        }
+
+        public function transfer(){
+            $this->transfer_item($this->posted, $this->store_from, $this->store_to, $this->item, $this->invoice, $this->quantity);
+        }
+    }
     //controller for adding items to inventory
     class add_inventory extends inserts{
         private $item;
@@ -697,18 +738,20 @@
         private $cost;
         private $expiration;
         private $store;
+        private $reorder;
 
-        public function __construct($item, $quantity, $cost, $expiration, $store)
+        public function __construct($item, $quantity, $cost, $expiration, $store, $reorder)
         {
             $this->item = $item;
             $this->quantity = $quantity;
             $this->cost = $cost;
             $this->expiration = $expiration;
             $this->store = $store;
+            $this->reorder = $reorder;
         }
 
         public function insert_inventory(){
-            $this->add_inventory($this->store, $this->item, $this->cost, $this->quantity, $this->expiration);
+            $this->add_inventory($this->store, $this->item, $this->cost, $this->quantity, $this->expiration, $this->reorder);
         }
     }
     //controller for adding sales

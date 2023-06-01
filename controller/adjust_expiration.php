@@ -1,5 +1,6 @@
 <?php
-    session_start();    
+    session_start(); 
+    $store = $_SESSION['store_id'];   
     // $removed_by = $_SESSION['user_id'];
     // if(isset($_POST['change_prize'])){
         $item = htmlspecialchars(stripslashes($_POST['item_id']));
@@ -19,7 +20,7 @@
         }
         //update expiration
         $update_exp = new Update_table();
-        $update_exp->update('items', 'expiration_date', 'item_id', $exp, $item);
+        $update_exp->update2cond('inventory', 'expiration_date', 'item', 'store', $exp, $item, $store);
         if($update_exp){
            
              echo "<div class='success'><p> $item_name expiration date updated successfully! <i class='fas fa-thumbs-up'></i></p></div>";

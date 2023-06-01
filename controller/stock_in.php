@@ -21,6 +21,10 @@
     include "../classes/inserts.php";
     include "../classes/update.php";
     include "../classes/select.php";
+    //get reordr level
+    $get_reorder = new selects();
+    $row = $get_reorder->fetch_details_group('items', 'reorder_level', 'item_id', $item);
+    $reorder_level = $row->reorder_level;
     // get item previous quantity in inventory;
     $get_prev_qty = new selects();
     $prev_qtys = $get_prev_qty->fetch_details_2cond('inventory', 'item', 'store', $item, $store);
@@ -43,9 +47,9 @@
         $update_inventory = new Update_table();
         $update_inventory->update_tripple2Cond('inventory', 'quantity', $new_qty, 'cost_price', $cost_price, 'expiration_date', $expiration, 'item', $item, 'store', $store);
     }
+    //add to inventory if not found
     if(gettype($prev_qtys) === 'string'){
-        //add to inventory
-        $insert_item = new add_inventory($item, $quantity, $cost_price, $expiration, $store);
+        $insert_item = new add_inventory($item, $quantity, $cost_price, $expiration, $store, $reorder_level);
         $insert_item->insert_inventory();
     }
     //stockin item
