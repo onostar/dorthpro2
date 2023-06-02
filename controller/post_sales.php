@@ -28,7 +28,7 @@ include "../classes/inserts.php";
                 $prev_qtys = $get_qty->fetch_details_cond('items', 'item_id', $all_item);
                 foreach($prev_qtys as $prev_qty){    
                     //insert into audit trail
-                    $inser_trail = new audit_trail($all_item, $trans_type, $prev_qty->quantity, $sold_qty, $user);
+                    $inser_trail = new audit_trail($all_item, $trans_type, $prev_qty->quantity, $sold_qty, $user, $store);
                     $inser_trail->audit_trail();
                 
                 }

@@ -2600,3 +2600,80 @@ function giveDiscount(){
      }
 
 }
+
+//delete individual transfered items from transfer
+function deleteTransfer(transfer, item){
+     let confirmDel = confirm("Are you sure you want to remove this item?", "");
+     if(confirmDel){
+          
+          $.ajax({
+               type : "GET",
+               url : "../controller/delete_transfer.php?transfer_id="+transfer+"&item_id="+item,
+               success : function(response){
+                    $(".stocked_in").html(response);
+               }
+               
+          })
+          return false;
+     }else{
+          return;
+     }
+}
+
+//post transfer
+function postTransfer(invoice_number){
+     invoice = invoice_number;
+     confirmPost = confirm("Are you sure to post this transfer?", "");
+     if(confirmPost){
+          $.ajax({
+               method : "GET",
+               url : "../controller/post_transfer.php?invoice="+invoice,
+               success : function(response){
+                    $("#stockin").html(response);
+               }
+          })
+          return false;
+     }else{
+          return;
+     }
+}
+//Accept items transferred
+function acceptItem(invoice_number){
+     invoice = invoice_number;
+     confirmPost = confirm("Are you sure to accept this item?", "");
+     if(confirmPost){
+          $.ajax({
+               method : "GET",
+               url : "../controller/accept_item.php?transfer_id="+invoice,
+               success : function(response){
+                    $("#accept_item").html(response);
+               }
+          })
+          setTimeout(function(){
+               $("#accept_item").load("accept_items.php #accept_item");
+          }, 2000);
+          return false
+     }else{
+          return;
+     }
+}
+//Reject items transferred
+function rejectItem(invoice_number){
+     invoice = invoice_number;
+     confirmPost = confirm("Are you sure to reject this item?", "");
+     if(confirmPost){
+          $.ajax({
+               method : "GET",
+               url : "../controller/reject_item.php?transfer_id="+invoice,
+               success : function(response){
+                    $("#accept_item").html(response);
+               }
+          })
+          setTimeout(function(){
+               $("#accept_item").load("accept_items.php #accept_item");
+          }, 2000);
+          return false
+     }else{
+          return;
+     }
+}

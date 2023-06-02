@@ -11,7 +11,7 @@
     <?php
         //generate receipt invoice
         //get current date
-        $todays_date = date("dmyh");
+        $todays_date = date("dmyhi");
         $random_num = random_int(10000, 99999);
         $invoice = "TR".$todays_date.$random_num.$store.$user_id;
         $_SESSION['invoice'] = $invoice;
@@ -37,6 +37,7 @@
                     </select>
                 </div>
                 <div class="data" style="width:100%; margin:10px 0">
+                    <label for="">Enter item name</label>
                     <input type="text" name="item" id="item" required placeholder="Input item name or barcode" onkeyup="getItemTransfer(this.value)">
                         <div id="sales_item">
                             

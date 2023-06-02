@@ -14,10 +14,11 @@
     include "../classes/select.php";
     //get item details 
     $get_item_det = new selects();
-    $items = $get_item_det->fetch_details_cond('items', 'item_id', $item);
-    foreach($items as $item){
-        $cost_price = $item->cost_price;
-        $sales_price = $item->sales_price;
+    $itemss = $get_item_det->fetch_details_cond('items', 'item_id', $item);
+    foreach($itemss as $items){
+        $cost_price = $items->cost_price;
+        // $sales_price = $items->sales_price;
+        $name = $items->item_name;
     }
     // get item previous quantity in inventory;
     $get_prev_qty = new selects();
@@ -25,8 +26,13 @@
     if(gettype($prev_qtys) === 'array'){
         foreach($prev_qtys as $prev_qty){
             $inv_qty = $prev_qty->quantity;
+            $expiration = $prev_qty->expiration_date;
         }
     }
+    //check item quantity
+    if($quantity > $inv_qty){
+        echo "<div class='notify' style='padding:4px!important'><p style='color:#fff!important'><span>$name</span> do not have enough quantity! Cannot proceed</p>";
+    }else{
     //insert into audit trail
     $inser_trail = new audit_trail($item, $trans_type, $inv_qty, $quantity, $posted, $store_from);
     $inser_trail->audit_trail();
@@ -40,16 +46,16 @@
     }
     
     //transfer item
-    $transfer = new transfers($item, $invoice, $quantity, $posted, $store_from, $store_to);
+    $transfer = new transfers($item, $invoice, $quantity, $posted, $cost_price, $store_from, $store_to, $expiration);
 
     $transfer->transfer();
     
     if($transfer){
         
 ?>
-    <!-- display stockins for this invoice number -->
+    <!-- display transfers for this invoice number -->
 <div class="displays allResults" id="stocked_items">
-    <h2>Items to be transferred with invoice <?php echo $invoice?></h2>
+    <h2>Items transfered with invoice <?php echo $invoice?></h2>
     <table id="stock_items_table" class="searchTable">
         <thead>
             <tr style="background:var(--moreColor)">
@@ -65,24 +71,27 @@
             <?php
                 $n = 1;
                 $get_items = new selects();
-                $details = $get_items->fetch_details_2cond('transfers', 'store_from', 'invoice', $store_from, $invoice);
+                $details = $get_items->fetch_details_2cond('transfers', 'from_store', 'invoice', $store_from, $invoice);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
+                    $get_ind = new selects();
+                    $alls = $get_ind->fetch_details_cond('items', 'item_id', $detail->item);
+                    foreach($alls as $all){
+                        $sales_price = $all->sales_price;
+                        $itemname = $all->item_name;
+                    }
             ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
                 <td style="color:var(--moreClor);">
                     <?php
-                        //get category name
-                        $get_item_name = new selects();
-                        $item_name = $get_item_name->fetch_details_group('items', 'item_name', 'item_id', $detail->item);
-                        echo $item_name->item_name;
+                        echo $itemname;
                     ?>
                 </td>
                 <td style="text-align:center"><?php echo $detail->quantity?></td>
                 <td>
                     <?php 
-                        echo "₦".number_format($cost_price, 2);
+                        echo "₦".number_format($detail->cost_price, 2);
                     ?>
                 </td>
                 <td>
@@ -90,6 +99,7 @@
                         echo "₦".number_format($sales_price, 2);
                     ?>
                 </td>
+                <td>
                     <a style="color:red; font-size:1rem" href="javascript:void(0) "title="delete purchase" onclick="deleteTransfer('<?php echo $detail->transfer_id?>', <?php echo $detail->item?>)"><i class="fas fa-trash"></i></a>
                 </td>
                 
@@ -104,10 +114,9 @@
         if(gettype($details) == "string"){
             echo "<p class='no_result'>'$details'</p>";
         }
-
         // get sum
         $get_total = new selects();
-        $amounts = $get_total->fetch_sum_2con('inventory', 'cost_price', 'quantity', 'item', 'store', $item, $store_from);
+        $amounts = $get_total->fetch_sum_2con('transfers', 'cost_price', 'quantity', 'from_store', 'invoice', $store_from, $invoice);
         foreach($amounts as $amount){
             $total_amount = $amount->total;
         }
@@ -115,11 +124,11 @@
         echo "<p class='total_amount' style='color:red'>Total Cost: ₦".number_format($total_amount, 2)."</p>";
     ?>
     <div class="close_stockin">
-        <button onclick="postTransfer('<?php echo $invoice?>')" style="background:red; padding:8px; border-radius:5px;">Post transfer <i class="fas fa-power-off"></i></button>
+        <button onclick="postTransfer('<?php echo $invoice?>')" style="background:green; padding:8px; border-radius:5px;">Post transfer <i class="fas fa-upload"></i></button>
     </div>
 </div>
 <?php
         }
     
-
+    }
 ?>

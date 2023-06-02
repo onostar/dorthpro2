@@ -158,6 +158,20 @@
                 return $rows;
             }
         }
+        //fetch with two condition group by
+        public function fetch_details_2condGroup($table, $condition1, $condition2, $value1, $value2, $group){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition1 = :$condition1 AND $condition2 = :$condition2 GROUP BY $group");
+            $get_user->bindValue("$condition1", $value1);
+            $get_user->bindValue("$condition2", $value2);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
         //fetch with two condition (one is negative)
         public function fetch_details_2cond1neg($table, $condition1, $condition2, $value1, $value2){
             $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition1 = :$condition1 AND $condition2 != :$condition2");
@@ -828,7 +842,7 @@
                 return $rows;
             }
         }
-        //fetch details with single condition grouped
+        //fetch single column details with single condition grouped
         public function fetch_details_group($table, $column, $condition, $value){
             $get_user = $this->connectdb()->prepare("SELECT $column FROM $table WHERE $condition = :$condition");
             $get_user->bindValue("$condition", $value);
@@ -841,6 +855,20 @@
                 return $rows;
             }
         }
+        //fetch all details with 1 condition grouped
+        public function fetch_details_Allgroup($table, $condition, $value, $group){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition = :$condition GROUP BY $group");
+            $get_user->bindValue("$condition", $value);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $row = $get_user->fetch();
+                return $row;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
+        
         // fetch daily checkins
         public function fetch_daily_sales(){
             $get_daily = $this->connectdb()->prepare("SELECT COUNT(distinct invoice) AS customers, SUM(amount_paid) AS revenue, post_date FROM payments GROUP BY date(post_date) ORDER BY date(post_date) DESC");

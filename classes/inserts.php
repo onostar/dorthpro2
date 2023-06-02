@@ -329,14 +329,16 @@
             $stockin->execute();
         }
         //Transfer item to store
-        protected function transfer_item($posted, $store_from, $store_to, $item, $invoice, $quantity){
-            $transfer = $this->connectdb()->prepare("INSERT INTO transfers (item, invoice, store_from, store_to, quantity, posted_by) VALUES (:item, :invoice, :store_from, :store_to, :quantity, :posted_by)");
+        protected function transfer_item($posted, $store_from, $store_to, $item, $invoice, $quantity, $cost, $expiration){
+            $transfer = $this->connectdb()->prepare("INSERT INTO transfers (item, invoice, from_store, to_store, quantity, cost_price, posted_by, expiration) VALUES (:item, :invoice, :from_store, :to_store, :quantity, :cost_price, :posted_by, :expiration)");
             $transfer->bindvalue("item", $item);
             $transfer->bindvalue("invoice", $invoice);
             $transfer->bindvalue("quantity", $quantity);
+            $transfer->bindvalue("cost_price", $cost);
             $transfer->bindvalue("posted_by", $posted);
-            $transfer->bindvalue("store_from", $store_from);
-            $transfer->bindvalue("store_to", $store_to);
+            $transfer->bindvalue("from_store", $store_from);
+            $transfer->bindvalue("to_store", $store_to);
+            $transfer->bindvalue("expiration", $expiration);
             $transfer->execute();
         }
         //add item quantity to inventory
@@ -716,8 +718,10 @@
         private $posted;
         private $store_from;
         private $store_to;
+        private $cost;
+        private $expiration;
 
-        public function __construct($item, $invoice, $quantity, $posted, $store_from, $store_to)
+        public function __construct($item, $invoice, $quantity, $posted, $cost, $store_from, $store_to, $expiration)
         {
             $this->item = $item;
             $this->invoice = $invoice;
@@ -725,10 +729,12 @@
             $this->posted = $posted;
             $this->store_from = $store_from;
             $this->store_to = $store_to;
+            $this->cost = $cost;
+            $this->expiration = $expiration;
         }
 
         public function transfer(){
-            $this->transfer_item($this->posted, $this->store_from, $this->store_to, $this->item, $this->invoice, $this->quantity);
+            $this->transfer_item($this->posted, $this->store_from, $this->store_to, $this->item, $this->invoice, $this->quantity, $this->cost, $this->expiration);
         }
     }
     //controller for adding items to inventory
