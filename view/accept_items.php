@@ -21,7 +21,7 @@
                 <td>Invoice</td>
                 <td>Item</td>
                 <td>Quantity</td>
-                <td>Transferred from</td>
+                <td>From</td>
                 <td>Date</td>
                 <td>Transferred by</td>
                 <td></td>

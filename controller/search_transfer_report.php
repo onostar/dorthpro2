@@ -1,35 +1,25 @@
 <?php
     session_start();
     $store = $_SESSION['store_id'];
+    $from = htmlspecialchars(stripslashes($_POST['from_date']));
+    $to = htmlspecialchars(stripslashes($_POST['to_date']));
+
+    // instantiate classes
     include "../classes/dbh.php";
     include "../classes/select.php";
+
     //get store name
     $get_store = new selects();
     $strs = $get_store->fetch_details_group('stores', 'store', 'store_id', $store);
     $store_name = $strs->store;
 
+    
 ?>
-<div id="transfer_report" class="displays management" style="width:100%!important;">
-    <div class="select_date">
-        <!-- <form method="POST"> -->
-        <section>    
-            <div class="from_to_date">
-                <label>Select From Date</label><br>
-                <input type="date" name="from_date" id="from_date"><br>
-            </div>
-            <div class="from_to_date">
-                <label>Select to Date</label><br>
-                <input type="date" name="to_date" id="to_date"><br>
-            </div>
-            <button type="submit" name="search_date" id="search_date" onclick="search('search_transfer_report.php')">Search <i class="fas fa-search"></i></button>
-        </section>
-    </div>
-<div class="displays allResults new_data" id="revenue_report">
-    <h2>Items transferred from <?php echo $store_name?> Today</h2>
+<h2>Items transferred from <?php echo $store_name?> between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
     <hr>
     <div class="search">
-        <input type="search" id="searchCheckout" placeholder="Enter keyword" onkeyup="searchData(this.value)">
-        <a class="download_excel" href="javascript:void(0)" onclick="convertToExcel('data_table', 'Sales report')"title="Download to excel"><i class="fas fa-file-excel"></i></a>
+        <input type="search" id="searchRevenue" placeholder="Enter keyword" onkeyup="searchData(this.value)">
+        <a class="download_excel" href="javascript:void(0)" onclick="convertToExcel('data_table', 'Revenue by category')"title="Download to excel"><i class="fas fa-file-excel"></i></a>
     </div>
     <table id="data_table" class="searchTable">
         <thead>
@@ -38,7 +28,8 @@
                 <td>Invoice</td>
                 <td>Total items</td>
                 <td>Store</td>
-                <td>Post time</td>
+                <td>Post Date</td>
+                <td>Post Time</td>
                 <td>Posted by</td>
                 <td></td>
                 
@@ -48,7 +39,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_2condNegDateGroup('transfers', 'from_store', 'transfer_status', $store, 0, 'post_date', 'invoice');
+                $details = $get_users->fetch_details_2condNeg2DateGroup('transfers', 'from_store', 'transfer_status', $store, 0, 'date(post_date)', $from, $to, 'invoice');
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
@@ -72,6 +63,7 @@
                     ?>
                 </td>
                 
+                <td><?php echo date("m-d-Y", strtotime($detail->post_date));?></td>
                 <td style="color:var(--moreColor)"><?php echo date("H:m:ia", strtotime($detail->post_date));?></td>
                 <td>
                     <?php
@@ -94,9 +86,3 @@
             echo "<p class='no_result'>'$details'</p>";
         }
     ?>
-    
-
-</div>
-
-<script src="../jquery.js"></script>
-<script src="../script.js"></script>

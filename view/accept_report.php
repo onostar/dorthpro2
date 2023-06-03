@@ -21,11 +21,11 @@
                 <label>Select to Date</label><br>
                 <input type="date" name="to_date" id="to_date"><br>
             </div>
-            <button type="submit" name="search_date" id="search_date" onclick="search('search_transfer_report.php')">Search <i class="fas fa-search"></i></button>
+            <button type="submit" name="search_date" id="search_date" onclick="search('search_accept_report.php')">Search <i class="fas fa-search"></i></button>
         </section>
     </div>
 <div class="displays allResults new_data" id="revenue_report">
-    <h2>Items transferred from <?php echo $store_name?> Today</h2>
+    <h2>Items accepted to <?php echo $store_name?> Today</h2>
     <hr>
     <div class="search">
         <input type="search" id="searchCheckout" placeholder="Enter keyword" onkeyup="searchData(this.value)">
@@ -36,11 +36,12 @@
             <tr style="background:var(--primaryColor)">
                 <td>S/N</td>
                 <td>Invoice</td>
-                <td>Total items</td>
-                <td>Store</td>
+                <td>Item</td>
+                <td>Quantity</td>
+                <td>From</td>
                 <td>Post time</td>
-                <td>Posted by</td>
-                <td></td>
+                <td>Transferred by</td>
+                <td>Accepted by</td>
                 
             </tr>
         </thead>
@@ -48,26 +49,27 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_2condNegDateGroup('transfers', 'from_store', 'transfer_status', $store, 0, 'post_date', 'invoice');
+                $details = $get_users->fetch_details_date2Cond('transfers', 'date(post_date)', 'to_store', $store, 'transfer_status', 2);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
+                    $get_ind = new selects();
+                    $alls = $get_ind->fetch_details_cond('items', 'item_id', $detail->item);
+                    foreach($alls as $all){
+                        $cost_price = $all->cost_price;
+                        $sales_price = $all->sales_price;
+                        $itemname = $all->item_name;
+                    }
             ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
                 <td style="color:var(--otherColor)"><?php echo $detail->invoice?></td>
-                <td style="color:green; text-align:Center">
-                    <?php 
-                        //get total items with that invoice
-                        $get_sum = new selects();
-                        $sums = $get_sum->fetch_count_cond('transfers', 'invoice', $detail->invoice);
-                        echo $sums;
-                    ?>
-                </td>
+                <td><?php echo $itemname;?></td>
+                <td style="text-align:center; color:green"><?php echo $detail->quantity?></td>
                 <td style="color:green;">
                     <?php 
                         //get total items with that invoice
                         $get_sum = new selects();
-                        $sums = $get_sum->fetch_details_group('stores', 'store', 'store_id', $detail->to_store);
+                        $sums = $get_sum->fetch_details_group('stores', 'store', 'store_id', $detail->from_store);
                         echo $sums->store;
                     ?>
                 </td>
@@ -82,7 +84,12 @@
                     ?>
                 </td>
                 <td>
-                    <a style="color:green; background:var(--otherColor); padding:5px; border-radius:5px; color:#fff" href="javascript:void(0)" title="View invoice details" onclick="showPage('transfer_details.php?invoice=<?php echo $detail->invoice?>')"> <i class="fas fa-eye"></i> View</a>
+                    <?php
+                        //get posted by
+                        $get_posted_by = new selects();
+                        $checkedin_by = $get_posted_by->fetch_details_group('users', 'full_name', 'user_id', $detail->accept_by);
+                        echo $checkedin_by->full_name;
+                    ?>
                 </td>
                 
             </tr>

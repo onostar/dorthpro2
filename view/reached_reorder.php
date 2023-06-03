@@ -34,7 +34,7 @@
                 foreach($details as $detail):
             ?>
             <tr>
-            <td style="text-align:center; color:red;"><?php echo $n?></td>
+                <td style="text-align:center; color:red;"><?php echo $n?></td>
                 <td>
                     <?php
                         //get item category first
