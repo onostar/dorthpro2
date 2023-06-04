@@ -130,7 +130,7 @@
                             </p>
                         </div>
                         <div class="links page_navs" onclick="showPage('expired_items.php')" title="Expired items">
-                            <i class="fas fa-list" style="color:red"></i>
+                            <i class="fas fa-calendar-times" style="color:red"></i>
                             <p style="color:red">
                                 <?php
                                     $get_expired = new selects();
@@ -140,7 +140,7 @@
                             </p>
                         </div>
                         <div class="links page_navs" onclick="showPage('reached_reorder.php')" title="Reached reorder level">
-                            <i class="fas fa-door-open"></i>
+                            <i class="fas fa-sort-amount-down"></i>
                             <p>
                                 <?php
                                     $get_level = new selects();

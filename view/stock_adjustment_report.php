@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
 
@@ -17,7 +18,7 @@
                 <label>Select to Date</label><br>
                 <input type="date" name="to_date" id="to_date"><br>
             </div>
-            <button type="submit" name="search_date" id="search_date" onclick="searchAdjustments()">Search <i class="fas fa-search"></i></button>
+            <button type="submit" name="search_date" id="search_date" onclick="search('search_adjustments.php')">Search <i class="fas fa-search"></i></button>
     </section>
     </div>
 <div class="displays allResults new_data" style="width:70%!important; margin: 0 50px!important;">
@@ -43,7 +44,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdate('stock_adjustments', 'date(adjust_date)');
+                $details = $get_users->fetch_details_curdateCon('stock_adjustments', 'date(adjust_date)', 'store', $store);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>

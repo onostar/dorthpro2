@@ -196,14 +196,21 @@
                         $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "17");
                         if($row > 0 || $role == "Admin"){
                     ?> 
-                    <li><a href="javascript:void(0);" title="set reorder level" class="page_navs" onclick="showPage('reorder_level.php')"><i class="fas fa-database"></i> Set reorder level</a></li>
+                    <li><a href="javascript:void(0);" title="set reorder level" class="page_navs" onclick="showPage('reorder_level.php')"><i class="fas fa-sort-numeric-down"></i> Set reorder level</a></li>
                     <?php }?>
                     <?php 
                         $get_rights = new selects();
                         $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "18");
                         if($row > 0 || $role == "Admin"){
                     ?>
-                    <li><a href="javascript:void(0);" title="Stock balance" class="page_navs" onclick="showPage('stock_balance.php')"><i class="fas fa-database"></i> Stock balance</a></li>
+                    <li><a href="javascript:void(0);" title="Stock balance" class="page_navs" onclick="showPage('stock_balance.php')"><i class="fas fa-drum"></i> Stock balance</a></li>
+                    <?php }?>
+                    <?php 
+                        $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "59");
+                        if($row > 0 || $role == "Admin"){
+                    ?>
+                    <li><a href="javascript:void(0);" title="All store Stock balance" class="page_navs" onclick="showPage('all_store_balance.php')"><i class="fas fa-database"></i> All Store balance</a></li>
                     <?php }?>
                     <?php 
                         $get_rights = new selects();

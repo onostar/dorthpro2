@@ -13,7 +13,7 @@
     include "../classes/inserts.php";
     include "../classes/update.php";
     include "../classes/select.php";
-
+    
     //get items
     $get_item = new selects();
     $the_items = $get_item->fetch_details_cond('transfers', 'transfer_id', $id);
@@ -21,6 +21,7 @@
         $item = $the_item->item;
         $quantity = $the_item->quantity;
         $expiration = $the_item->expiration;
+        $status = $the_item->transfer_status;
     }
     //get item details 
     $get_item_det = new selects();
@@ -61,9 +62,13 @@
         $insert_item->insert_inventory();
     }
     //update transfer item
-    $update_transfer = new Update_table();
-    $update_transfer->update_double('transfers', 'transfer_status', 2, 'accept_by', $accepted, 'transfer_id', $id);
-
+    if($status == -1){
+        $update_transfer = new Update_table();
+        $update_transfer->update_double('transfers', 'transfer_status', -2, 'accept_by', $accepted, 'transfer_id', $id);
+    }else{
+        $update_transfer = new Update_table();
+        $update_transfer->update_double('transfers', 'transfer_status', 2, 'accept_by', $accepted, 'transfer_id', $id);
+    }
     if($update_transfer){
         echo "<div class='notify' style='padding:4px!important'><p style='color:#fff!important'><span>$quantity $name</span> accepted into inventory</p>";
     }

@@ -1209,56 +1209,8 @@ function searchSalesReturnReport(){
      }
      return false;
 }
-//  search stock adjustment report
-function searchAdjustments(){
-     let from_date = document.getElementById('from_date').value;
-     let to_date = document.getElementById('to_date').value;
-     /* authentication */
-     if(from_date.length == 0 || from_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date!");
-          $("#from_date").focus();
-          return;
-     }else if(to_date.length == 0 || to_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date range!");
-          $("#to_date").focus();
-          return;
-     }else{
-          $.ajax({
-               type: "POST",
-               url: "../controller/search_adjustments.php",
-               data: {from_date:from_date, to_date:to_date},
-               success: function(response){
-               $(".new_data").html(response);
-               }
-          });
-     }
-     return false;
-}
-//  search item removed report
-function searchRemoval(){
-     let from_date = document.getElementById('from_date').value;
-     let to_date = document.getElementById('to_date').value;
-     /* authentication */
-     if(from_date.length == 0 || from_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date!");
-          $("#from_date").focus();
-          return;
-     }else if(to_date.length == 0 || to_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date range!");
-          $("#to_date").focus();
-          return;
-     }else{
-          $.ajax({
-               type: "POST",
-               url: "../controller/search_removal.php",
-               data: {from_date:from_date, to_date:to_date},
-               success: function(response){
-               $(".new_data").html(response);
-               }
-          });
-     }
-     return false;
-}
+
+
 //  search revenue or sales report 
 function searchRevenue(){
      let from_date = document.getElementById('from_date').value;
@@ -2676,4 +2628,18 @@ function rejectItem(invoice_number){
      }else{
           return;
      }
+}
+//Get stock balance by store
+function getStockBalance(store_id){
+     store = store_id;
+     $.ajax({
+          method : "POST",
+          url : "../controller/get_stock_balance.php",
+          data : {store:store},
+          success : function(response){
+               $(".store_balance").html(response);
+          }
+     })
+     return false
+     
 }

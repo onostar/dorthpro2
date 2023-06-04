@@ -172,6 +172,18 @@
                 return $rows;
             }
         }
+        //fetch with one condition group by
+        public function fetch_AllStock(){
+            $get_user = $this->connectdb()->prepare("SELECT SUM(DISTINCT quantity) AS total, cost_price, item FROM inventory GROUP BY item");
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
         //fetch with one condition positiove and another negative group by
         public function fetch_details_2condNegGroup($table, $condition1, $condition2, $value1, $value2, $group){
             $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition1 = :$condition1 AND $condition2 != :$condition2 GROUP BY $group");

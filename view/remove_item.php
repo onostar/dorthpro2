@@ -13,7 +13,7 @@
 ?>
 
     <div class="info" style="width:90%; margin:auto;"></div>
-    <div class="displays allResults" style="width:70%; margin:0 0 0 50px!important">
+    <div class="displays allResults" style="width:80%; margin:0 0 0 50px!important">
         <h2>Remove item quantity from inventory</h2>
         <hr>
         <div class="search">

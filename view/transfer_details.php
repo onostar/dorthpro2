@@ -73,6 +73,8 @@
                                     echo "<p style='color:green'><i class='fas fa-check'></i> Accepted</p>";
                                 }elseif($detail->transfer_status == 1){
                                     echo "<p style='color:var(--otherColor)'><i class='fas fa-spinner'></i> Pending</p>";
+                                }elseif($detail->transfer_status == -2){
+                                    echo "<p style='color:var(--secondaryColor)'><i class='fas fa-undo'></i> Accepted return</p>";
                                 
                                 }else{
                                     echo "<p style='color:red'><i class='fas fa-cancel'></i> Returned</p>";
@@ -84,11 +86,6 @@
                         
                         if($detail->transfer_status == 1){
                             echo "";
-                        }elseif($detail->transfer_status == -1){
-                            //get posted by
-                            $get_posted_by = new selects();
-                            $post_by = $get_posted_by->fetch_details_group('users', 'full_name', 'user_id', $detail->accept_by);
-                            echo $post_by->full_name;
                         }else{
                             //get posted by
                             $get_posted_by = new selects();
