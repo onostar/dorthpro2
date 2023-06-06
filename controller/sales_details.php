@@ -1,3 +1,6 @@
+<?php
+    $store = $_SESSION['store_id'];
+?>
 <div class="displays allResults" id="stocked_items">
     <!-- <h2>Items in sales order</h2> -->
     <table id="addsales_table" class="searchTable">
@@ -81,9 +84,10 @@
     ?>
     <div class="close_stockin add_user_form" style="width:50%; margin:0;">
         <section class="addUserForm">
-            <div class="inputs">
+            <div class="inputs" style="display:flex;flex-wrap:wrap">
                 <input type="hidden" name="total_amount" id="total_amount" value="<?php echo $total_amount?>">
                 <input type="hidden" name="sales_invoice" id="sales_invoice" value="<?php echo $invoice?>">
+                <input type="hidden" name="store" id="store" value="<?php echo $store?>">
                 <div class="data">
                     <label for="payment_type">Payment options</label>
                     <select name="payment_type" id="payment_type" onchange="checkMode(this.value)">

@@ -1939,6 +1939,7 @@ function postSales(){
           let total_amount = document.getElementById("total_amount").value;
           let sales_invoice = document.getElementById("sales_invoice").value;
           let discount = document.getElementById("discount").value;
+          let store = document.getElementById("store").value;
           let payment_type = document.getElementById("payment_type").value;
           let bank = document.getElementById("bank").value;
           let multi_cash = document.getElementById("multi_cash").value;
@@ -1964,7 +1965,7 @@ function postSales(){
                $.ajax({
                     type : "POST",
                     url : "../controller/post_sales.php",
-                    data : {sales_invoice:sales_invoice, payment_type:payment_type, bank:bank, multi_cash:multi_cash, multi_pos:multi_pos, multi_transfer:multi_transfer, discount:discount},
+                    data : {sales_invoice:sales_invoice, payment_type:payment_type, bank:bank, multi_cash:multi_cash, multi_pos:multi_pos, multi_transfer:multi_transfer, discount:discount, store:store},
                     success : function(response){
                          $("#direct_sales").html(response);
                     }
@@ -1990,6 +1991,7 @@ function postSalesOrder(){
           let sales_invoice = document.getElementById("sales_invoice").value;
           let payment_type = document.getElementById("payment_type").value;
           let bank = document.getElementById("bank").value;
+          let store = document.getElementById("store").value;
           let multi_cash = document.getElementById("multi_cash").value;
           let multi_pos = document.getElementById("multi_pos").value;
           let multi_transfer = document.getElementById("multi_transfer").value;
@@ -2014,7 +2016,7 @@ function postSalesOrder(){
                $.ajax({
                     type : "POST",
                     url : "../controller/post_sales_order.php",
-                    data : {sales_invoice:sales_invoice, payment_type:payment_type, bank:bank, multi_cash:multi_cash, multi_pos:multi_pos, multi_transfer:multi_transfer, discount:discount},
+                    data : {sales_invoice:sales_invoice, payment_type:payment_type, bank:bank, multi_cash:multi_cash, multi_pos:multi_pos, multi_transfer:multi_transfer, discount:discount, store:store},
                     success : function(response){
                          $("#sales_details").html(response);
                     }
@@ -2268,31 +2270,6 @@ function printSalesTicket(invoice){
           $.ajax({
                type: "POST",
                url: "../controller/"+url,
-               data: {from_date:from_date, to_date:to_date},
-               success: function(response){
-               $(".new_data").html(response);
-               }
-          });
-     }
-     return false;
-}
-//  search sales order by date 
-function searchSalesOrder(){
-     let from_date = document.getElementById('from_date').value;
-     let to_date = document.getElementById('to_date').value;
-     /* authentication */
-     if(from_date.length == 0 || from_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date!");
-          $("#from_date").focus();
-          return;
-     }else if(to_date.length == 0 || to_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date range!");
-          $("#to_date").focus();
-          return;
-     }else{
-          $.ajax({
-               type: "POST",
-               url: "../controller/search_sales_order.php",
                data: {from_date:from_date, to_date:to_date},
                success: function(response){
                $(".new_data").html(response);

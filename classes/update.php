@@ -140,10 +140,11 @@
             $update->execute();
         }
         //update quantity (substraction) for inventory after sales
-        public function update_inv_qty($value, $condition_value){
-            $update = $this->connectdb()->prepare("UPDATE items SET quantity = quantity - :quantity WHERE item_id = :item_id");
+        public function update_inv_qty($value, $condition_value, $store){
+            $update = $this->connectdb()->prepare("UPDATE inventory SET quantity = quantity - :quantity WHERE item = :item AND store = :store");
             $update->bindValue("quantity", $value);
-            $update->bindValue("item_id", $condition_value);
+            $update->bindValue("item", $condition_value);
+            $update->bindValue("store", $store);
             $update->execute();
         }
 

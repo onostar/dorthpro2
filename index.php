@@ -25,7 +25,7 @@
 <body>
     <main id="reg_body">
         
-        <div class="header">
+        <!-- <div class="header">
             <h1>
                 <a href="index.php">
                     <img src="images/logo.png" alt="logo">
@@ -33,16 +33,16 @@
             </h1>
             <h3><?php echo $row->company?></h3>
            
-        </div>
+        </div> -->
         <section class="reg_log">
             <!-- <div class="adds">
                 <img src="images/software.jpg" alt="login banner">
             </div> -->
             <div class="login_page">
-            
+                
                 <h3 class="mobile_company"><?php echo $row->company?></h3>
-                <h2>Welcome User!</h2>
-                <p>Sign in to continue</p>
+                <!-- <h2>Welcome User!</h2> -->
+                <p style="color:var(--secondaryColor)">Sign in to continue</p>
                 <?php
                     if(isset($_SESSION['success'])){
                         echo "<p class='success succeed' style='color:green'>" . $_SESSION['success']. "</p>
@@ -93,7 +93,9 @@
                     </div>
                     
                 </form>
-                
+                <div class="software_logo">
+                    <img src="images/logo.png" alt="logo">
+                </div>
                 <div id="foot">
                     <p >&copy;<?php echo Date("Y");?> Dorthpro Digitals. All Rights Reserved.</p>
 

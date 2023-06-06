@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     $from = htmlspecialchars(stripslashes($_POST['from_date']));
     $to = htmlspecialchars(stripslashes($_POST['to_date']));
 
@@ -8,7 +9,7 @@
     include "../classes/select.php";
 
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_salesOrderDate($from, $to);
+    $details = $get_revenue->fetch_salesOrderDate($from, $to, $store);
     $n = 1;  
 ?>
 <h2>Sales Order between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>

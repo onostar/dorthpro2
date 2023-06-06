@@ -16,6 +16,7 @@ include "../classes/inserts.php";
             $pos = htmlspecialchars(stripslashes($_POST['multi_pos']));
             $transfer = htmlspecialchars(stripslashes($_POST['multi_transfer']));
             $discount = htmlspecialchars(stripslashes($_POST['discount']));
+            $store = htmlspecialchars(stripslashes($_POST['store']));
             //insert into audit trail
             //get items and quantity sold in the invoice
             $get_item = new selects();
@@ -25,7 +26,7 @@ include "../classes/inserts.php";
                 $sold_qty = $item->quantity;
                 //get item previous quantity in inventory
                 $get_qty = new selects();
-                $prev_qtys = $get_qty->fetch_details_cond('items', 'item_id', $all_item);
+                $prev_qtys = $get_qty->fetch_details_2cond('inventory', 'store', 'item', $store, $all_item);
                 foreach($prev_qtys as $prev_qty){    
                     //insert into audit trail
                     $inser_trail = new audit_trail($all_item, $trans_type, $prev_qty->quantity, $sold_qty, $user, $store);
@@ -56,22 +57,22 @@ include "../classes/inserts.php";
                 if($payment_type == "Multiple"){
                     //insert into payments
                     if($cash !== '0'){
-                        $insert_payment = new payments($user, 'Cash', $bank, $inv_amount, $cash, $discount, $invoice);
+                        $insert_payment = new payments($user, 'Cash', $bank, $inv_amount, $cash, $discount, $invoice, $store);
                         $insert_payment->payment();
                     }
                     if($pos !== '0'){
-                        $insert_payment = new payments($user, 'POS', $bank, $inv_amount, $pos, $discount, $invoice);
+                        $insert_payment = new payments($user, 'POS', $bank, $inv_amount, $pos, $discount, $invoice, $store);
                         $insert_payment->payment();
                     }
                     if($transfer !== '0'){
-                        $insert_payment = new payments($user, 'Transfer', $bank, $inv_amount, $transfer, $discount, $invoice);
+                        $insert_payment = new payments($user, 'Transfer', $bank, $inv_amount, $transfer, $discount, $invoice, $store);
                         $insert_payment->payment();
                     }
                     //
-                    $insert_multi = new multiple_payment($user, $invoice, $cash, $pos, $transfer, $bank);
+                    $insert_multi = new multiple_payment($user, $invoice, $cash, $pos, $transfer, $bank, $store);
                     $insert_multi->multi_pay();
                 }else{
-                    $insert_payment = new payments($user, $payment_type, $bank, $inv_amount, $amount_paid, $discount, $invoice);
+                    $insert_payment = new payments($user, $payment_type, $bank, $inv_amount, $amount_paid, $discount, $invoice, $store);
                     $insert_payment->payment();
                 }
                 
@@ -85,13 +86,10 @@ include "../classes/inserts.php";
                 foreach($rows as $row){
                     //update individual quantity in inventory
                     $update_qty = new Update_table();
-                    $update_qty->update_inv_qty($row->quantity, $row->item);
+                    $update_qty->update_inv_qty($row->quantity, $row->item, $store);
                     
                 }
                 
-            //insert into audit trail
-                
-            
 ?>
 <div id="printBtn">
     <button onclick="printSalesReceipt('<?php echo $invoice?>')">Print Receipt <i class="fas fa-print"></i></button>

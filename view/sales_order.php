@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
     if(isset($_SESSION['user_id'])){
@@ -14,7 +15,7 @@
         //get current date
         $todays_date = date("dmyh");
         $random_num = random_int(10000, 99999);
-        $invoice = "RT".$todays_date.$user_id.$random_num;
+        $invoice = "RT".$todays_date.$user_id.$random_num.$store;
         $_SESSION['invoice'] = $invoice;
     ?>
     

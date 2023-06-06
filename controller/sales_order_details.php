@@ -1,3 +1,6 @@
+<?php
+    $store = $_SESSION['store_id'];
+?>
 <div class="displays allResults" id="stocked_items">
     <!-- <h2>Items in sales order</h2> -->
     <table id="addsales_table" class="searchTable">

@@ -4,6 +4,7 @@ include "../classes/dbh.php";
 include "../classes/select.php";
 include "../classes/inserts.php";
     session_start();
+    $store = $_SESSION['store_id'];
     if(isset($_SESSION['user_id'])){
         $user_id = $_SESSION['user_id'];
         if(isset($_SESSION['invoice'])){
@@ -24,7 +25,18 @@ include "../classes/inserts.php";
             $name = $row->item_name;
             $cost = $row->cost_price;
             // $department = $row->department;
-            $qty = $row->quantity;
+           
+        }
+        //get quantity from inventory
+        $get_qty = new selects();
+        $qtyss = $get_qty->fetch_details_2cond('inventory', 'store', 'item', $store, $item);
+        if(gettype($qtyss) == 'array'){
+            foreach($qtyss as $qtys){
+                $qty = $qtys->quantity;
+            }
+        }
+        if(gettype($qtyss) == 'string'){
+            $qty = 0;
         }
         $sales_cost = $quantity * $cost;
             if($qty == 0){
@@ -33,7 +45,7 @@ include "../classes/inserts.php";
                 echo "<div class='notify'><p><span>$name</span> does not have selling price! Cannot proceed</p></div>";
             }else{
                 //insert into sales order
-                $sell_item = new post_sales($item, $invoice, $quantity, $price, $price, $user_id, $sales_cost);
+                $sell_item = new post_sales($item, $invoice, $quantity, $price, $price, $user_id, $sales_cost, $store);
                 $sell_item->add_sales();
                 if($sell_item){
 

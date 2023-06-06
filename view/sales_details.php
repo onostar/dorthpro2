@@ -1,6 +1,7 @@
 <div id="sales_details">
 <?php
     session_start();
+    $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
     include "../classes/update.php";
@@ -81,9 +82,10 @@
             </div>
             <div class="close_stockin add_user_form" style="width:50%; margin:0;">
             <section class="addUserForm">
-                <div class="inputs">
+                <div class="inputs" style="display:flex; flex-wrap:wrap">
                     <input type="hidden" name="total_amount" id="total_amount" value="<?php echo $detail->total?>">
                     <input type="hidden" name="sales_invoice" id="sales_invoice" value="<?php echo $invoice?>">
+                    <input type="hidden" name="store" id="store" value="<?php echo $store?>">
                     <div class="data">
                         <label for="payment_type">Payment options</label>
                         <select name="payment_type" id="payment_type" onchange="checkMode(this.value)">

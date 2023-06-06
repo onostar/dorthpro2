@@ -11,7 +11,7 @@
     --secondaryColor: rgba(241, 56, 23, 0.9);
     --otherColor: rgb(3, 69, 75);
     --moreColor:rgba(11, 99, 134, 0.7);
-    --background:linear-gradient(45deg, hsla(202, 81%, 22%, .9), hsl(189, 83%, 35%));
+    --background:linear-gradient(45deg, hsla(202, 81%, 22%, .9), hsl(189, 54%, 59%), rgb(3, 69, 75));
 }
 body{
     position:relative;
@@ -598,7 +598,7 @@ main hr{
     background:var(--background);
     width:100%;
     height:100vh;
-    margin:0;
+    margin:0!important;
 }
 #reg_body .header{
     width:100%;
@@ -637,6 +637,12 @@ main hr{
     /* height:85vh; */
     margin:0;
     /* background:#fff; */
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    height:100%;
 }
 
 .login_page{
@@ -647,10 +653,19 @@ main hr{
     height:80%;
     background:#fff;
     padding:10px;
-    margin:40px auto 0;
-    box-shadow: 2px 2px 2px 3px #c4c4c4;
+    margin:0 auto;
+    box-shadow: 2px 2px 2px 3px var(--primaryColor);
     border-radius:10px;
     /* z-index:3; */
+}
+.login_page h1{
+    width:40%;
+}
+.login_page h1 a{
+    width:100%;
+}
+.login_page h1 a img{
+    width:100%;
 }
 #foot{
     color:var(--otherColor);
@@ -689,7 +704,7 @@ main hr{
 .login_page form{
     padding:10px;
     width:90%;
-    margin:0 auto;
+    margin:20px auto;
 }
 .login_page form .data{
     display:block;
@@ -759,7 +774,19 @@ main hr{
     object-fit: cover;
 }
 .mobile_company{
-    display: none;
+    display:block;
+    color:var(--moreColor);
+    text-align: center;
+    font-size:1.5rem;
+    margin:10px;
+}
+.software_logo{
+    width:50%;
+    margin:0 auto;
+}
+.software_logo img{
+    height:30px;
+    width:100%;
 }
 #reg_form{
     width:55%;
@@ -3005,13 +3032,7 @@ x
     .reg_log{
         gap:0;
     }
-    .mobile_company{
-        display:block;
-        color:var(--moreColor);
-        text-align: center;
-        font-size:1.2rem;
-        margin:0;
-    }
+    
     .header h1{
         width:40vw;
         height:10vh;
@@ -3374,7 +3395,10 @@ x
         width:80%;
         
     }
-    
+    .mobile_company{
+        font-size:1.3rem;
+        /* margin:10px; */
+    }
     .other_menu{
         display:none;
     }
