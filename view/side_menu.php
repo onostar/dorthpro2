@@ -120,6 +120,13 @@
                     <?php }?>
                     <?php 
                         $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "62");
+                        if($row > 0 || $role == "Admin"){
+                    ?> 
+                    <li><a href="javascript:void(0);" title="Add customer" class="page_navs" onclick="showPage('add_customer.php')"><i class="fas fa-user-tie"></i> Add Customer</a></li>
+                    <?php }?>
+                    <?php 
+                        $get_rights = new selects();
                         $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "10");
                         if($row > 0 || $role == "Admin"){
                     ?> 
@@ -450,6 +457,13 @@
                         if($row > 0 || $role == "Admin"){
                     ?>
                     <li><a href="javascript:void(0);" title="Accepted items report" class="page_navs" onclick="showPage('accept_report.php')"><i class="fas fa-exchange"></i> Accept report</a></li>
+                    <?php }?>
+                    <?php 
+                        $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "63");
+                        if($row > 0 || $role == "Admin"){
+                    ?>
+                    <li><a href="javascript:void(0);" title="List of customers" class="page_navs" onclick="showPage('customer_list.php')"><i class="fas fa-user-nurse"></i> Customer List</a></li>
                     <?php }?>
                     <li><a href="javascript:void(0);" title="Help and Faqs" class="page_navs" onclick="showPage('reports_help.php')"><i class="fas fa-question-circle"></i> Help</a></li>
                 </ul>

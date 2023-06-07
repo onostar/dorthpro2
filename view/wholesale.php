@@ -28,6 +28,7 @@
                 <div class="inputs">
                     <!-- bar items form -->
                     <div class="data" style="width:60%">
+                    <label for="customer">Select a customer</label>
                         <select name="customer" id="customer">
                             <option value=""selected>Select Customer</option>
                             <?php 

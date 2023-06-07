@@ -140,6 +140,32 @@
             }
             
         }
+        //add customers
+        protected function create_customer($value1, $value2, $value3, $value4){
+            //check if item exists
+            $check_item = $this->connectdb()->prepare("SELECT * FROM customers WHERE customer = :customer");
+            $check_item->bindValue("customer", $value1);
+            
+            $check_item->execute();
+            if($check_item->rowCount() > 0){
+                echo "<p class='exist'><span>$value1</span> already exists!</p>";
+                die();
+                
+            }else{
+                $add_item = $this->connectdb()->prepare("INSERT INTO customers (customer, phone_numbers, customer_address, customer_email) VALUES (:customer, :phone_numbers, :customer_address, :customer_email)");
+                $add_item->bindValue("customer", $value1);
+                $add_item->bindValue("phone_numbers", $value2);
+                $add_item->bindValue("customer_email", $value3);
+                $add_item->bindValue("customer_address", $value4);
+                $add_item->execute();
+                if($add_item){
+                    echo "<p><span>$value1</span> added successfully!</p>";
+                }else{
+                    echo "<p class='exist'><span>$value1</span> could not be created!</p>";
+                }
+            }
+            
+        }
         //add stores
         protected function add_stores($value1, $value2, $value3, $value4){
             //check if item exists
@@ -571,6 +597,24 @@
         }
         public function create_item(){
             $this->add_items($this->value1, $this->value2, $this->value3, $this->value4, $this->value5);
+        }
+    }
+    // controller for adding new items
+    class add_customer extends inserts{
+        private $value1;
+        private $value2;
+        private $value3;
+        private $value4;
+
+        public function __construct($value1, $value2, $value3, $value4)
+        {
+            $this->value1 = $value1;
+            $this->value2 = $value2;
+            $this->value3 = $value3;
+            $this->value4 = $value4;
+        }
+        public function add_customer(){
+            $this->create_customer($this->value1, $this->value2, $this->value3, $this->value4);
         }
     }
     // controller for adding new stores

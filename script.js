@@ -2571,3 +2571,43 @@ function getStockBalance(store_id){
      return false
      
 }
+
+// Add new customer
+function addCustomer(){
+     let customer = document.getElementById("customer").value;
+     let phone_number = document.getElementById("phone_number").value;
+     let address = document.getElementById("address").value;
+     let email = document.getElementById("email").value;
+     if(customer.length == 0 || customer.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter customer name!");
+          $("#customer").focus();
+          return;
+     }else if(phone_number.length == 0 || phone_number.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter customer phone number").focus();
+          $("#phone_number").focus();
+          return;
+     }else if(address.length == 0 || address.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input customer address");
+          $("#address").focus();
+          return;
+     }else if(email.length == 0 || email.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter customer email address");
+          $("#email").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/add_customer.php",
+               data : {customer:customer, phone_number:phone_number, email:email, address:address},
+               success : function(response){
+               $(".info").html(response);
+               }
+          })
+     }
+     $("#customer").val('');
+     $("#email").val('');
+     $("#address").val('');
+     $("#phone_number").val('');
+     $("#customer").focus();
+     return false;    
+}
