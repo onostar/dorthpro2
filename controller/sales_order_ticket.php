@@ -1,54 +1,6 @@
-<style>
-    .sales_receipt{
-    padding:10px;
-}
-.sales_receipt h2, .sales_receipt p{
-    text-align:center;
-    font-size:.9rem;
-    padding:0;
-    margin:0;
-}
-.receipt_head{
-    margin:5px;
-}
-.sales_receipt .receipt_head{
-    display:flex;
-    justify-content: center;
-    gap:.5rem;
-    margin:2px 0;
-}
-.sales_receipt .total_amount{
-    text-align: right;
-    font-size:.9rem;
-    margin:5px 0;
-}
 
-.sales_receipt .sold_by{
-    text-align: left;
-    font-size:.9rem;
-
-}
-.sales_receipt table{
-    width:100%!important;
-    margin:10px auto!important;
-    box-shadow:none;
-    border:1px solid #222;
-    border-collapse: collapse;
-}
-.sales_receipt table thead tr td{
-    font-size:.9rem;
-    padding:2px;
-
-}
-.sales_receipt table td{
-    border:1px solid #222;
-    padding:2px;
-}
-.item_categories{
-    padding:20px;
-}
-</style>
 <?php
+    include "receipt_style.php";
 // session_start();
 // instantiate class
 include "../classes/dbh.php";
@@ -57,14 +9,26 @@ include "../classes/select.php";
     if(isset($_GET['receipt'])){
         $user = $_SESSION['user_id'];
         $invoice = $_GET['receipt'];
-        
+        //get store
+        $get_store = new selects();
+        $strs = $get_store->fetch_details_group('sales', 'store', 'invoice', $invoice);
+        //get store name
+        $get_store_name = new selects();
+        $rows = $get_store_name->fetch_details_cond('stores', 'store_id', $strs->store);
+        foreach($rows as $row){
+            $store_name = $row->store;
+            $address = $row->store_address;
+            $phone = $row->phone_number;
+
+        }
+
                 
 ?>
 <div class="displays allResults sales_receipt">
     <?php include "receipt_header.php"?>
     <p><strong>ORDER TICKET</strong></p>
     </div>
-    <table id="postsales_table" class="searchTable">
+    <table id="postsales_table" class="searchTable" style="border-collapse:collapse;">
         <thead>
             <tr style="background:var(--moreColor)">
                 <td style="text-align:center">Items</td>

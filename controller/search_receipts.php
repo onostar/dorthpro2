@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     $from = htmlspecialchars(stripslashes($_POST['from_date']));
     $to = htmlspecialchars(stripslashes($_POST['to_date']));
 
@@ -8,7 +9,7 @@
     include "../classes/select.php";
 
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_details_dateGro('payments', 'date(post_date)', $from, $to, 'invoice');
+    $details = $get_revenue->fetch_details_dateGro1con('payments', 'date(post_date)', $from, $to, 'store', $store, 'invoice');
     $n = 1;  
 ?>
 <h2>Reprint sales receipt between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>

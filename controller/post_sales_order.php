@@ -1,11 +1,10 @@
 <?php
-// session_start();
 // instantiate class
 include "../classes/dbh.php";
 include "../classes/update.php";
 include "../classes/select.php";
 include "../classes/inserts.php";
-    
+session_start();
     if(isset($_SESSION['user_id'])){
         $trans_type ="sales";
         $user = $_SESSION['user_id'];

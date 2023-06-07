@@ -1,25 +1,22 @@
 <?php
-    session_start();    
+    
     // if(isset($_POST['change_prize'])){
         $trans_type = "sales_return";
         $item = htmlspecialchars(stripslashes($_POST['item']));
         $user = htmlspecialchars(stripslashes($_POST['user_id']));
         $sales = htmlspecialchars(stripslashes($_POST['sales_id']));
-        $quantity = ucwords(htmlspecialchars(stripslashes($_POST['quantity'])));
+        $quantity = htmlspecialchars(stripslashes($_POST['quantity']));
+        $store = htmlspecialchars(stripslashes($_POST['store']));
         $reason = ucwords(htmlspecialchars(stripslashes($_POST['reason'])));
-
+        
         // instantiate classes
         include "../classes/dbh.php";
         include "../classes/select.php";
         include "../classes/update.php";
         include "../classes/inserts.php";
         include "../classes/delete.php";
-        //get item quantity in inventory;
-        $get_inv = new selects();
-        $inv_qty = $get_inv->fetch_details_group('items', 'quantity', 'item_id', $item);
-        //insert into audit trail
-        $inser_trail = new audit_trail($item, $trans_type, $inv_qty->quantity, $quantity, $user);
-        $inser_trail->audit_trail();
+        
+        
         //get item name
         $get_name = new selects();
         $row = $get_name->fetch_details_group('items', 'item_name', 'item_id', $item);
@@ -44,11 +41,17 @@
         //update item quantity in inventory
         //get item current quantity in inventory;
         $get_qty = new selects();
-        $qtys = $get_qty->fetch_details_group('items', 'quantity', 'item_id', $item);
-        $inv_qty = $qtys->quantity;
+        $qtys = $get_qty->fetch_details_2cond('inventory', 'store', 'item', $store, $item);
+        foreach($qtys as $qty){
+            $inv_qty = $qty->quantity;
+        }
         $new_inv_qty = $inv_qty + $quantity;
         $update_inventory = new Update_table();
-        $update_inventory->update('items', 'quantity', 'item_id', $new_inv_qty, $item);
+        $update_inventory->update2cond('inventory', 'quantity', 'store', 'item', $new_inv_qty, $store, $item);
+
+        //insert into audit trail
+        $inser_trail = new audit_trail($item, $trans_type, $inv_qty, $quantity, $user, $store);
+        $inser_trail->audit_trail();
         //update invoice amount in payment table
         //get total invoice amount from payment table
         $get_amount = new selects();
@@ -59,7 +62,7 @@
         $update_payment->update('payments', 'amount_paid', 'invoice', $new_inv_amount, $invoice);        
         // if($update_payment){
             //insert into sales return table
-            $sales_return = new sales_return($item, $quantity, $removed_amount, $reason, $user, $invoice);
+            $sales_return = new sales_return($item, $quantity, $removed_amount, $reason, $user, $invoice, $store);
             $sales_return->return_sales();
             if($sales_return){
             //remove invoice from payments and sales if amount is = 0

@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $store = $_SESSION['store_id'];
     // if(isset($_SESSION('user_id'))){
         $user = $_SESSION['user_id'];
     if (isset($_GET['sales_id'])){
@@ -29,9 +30,10 @@
                     <h4>Qty sold => <?php  echo $row->quantity?></h4>
                 </div>
                 <input type="hidden" name="sold_qty" id="sold_qty" value="<?php echo $row->quantity?>">
-                    <input type="hidden" name="user_id" id="user_id" value="<?php echo $user?>" required>
-                    <input type="hidden" name="sales_id" id="sales_id" value="<?php echo $row->sales_id?>" required>
-                    <input type="hidden" name="item" id="item" value="<?php echo $row->item?>" required>
+                <input type="hidden" name="user_id" id="user_id" value="<?php echo $user?>" required>
+                <input type="hidden" name="store" id="store" value="<?php echo $store?>">
+                <input type="hidden" name="sales_id" id="sales_id" value="<?php echo $row->sales_id?>" required>
+                <input type="hidden" name="item" id="item" value="<?php echo $row->item?>" required>
                 <div class="data" style="width:20%; margin:0;">
                     <label for="qty">Return Quantity</label>
                     <input type="text" name="quantity" id="quantity" value="<?php echo $row->quantity?>">
@@ -41,7 +43,7 @@
                     <input type="text" name="reason" id="reason" placeholder="Input reason for return">
                 </div>
                 <div class="data" style="width:35%;  margin:0;">
-                    <button type="submit" id="return_sales" name="return_sales" onclick="returnSales()" style="background:green;"> Return <i class="fas fa-save"></i></button>
+                    <button type="submit" id="return_sales" name="return_sales" onclick="returnSales()" style="background:green;"> Return</button>
                     <a href="javascript:void(0)" title="close form" style='background:red; padding:10px; border-radius:5px; color:#fff' onclick="closeForm()">CLose <i class='fas fa-angle-double-left'></i></a>
                 </div>
             </div>

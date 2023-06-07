@@ -2100,6 +2100,7 @@ function displaySales(sales_id){
           let sold_qty = document.getElementById("sold_qty").value;
           let sales_id = document.getElementById("sales_id").value;
           let user_id = document.getElementById("user_id").value;
+          let store = document.getElementById("store").value;
           let quantity = document.getElementById("quantity").value;
           let reason = document.getElementById("reason").value;
           if(quantity.length == 0 || quantity.replace(/^\s+|\s+$/g, "").length == 0){
@@ -2118,7 +2119,7 @@ function displaySales(sales_id){
                $.ajax({
                     type : "POST",
                     url : "../controller/return_sales.php",
-                    data: {item:item, sales_id:sales_id, user_id:user_id, quantity:quantity, reason:reason},
+                    data: {item:item, sales_id:sales_id, user_id:user_id, quantity:quantity, reason:reason, store:store},
                     success : function(response){
                          $("#sales_return").html(response);
                     }
@@ -2132,57 +2133,7 @@ function displaySales(sales_id){
           return;
      }
 }
-// search sales return
-function searchSalesReturn(){
-     let from_date = document.getElementById('from_date').value;
-     let to_date = document.getElementById('to_date').value;
-     /* authentication */
-     if(from_date.length == 0 || from_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date!");
-          $("#from_date").focus();
-          return;
-     }else if(to_date.length == 0 || to_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date range!");
-          $("#to_date").focus();
-          return;
-     }else{
-          $.ajax({
-               type: "POST",
-               url: "../controller/search_sales_return.php",
-               data: {from_date:from_date, to_date:to_date},
-               success: function(response){
-               $(".new_data").html(response);
-               }
-          });
-     }
-     return false;
-}
 
-//  search receipt to reprint
-function searchReceipt(){
-     let from_date = document.getElementById('from_date').value;
-     let to_date = document.getElementById('to_date').value;
-     /* authentication */
-     if(from_date.length == 0 || from_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date!");
-          $("#from_date").focus();
-          return;
-     }else if(to_date.length == 0 || to_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date range!");
-          $("#to_date").focus();
-          return;
-     }else{
-          $.ajax({
-               type: "POST",
-               url: "../controller/search_receipts.php",
-               data: {from_date:from_date, to_date:to_date},
-               success: function(response){
-               $(".new_data").html(response);
-               }
-          });
-     }
-     return false;
-}
 
 // reprint receipt
 function printReceipt(invoice){

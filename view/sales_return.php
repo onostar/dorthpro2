@@ -1,6 +1,7 @@
 <div id="sales_return">
 <?php
     session_start();
+    $store = $_SESSION['store_id'];
     if(isset($_SESSION['user_id'])){
         $user = $_SESSION['user_id'];
         include "../classes/dbh.php";
@@ -21,7 +22,7 @@
                 <label>Select to Date</label><br>
                 <input type="date" name="to_date" id="to_date"><br>
             </div>
-            <button style="width:20%" type="submit" name="search_date" id="search_date" onclick="searchSalesReturn()">Search <i class="fas fa-search"></i></button>
+            <button style="width:20%" type="submit" name="search_date" id="search_date" onclick="search('search_sales_return.php')">Search <i class="fas fa-search"></i></button>
         </section>
     </div>
 <div class="displays allResults new_data" id="salesReturn">
@@ -47,7 +48,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdateCon('sales', 'date(post_date)', 'sales_status', 2);
+                $details = $get_users->fetch_details_date2Cond('sales', 'date(post_date)', 'sales_status', 2, 'store', $store);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>

@@ -291,6 +291,19 @@
                 return $rows;
             }
         }
+        //fetch between two dates and a condition and grouped
+        public function fetch_details_dateGro1con($table, $condition1, $value1, $value2, $con, $con_value, $group){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $con = :$con AND $condition1 BETWEEN '$value1' AND '$value2' GROUP BY $group");
+            $get_user->bindValue("$con", $con_value);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
         //fetch between two dates and Condition
         public function fetch_details_2dateCon($table, $column, $condition1, $value1, $value2, $column_value){
             $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $column = :$column AND $condition1 BETWEEN '$value1' AND '$value2'");
@@ -331,6 +344,19 @@
         //fetch with current date grouped by condition
         public function fetch_details_curdateGro($table, $column, $group){
             $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE date($column) = CURDATE() GROUP BY $group");
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
+        //fetch with current date and a condition grouped by condition
+        public function fetch_details_curdateGro1con($table, $column, $condition, $value, $group){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE date($column) = CURDATE() AND $condition = :$condition GROUP BY $group");
+            $get_user->bindValue("$condition", $value);
             $get_user->execute();
             if($get_user->rowCount() > 0){
                 $rows = $get_user->fetchAll();

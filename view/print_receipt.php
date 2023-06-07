@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
 
@@ -17,7 +18,7 @@
                 <label>Select to Date</label><br>
                 <input type="date" name="to_date" id="to_date"><br>
             </div>
-            <button type="submit" name="search_date" id="search_date" onclick="searchReceipt()" style="width:15%">Search <i class="fas fa-search"></i></button>
+            <button type="submit" name="search_date" id="search_date" onclick="search('search_receipts.php')" style="width:15%">Search <i class="fas fa-search"></i></button>
 </section>
     </div>
 <div class="displays allResults new_data" id="revenue_report">
@@ -42,7 +43,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdateGro('payments', 'date(post_date)', 'invoice');
+                $details = $get_users->fetch_details_curdateGro1con('payments', 'date(post_date)', 'store', $store, 'invoice');
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
