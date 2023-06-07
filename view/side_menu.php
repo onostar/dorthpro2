@@ -161,6 +161,20 @@
                     <?php }?>
                     <?php 
                         $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "60");
+                        if($row > 0 || $role == "Admin"){
+                    ?> 
+                    <li><a href="javascript:void(0);" title="Make Wholesale" class="page_navs" onclick="showPage('wholesale.php')"><i class="fas fa-luggage-cart"></i> Wholesale</a></li>
+                    <?php }?>
+                    <?php 
+                        $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "61");
+                        if($row > 0 || $role == "Admin"){
+                    ?> 
+                    <li><a href="javascript:void(0);" title="Raise Wholesale order" class="page_navs" onclick="showPage('wholesale_order.php')"><i class="fas fa-luggage-cart"></i> Wholesale order</a></li>
+                    <?php }?>
+                    <?php 
+                        $get_rights = new selects();
                         $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "15");
                         if($row > 0 || $role == "Admin"){
                     ?> 
