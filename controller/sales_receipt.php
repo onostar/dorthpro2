@@ -21,15 +21,20 @@ include "../classes/select.php";
             $phone = $strs->phone_number;
 
         }
-        //get payment method
+        //get payment details
         $get_payment = new selects();
-        $payment = $get_payment->fetch_details_group('payments', 'payment_mode', 'invoice', $invoice);
-        $pay_mode = $payment->payment_mode;
+        $payments = $get_payment->fetch_details_cond('payments', 'invoice', $invoice);
+        foreach($payments as $payment){
+            $pay_mode = $payment->payment_mode;
+            $customer = $payment->customer;
+            $type = $payment->sales_type;
+        }
                 
 ?>
 <div class="displays allResults sales_receipt">
     <?php include "receipt_header.php"?>
         <p><strong>(<?php echo strtoupper($pay_mode)?> Receipt)</strong></p>
+        
     </div>
     <table id="postsales_table" class="searchTable">
         <thead>

@@ -20,7 +20,7 @@
                 <td>Phone number</td>
                 <td>Address</td>
                 <td>Email</td>
-                <td>Joined</td>
+                <td>Date reg</td>
             </tr>
         </thead>
         <tbody>

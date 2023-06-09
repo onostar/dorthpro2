@@ -5,8 +5,7 @@ include "../classes/select.php";
 include "../classes/inserts.php";
     session_start();
     $store = $_SESSION['store_id'];
-    $sales_type = "Retail";
-    $customer = 0;
+    $sales_type = "Wholesale";
     if(isset($_SESSION['user_id'])){
         $user_id = $_SESSION['user_id'];
         if(isset($_SESSION['invoice'])){
@@ -14,8 +13,10 @@ include "../classes/inserts.php";
         }
         if(isset($_GET['sales_item'])){
             $item = $_GET['sales_item'];
+            $customer = $_GET['customer'];
+            
         }
-
+    $_SESSION['customer'] = $customer;
     $quantity = 1;
     
     //get selling price
@@ -23,7 +24,7 @@ include "../classes/inserts.php";
     $rows = $get_item->fetch_details_cond('items', 'item_id', $item);
      if(gettype($rows) == 'array'){
         foreach($rows as $row){
-            $price = $row->sales_price;
+            $price = $row->wholesale;
             $name = $row->item_name;
             $cost = $row->cost_price;
             // $department = $row->department;
@@ -54,7 +55,7 @@ include "../classes/inserts.php";
 <!-- display sales for this invoice number -->
 <div class="notify"><p><span><?php echo $name?></span> added to sales order</p></div>
 <?php
-    include "sales_details.php";
+    include "wholesale_details.php";
                 }
             }
 ?>

@@ -5,6 +5,8 @@ include "../classes/select.php";
 include "../classes/inserts.php";
     session_start();
     $store = $_SESSION['store_id'];
+    $sales_type = "Retail";
+    $customer = 0;
     if(isset($_SESSION['user_id'])){
         $user_id = $_SESSION['user_id'];
         if(isset($_SESSION['invoice'])){
@@ -45,7 +47,7 @@ include "../classes/inserts.php";
                 echo "<div class='notify'><p><span>$name</span> does not have selling price! Cannot proceed</p></div>";
             }else{
                 //insert into sales order
-                $sell_item = new post_sales($item, $invoice, $quantity, $price, $price, $user_id, $sales_cost, $store);
+                $sell_item = new post_sales($item, $invoice, $quantity, $price, $price, $user_id, $sales_cost, $store, $sales_type, $customer);
                 $sell_item->add_sales();
                 if($sell_item){
 

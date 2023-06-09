@@ -1,5 +1,5 @@
 <?php
-    
+        session_start();
     // if(isset($_GET['id'])){
     //     $id = $_GET['id'];
         $sales = $_GET['sales_id'];

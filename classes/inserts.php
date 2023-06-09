@@ -326,9 +326,9 @@
             
         }
         //post payment
-        protected function post_payment($posted, $mode, $bank, $amount_due, $amount_paid, $discount, $invoice, $store){
+        protected function post_payment($posted, $mode, $bank, $amount_due, $amount_paid, $discount, $invoice, $store, $type, $customer){
             
-            $payment = $this->connectdb()->prepare("INSERT INTO payments (amount_due, amount_paid, discount, bank, payment_mode, posted_by, invoice, store) VALUES (:amount_due, :amount_paid, :discount, :bank, :payment_mode, :posted_by, :invoice, :store)");
+            $payment = $this->connectdb()->prepare("INSERT INTO payments (amount_due, amount_paid, discount, bank, payment_mode, posted_by, invoice, store, sales_type, customer) VALUES (:amount_due, :amount_paid, :discount, :bank, :payment_mode, :posted_by, :invoice, :store, :sales_type, :customer)");
             $payment->bindValue("amount_due", $amount_due);
             $payment->bindValue("amount_paid", $amount_paid);
             $payment->bindValue("discount", $discount);
@@ -337,6 +337,8 @@
             $payment->bindValue("posted_by", $posted);
             $payment->bindValue("invoice", $invoice);
             $payment->bindValue("store", $store);
+            $payment->bindValue("sales_type", $type);
+            $payment->bindValue("customer", $customer);
             $payment->execute();
             
         }
@@ -380,14 +382,14 @@
             $stockin->execute();
         }
         //add item to sales
-        protected function post_sales($posted, $item, $invoice, $quantity, $price, $amount, $cost, $store){
+        protected function post_sales($posted, $item, $invoice, $quantity, $price, $amount, $cost, $store, $type, $customer){
             // check if item already exist
             $confirm_check  = $this->connectdb()->prepare("SELECT * FROM sales WHERE invoice = :invoice AND item = :item");
             $confirm_check->bindValue("invoice", $invoice);
             $confirm_check->bindValue("item", $item);
             $confirm_check->execute();
             if(!$confirm_check->rowCount() > 0){
-                $add_sales = $this->connectdb()->prepare("INSERT INTO sales (item, invoice, price, total_amount, quantity, posted_by, cost, store) VALUES (:item, :invoice, :price, :total_amount, :quantity, :posted_by, :cost, :store)");
+                $add_sales = $this->connectdb()->prepare("INSERT INTO sales (item, invoice, price, total_amount, quantity, posted_by, cost, store, sales_type, customer) VALUES (:item, :invoice, :price, :total_amount, :quantity, :posted_by, :cost, :store, :sales_type, :customer)");
                 $add_sales->bindvalue("item", $item);
                 $add_sales->bindvalue("invoice", $invoice);
                 $add_sales->bindvalue("price", $price);
@@ -396,6 +398,8 @@
                 $add_sales->bindvalue("posted_by", $posted);
                 $add_sales->bindvalue("cost", $cost);
                 $add_sales->bindvalue("store", $store);
+                $add_sales->bindvalue("sales_type", $type);
+                $add_sales->bindvalue("customer", $customer);
                 $add_sales->execute();
             }else{
                 echo "<div class='notify'><p>Item already exists in sales order</p></div>";
@@ -561,8 +565,10 @@
         private $discount;
         private $invoice;
         private $store;
+        private $type;
+        private $customer;
 
-        public function __construct($posted, $mode, $bank, $amount_due, $amount_paid, $discount, $invoice, $store)
+        public function __construct($posted, $mode, $bank, $amount_due, $amount_paid, $discount, $invoice, $store, $type, $customer)
         {
             $this->posted = $posted;
             $this->mode = $mode;
@@ -572,10 +578,12 @@
             $this->discount = $discount;
             $this->invoice = $invoice;
             $this->store = $store;
+            $this->type = $type;
+            $this->customer = $customer;
         }
 
         public function payment(){
-            $this->post_payment($this->posted, $this->mode, $this->bank, $this->amount_due, $this->amount_paid, $this->discount, $this->invoice, $this->store);
+            $this->post_payment($this->posted, $this->mode, $this->bank, $this->amount_due, $this->amount_paid, $this->discount, $this->invoice, $this->store, $this->type, $this->customer);
         }
     }
 
@@ -822,8 +830,10 @@
         private $posted;
         private $cost;
         private $store;
+        private $type;
+        private $customer;
 
-        public function __construct($item, $invoice, $quantity, $price, $amount, $posted, $cost, $store)
+        public function __construct($item, $invoice, $quantity, $price, $amount, $posted, $cost, $store, $type, $customer)
         {
             $this->item = $item;
             // $this->staff = $staff;
@@ -834,10 +844,12 @@
             $this->posted = $posted;
             $this->cost = $cost;
             $this->store = $store;
+            $this->type = $type;
+            $this->customer = $customer;
         }
 
         public function add_sales(){
-            $this->post_sales($this->posted, $this->item, $this->invoice, $this->quantity, $this->price, $this->amount, $this->cost, $this->store);
+            $this->post_sales($this->posted, $this->item, $this->invoice, $this->quantity, $this->price, $this->amount, $this->cost, $this->store, $this->type, $this->customer);
         }
     }
 

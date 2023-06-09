@@ -1,4 +1,6 @@
 <?php
+    session_start();
+
         $item = $_GET['item'];
         // instantiate classes
         include "../classes/dbh.php";

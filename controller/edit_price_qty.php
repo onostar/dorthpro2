@@ -1,7 +1,7 @@
 <?php
     session_start();
     $user = $_SESSION['user_id'];
-
+    $store = $_SESSION['store_id'];
 
     if (isset($_GET['item'])){
         $sales = $_GET['item'];
@@ -23,12 +23,15 @@
         $get_item = new selects();
         $details = $get_item->fetch_details_cond('items', 'item_id', $row->item);
         foreach($details as $detail){
-            // $item_price = $detail->sales_price;
-            $item_qty = $detail->quantity;
-            // $dept = $detail->department;
             $name = $detail->item_name;
         }
-        
+        //get item quantity from store
+        $get_qty = new selects();
+        $qtys = $get_qty->fetch_details_2cond('inventory', 'store', 'item', $store, $row->item);
+        foreach($qtys as $qty){
+            $item_qty = $qty->quantity;
+
+        }
     ?>
     <div class="add_user_form priceForm" style="width:90%; padding:0!important">
         

@@ -1,7 +1,7 @@
 <?php
     session_start();
     $user = $_SESSION['user_id'];
-
+    $store = $_SESSION['store_id'];
 
     if (isset($_GET['sales_id'])){
         $sales = $_GET['sales_id'];
@@ -25,12 +25,16 @@
         $details = $get_item->fetch_details_cond('items', 'item_id', $row->item);
         foreach($details as $detail){
             // $item_price = $detail->sales_price;
-            $item_qty = $detail->quantity;
             // $dept = $detail->department;
             $name = $detail->item_name;
             $pack_price = $detail->pack_price;
             $pack_size = $detail->pack_size;
         }
+        $get_qty = new selects();
+        $qtys = $get_qty->fetch_details_2cond('inventory', 'store', 'item', $store, $row->item);
+        foreach($qtys as $qty){
+            $item_qty = $qty->quantity;
+        } 
         $total = $pack_price * $pack_size;
         if($pack_price == 0 || $pack_size == 0){
             echo "<script>alert('Pack price or pack size not set for this item! Can not proceed!')</script>";

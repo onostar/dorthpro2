@@ -27,7 +27,7 @@
 
 </div>    
 <?php
-    include "sales_details.php";
+    include "wholesale_details.php";
             }            
         
     // }

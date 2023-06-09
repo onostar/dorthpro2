@@ -1,24 +1,25 @@
 <?php
+// session_start();
 // instantiate class
 include "../classes/dbh.php";
 include "../classes/update.php";
 include "../classes/select.php";
 include "../classes/inserts.php";
-session_start();
+    session_start();
     if(isset($_SESSION['user_id'])){
-        $trans_type ="sales";
-        $user = $_SESSION['user_id'];
+        $trans_type = "sales";
+            $user = $_SESSION['user_id'];
             $invoice = $_POST['sales_invoice'];
             $payment_type = htmlspecialchars(stripslashes($_POST['payment_type']));
             $bank = htmlspecialchars(stripslashes($_POST['bank']));
             $cash = htmlspecialchars(stripslashes($_POST['multi_cash']));
             $pos = htmlspecialchars(stripslashes($_POST['multi_pos']));
-            $store = htmlspecialchars(stripslashes($_POST['store']));
             $transfer = htmlspecialchars(stripslashes($_POST['multi_transfer']));
             $discount = htmlspecialchars(stripslashes($_POST['discount']));
-            $type = "Retail";
-            $customer = 0;
-        //insert into audit trail
+            $store = htmlspecialchars(stripslashes($_POST['store']));
+            $type = "Wholesale";
+            $customer = htmlspecialchars(stripslashes($_POST['customer_id']));
+            //insert into audit trail
             //get items and quantity sold in the invoice
             $get_item = new selects();
             $items = $get_item->fetch_details_cond('sales', 'invoice', $invoice);
@@ -36,6 +37,11 @@ session_start();
                 }
             }
             
+        //check if mode is multiple payment
+        /* $get_mode = new selects();
+        $mode = $get_mode->fetch_details_group('payments', 'payment_mode', 'invoice', $invoice);
+        $paymode = $mode->payment_mode; */
+
         //update all items with this invoice
         $update_invoice = new Update_table();
         $update_invoice->update('sales', 'sales_status', 'invoice', 2, $invoice);
@@ -49,6 +55,7 @@ session_start();
                 }
                 //get amount paid
                 $amount_paid = $inv_amount - $discount;
+                //insert payments
                 if($payment_type == "Multiple"){
                     //insert into payments
                     if($cash !== '0'){
@@ -84,9 +91,10 @@ session_start();
                     $update_qty->update_inv_qty($row->quantity, $row->item, $store);
                     
                 }
+                
 ?>
 <div id="printBtn">
-    <button onclick="printSalesOrderReceipt('<?php echo $invoice?>')">Print Receipt <i class="fas fa-print"></i></button>
+    <button onclick="printSalesReceipt('<?php echo $invoice?>')">Print Receipt <i class="fas fa-print"></i></button>
 </div>
 <!--  -->
    

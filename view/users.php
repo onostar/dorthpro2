@@ -56,6 +56,7 @@
     <link rel="stylesheet" href="../fontawesome-free-6.0.0-web/css/all.min.css">
     <link rel="stylesheet" href="../fontawesome-free-5.15.1-web/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../select2.min.css">
 </head>
 <body>
     <main>
@@ -192,6 +193,7 @@
     
     <script src="../jquery.js"></script>
     <script src="../jquery.table2excel.js"></script>
+    <script src="../select2.min.js"></script>
     <script src="../script.js"></script>
     <script>
         
@@ -205,6 +207,12 @@
             /* let today = new Date();
             alert(today.toLocaleDateString()); */
             //toggle mobile menu
+
+            //search item with select drop down
+            $("#customer").select2( {
+                placeholder: "Select customer",
+                allowClear: true
+            } );
             
     </script>
 </body>

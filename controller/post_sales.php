@@ -17,6 +17,8 @@ include "../classes/inserts.php";
             $transfer = htmlspecialchars(stripslashes($_POST['multi_transfer']));
             $discount = htmlspecialchars(stripslashes($_POST['discount']));
             $store = htmlspecialchars(stripslashes($_POST['store']));
+            $type = "Retail";
+            $customer = 0;
             //insert into audit trail
             //get items and quantity sold in the invoice
             $get_item = new selects();
@@ -57,22 +59,22 @@ include "../classes/inserts.php";
                 if($payment_type == "Multiple"){
                     //insert into payments
                     if($cash !== '0'){
-                        $insert_payment = new payments($user, 'Cash', $bank, $inv_amount, $cash, $discount, $invoice, $store);
+                        $insert_payment = new payments($user, 'Cash', $bank, $inv_amount, $cash, $discount, $invoice, $store, $type, $customer);
                         $insert_payment->payment();
                     }
                     if($pos !== '0'){
-                        $insert_payment = new payments($user, 'POS', $bank, $inv_amount, $pos, $discount, $invoice, $store);
+                        $insert_payment = new payments($user, 'POS', $bank, $inv_amount, $pos, $discount, $invoice, $store, $type, $customer);
                         $insert_payment->payment();
                     }
                     if($transfer !== '0'){
-                        $insert_payment = new payments($user, 'Transfer', $bank, $inv_amount, $transfer, $discount, $invoice, $store);
+                        $insert_payment = new payments($user, 'Transfer', $bank, $inv_amount, $transfer, $discount, $invoice, $store, $type, $customer);
                         $insert_payment->payment();
                     }
                     //
                     $insert_multi = new multiple_payment($user, $invoice, $cash, $pos, $transfer, $bank, $store);
                     $insert_multi->multi_pay();
                 }else{
-                    $insert_payment = new payments($user, $payment_type, $bank, $inv_amount, $amount_paid, $discount, $invoice, $store);
+                    $insert_payment = new payments($user, $payment_type, $bank, $inv_amount, $amount_paid, $discount, $invoice, $store, $type, $customer);
                     $insert_payment->payment();
                 }
                 

@@ -2,6 +2,7 @@
     session_start();
     $user = $_SESSION['user_id'];
     $store = $_SESSION['store_id'];
+
     if (isset($_GET['item'])){
         $sales = $_GET['item'];
     
@@ -31,7 +32,6 @@
             $item_qty = $qty->quantity;
 
         }
-        
     ?>
     <div class="add_user_form priceForm" style="width:90%; padding:0!important">
         
@@ -60,7 +60,7 @@
                     <input type="text" name="total_amount" id="total_amount" value="<?php echo $row->total_amount?>" readonly>
                 </div>
                 <div class="data" style="width:20%">
-                    <button type="submit" id="change_price" name="change_price" onclick="updatePriceQtyOrder()">Update </button>
+                    <button type="submit" id="change_price" name="change_price" onclick="updatePriceQtyWh()">Update </button>
                     <a href="javascript:void(0)" title="close form" style='background:red; padding:10px; border-radius:5px; color:#fff' onclick="closeForm()">Return</a>
                 </div>
             </div>

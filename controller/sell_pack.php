@@ -1,4 +1,6 @@
-<?php
+<?php   
+        session_start();
+        $store = $_SESSION['store_id'];
         $sales = htmlspecialchars(stripslashes($_POST['sales_id']));
         $qty = htmlspecialchars(stripslashes($_POST['pack_qty']));
         $pack_price = htmlspecialchars(stripslashes($_POST['pack_price']));
@@ -20,8 +22,10 @@
         $item = $get_item->fetch_details_group('sales', 'item', 'sales_id', $sales);
         $item_id = $item->item;
         $get_qty = new selects();
-        $item_qty = $get_qty->fetch_details_group('items', 'quantity', 'item_id', $item_id);
-        $inv_qty = $item_qty->quantity;
+        $item_qtys = $get_qty->fetch_details_2cond('inventory', 'store', 'item', $store, $item_id);
+        foreach($item_qtys as $item_qty){
+            $inv_qty = $item_qty->quantity;
+        }
         if($total_qty > $inv_qty){
             echo "<script>alert('Available Quantity is less than required! Can not proceed!')</script>";
         }else{

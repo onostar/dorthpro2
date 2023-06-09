@@ -1,14 +1,20 @@
 <?php
+    session_start();
+
         $sales = $_GET['sales_id'];
         $item = $_GET['item_id'];
+        $store = $_SESSION['store_id'];
         // instantiate classes
         include "../classes/dbh.php";
         include "../classes/select.php";
         include "../classes/update.php";
-        // check item current quantity in database
+        // check item current quantity in inventory
         $check_qty = new selects();
-        $qty = $check_qty->fetch_details_group('items', 'quantity', 'item_id', $item);
-        $current_qty = $qty->quantity;
+        $qtys = $check_qty->fetch_details_2cond('inventory', 'store', 'item', $store, $item);
+        foreach($qtys as $qty){
+            $current_qty = $qty->quantity;
+
+        }
         // check item current quantity in sales order
         $check_salesqty = new selects();
         $qtys = $check_salesqty->fetch_details_group('sales', 'quantity', 'sales_id', $sales);
