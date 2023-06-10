@@ -1,28 +1,15 @@
 <?php
     session_start();
     $store = $_SESSION['store_id'];
+    $from = htmlspecialchars(stripslashes($_POST['from_date']));
+    $to = htmlspecialchars(stripslashes($_POST['to_date']));
+
+    // instantiate classes
     include "../classes/dbh.php";
     include "../classes/select.php";
 
-
 ?>
-<div id="highestSelling" class="displays management">
-    <div class="select_date">
-        <!-- <form method="POST"> -->
-        <section>    
-            <div class="from_to_date">
-                <label>Select From Date</label><br>
-                <input type="date" name="from_date" id="from_date"><br>
-            </div>
-            <div class="from_to_date">
-                <label>Select to Date</label><br>
-                <input type="date" name="to_date" id="to_date"><br>
-            </div>
-            <button type="submit" name="search_date" id="search_date" onclick="search('search_highest.php')">Search <i class="fas fa-search"></i></button>
-</section>
-    </div>
-<div class="displays allResults new_data" id="revenue_report" style="width:60%!important; margin:0 50px!important">
-    <h2>Today's highest selling items (Amount)</h2>
+<h2>Expense Report between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
     <hr>
     <div class="search">
         <input type="search" id="searchCheckout" placeholder="Enter keyword" onkeyup="searchData(this.value)">
@@ -43,7 +30,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdateGroMany1c('sales', 'item', 'quantity', 'total_amount', 'date(post_date)', 'sales_status', 2, 'store', $store, 'item', 'SUM(total_amount)');
+                $details = $get_users->fetch_details_2dateGroMany1c('sales', 'item', 'quantity', 'total_amount', 'date(post_date)', 'sales_status', 2, 'store', $store, 'item', 'SUM(total_amount)', $from, $to);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
@@ -84,8 +71,3 @@
 
         
     ?>
-
-</div>
-
-<script src="../jquery.js"></script>
-<script src="../script.js"></script>

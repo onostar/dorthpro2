@@ -243,14 +243,15 @@
             
         }
         //Post expense
-        protected function post_expense($value1, $value2, $value3, $value4, $value5){
+        protected function post_expense($value1, $value2, $value3, $value4, $value5, $value6){
             
-            $add_exp = $this->connectdb()->prepare("INSERT INTO expenses (posted_by, expense_date, expense_head, amount, details) VALUES (:posted_by, :expense_date, :expense_head, :amount, :details)");
+            $add_exp = $this->connectdb()->prepare("INSERT INTO expenses (posted_by, expense_date, expense_head, amount, details, store) VALUES (:posted_by, :expense_date, :expense_head, :amount, :details, :store)");
             $add_exp->bindValue("posted_by", $value1);
             $add_exp->bindValue("expense_date", $value2);
             $add_exp->bindValue("expense_head", $value3);
             $add_exp->bindValue("amount", $value4);
             $add_exp->bindValue("details", $value5);
+            $add_exp->bindValue("store", $value6);
             $add_exp->execute();
             if($add_exp){
                 echo "<p>Expense Posted successfully!</p>";
@@ -684,17 +685,19 @@
         private $value3;
         private $value4;
         private $value5;
+        private $value6;
 
-        public function __construct($value1, $value2, $value3, $value4, $value5)
+        public function __construct($value1, $value2, $value3, $value4, $value5, $value6)
         {
             $this->value1 = $value1;
             $this->value2 = $value2;
             $this->value3 = $value3;
             $this->value4 = $value4;
             $this->value5 = $value5;
+            $this->value6 = $value6;
         }
         public function add_expense(){
-            $this->post_expense($this->value1, $this->value2, $this->value3, $this->value4, $this->value5);
+            $this->post_expense($this->value1, $this->value2, $this->value3, $this->value4, $this->value5, $this->value6);
         }
     }
     // controller for stock adjustment

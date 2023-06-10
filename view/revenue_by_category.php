@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
 
@@ -42,7 +43,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_revenue_cat();
+                $details = $get_users->fetch_revenue_cat($store);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
@@ -74,7 +75,7 @@
 
         // get sum
         $get_total = new selects();
-        $amounts = $get_total->fetch_revenue();
+        $amounts = $get_total->fetch_revenue($store);
         foreach($amounts as $amount){
             $revenue = $amount->total;
             $costSales = $amount->total_cost;

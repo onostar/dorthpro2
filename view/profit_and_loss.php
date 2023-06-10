@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
 
@@ -27,7 +28,7 @@
         <?php
             // get accounts
             $get_account = new selects();
-            $rows = $get_account->fetch_revenue();
+            $rows = $get_account->fetch_revenue($store);
             foreach($rows as $row){
         ?>
         <div class="prof_loss">
@@ -50,7 +51,7 @@
             <?php
                 //get expense
                 $get_exp = new selects();
-                $exps = $get_exp->fetch_sum_curdate('expenses', 'amount', 'date(post_date)');
+                $exps = $get_exp->fetch_sum_curdateCon('expenses', 'amount', 'date(post_date)', 'store', $store);
                 foreach($exps as $exp){
             ?>
             <div class="prof">
@@ -69,7 +70,7 @@
 
         // get sum
         $get_total = new selects();
-        $amounts = $get_total->fetch_revenue();
+        $amounts = $get_total->fetch_revenue($store);
         foreach($amounts as $amount){
             $revenue = $amount->total;
             $costSales = $amount->total_cost;

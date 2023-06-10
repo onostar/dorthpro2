@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store  = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
 
@@ -17,7 +18,7 @@
                 <label>Select to Date</label><br>
                 <input type="date" name="to_date" id="to_date"><br>
             </div>
-            <button type="submit" name="search_date" id="search_date" onclick="searchExpense()" style="width:15%">Search <i class="fas fa-search"></i></button>
+            <button type="submit" name="search_date" id="search_date" onclick="search('search_expense.php')" style="width:15%">Search <i class="fas fa-search"></i></button>
 </section>
     </div>
 <div class="displays allResults new_data" id="revenue_report">
@@ -44,7 +45,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdate('expenses', 'date(post_date)');
+                $details = $get_users->fetch_details_curdateCon('expenses', 'date(post_date)', 'store', $store);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
@@ -59,7 +60,7 @@
                 </td>
                 <td><?php echo "₦".number_format($detail->amount, 2)?></td>
                 <td><?php echo $detail->details?></td>
-                <td style="color:var(--moreColor)"><?php echo date("jS M, Y", strtotime($detail->expense_date));?></td>
+                <td style="color:var(--otherColor)"><?php echo date("jS M, Y", strtotime($detail->expense_date));?></td>
                 <td style="color:var(--moreColor)"><?php echo date("H:i:sa", strtotime($detail->post_date));?></td>
                 <td>
                     <?php
@@ -82,7 +83,7 @@
 
         // get sum
         $get_total = new selects();
-        $amounts = $get_total->fetch_sum_curdate('expenses', 'amount', 'date(post_date)');
+        $amounts = $get_total->fetch_sum_curdateCon('expenses', 'amount', 'date(post_date)', 'store', $store);
         foreach($amounts as $amount){
             echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($amount->total, 2)."</p>";
         }

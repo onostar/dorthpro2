@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
 
@@ -42,7 +43,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdateGro('payments', 'post_date', 'posted_by');
+                $details = $get_users->fetch_details_curdateGro1con('payments', 'post_date', 'store', $store, 'posted_by');
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
@@ -105,7 +106,7 @@
                 <td style="color:green; font-size:1rem;">
                     <?php
                         $get_total = new selects();
-                        $totals = $get_cash->fetch_sum_curdateCon('payments', 'amount_paid', 'post_date', 'payment_mode', 'Cash');
+                        $totals = $get_cash->fetch_sum_curdate2Con('payments', 'amount_paid', 'post_date', 'payment_mode', 'Cash', 'store', $store);
                         foreach($totals as $total){
                             echo "₦".number_format($total->total, 2);
                         }
@@ -114,7 +115,7 @@
                 <td style="color:green; font-size:1rem;">
                     <?php
                         $get_total = new selects();
-                        $totals = $get_cash->fetch_sum_curdateCon('payments', 'amount_paid', 'post_date', 'payment_mode', 'POS');
+                        $totals = $get_cash->fetch_sum_curdate2Con('payments', 'amount_paid', 'post_date', 'payment_mode', 'POS', 'store', $store);
                         foreach($totals as $total){
                             echo "₦".number_format($total->total, 2);
                         }
@@ -123,7 +124,7 @@
                 <td style="color:green; font-size:1rem;">
                     <?php
                         $get_total = new selects();
-                        $totals = $get_cash->fetch_sum_curdateCon('payments', 'amount_paid', 'post_date', 'payment_mode', 'Transfer');
+                        $totals = $get_cash->fetch_sum_curdate2Con('payments', 'amount_paid', 'post_date', 'payment_mode', 'Transfer', 'store', $store);
                         foreach($totals as $total){
                             echo "₦".number_format($total->total, 2);
                         }
@@ -133,7 +134,7 @@
                     <?php
                         // get sum
                         $get_total = new selects();
-                        $amounts = $get_total->fetch_sum_curdate('payments', 'amount_paid', 'date(post_date)');
+                        $amounts = $get_total->fetch_sum_curdateCon('payments', 'amount_paid', 'date(post_date)', 'store', $store);
                         foreach($amounts as $amount){
                             echo "₦".number_format($amount->total, 2);;
                         }

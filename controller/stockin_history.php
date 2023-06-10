@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $store = $_SESSION['store_id'];
     if(isset($_GET['item'])){
         $item = $_GET['item'];
     }
@@ -14,8 +15,8 @@
     $name = $names->item_name;
     //get purchase history
     $get_purchase = new selects();
-    $details = $get_purchase->fetch_details_2dateCon('purchases', 'item', 'date(post_date)', $from, $to, $item);
-    $n = 1;  
+    $details = $get_purchase->fetch_details_2date2Con('purchases','date(post_date)', $from, $to, 'item', $item, 'store', $store);
+    $n = 1;
 ?>
 <div class="search">
     <input type="search" id="searchPurchase" placeholder="Enter keyword" onkeyup="searchData(this.value)">
@@ -81,7 +82,7 @@
     }
     // get sum
     $get_total = new selects();
-    $amounts = $get_total->fetch_sum_2col2date1con('purchases', 'cost_price', 'quantity', 'date(post_date)', $from, $to, 'item', $item);
+    $amounts = $get_total->fetch_sum_2col2date2con('purchases', 'cost_price', 'quantity', 'date(post_date)', $from, $to, 'item', $item, 'store', $store);
     foreach($amounts as $amount){
         echo "<p class='total_amount' style='color:green; text-align:center'>Total: ₦".number_format($amount->total, 2)."</p>";
     }

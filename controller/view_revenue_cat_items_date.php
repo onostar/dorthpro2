@@ -6,14 +6,16 @@
     include "../classes/select.php";
     if (isset($_GET['department'])){
         $department = $_GET['department'];
+        $from = $_GET['from'];
+        $to = $_GET['to'];
     // get department name
     $get_dep = new selects();
     $deps = $get_dep->fetch_details_group('departments', 'department', 'department_id', $department);
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_revenue_cat_items($department, $store);
+    $details = $get_revenue->fetch_revenue_cat_itemsdate($from, $to, $department, $store);
     $n = 1;  
 ?>
-<h2>Items sold for  '<?php echo $deps->department?>'</h2>
+<h2>Items sold for  '<?php echo $deps->department?>' between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
     <hr>
     <div class="search">
         <input type="search" id="searchRevenue" placeholder="Enter keyword" onkeyup="searchData(this.value)">
@@ -21,12 +23,13 @@
     </div>
     <table id="data_table" class="searchTable">
         <thead>
-        <tr style="background:var(--primaryColor)">
+        <tr style="background:var(--otherColor)">
                 <td>S/N</td>
                 <td>Invoice</td>
                 <td>Item</td>
                 <td>Qty</td>
                 <td>Amount</td>
+                <td>Date</td>
                 <td>Post Time</td>
                 <td>Posted by</td>
                 
@@ -44,6 +47,7 @@
                 <td><?php echo $detail->item_name;?></td>
                 <td style="text-align:center; color:green"><?php echo $detail->quantity;?></td>
                 <td><?php echo "₦".number_format($detail->total_amount, 2)?></td>
+                <td style="color:var(--otherColor)"><?php echo date("d-m-y", strtotime($detail->post_date));?></td>
                 <td style="color:var(--moreColor)"><?php echo date("H:i:sa", strtotime($detail->post_date));?></td>
                 <td>
                     <?php

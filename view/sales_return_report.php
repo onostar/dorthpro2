@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
 
@@ -17,7 +18,7 @@
                 <label>Select to Date</label><br>
                 <input type="date" name="to_date" id="to_date"><br>
             </div>
-            <button type="submit" name="search_date" id="search_date" onclick="searchSalesReturnReport()">Search <i class="fas fa-search"></i></button>
+            <button type="submit" name="search_date" id="search_date" onclick="search('search_return_reports.php')">Search <i class="fas fa-search"></i></button>
 </section>
     </div>
 <div class="displays allResults new_data" id="check_in_report">
@@ -45,7 +46,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdate('sales_returns', 'date(return_date)');
+                $details = $get_users->fetch_details_curdateCon('sales_returns', 'date(return_date)', 'store', $store);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
@@ -85,7 +86,7 @@
 
         // get sum
         $get_total = new selects();
-        $amounts = $get_total->fetch_sum_curdate('sales_returns', 'amount', 'date(return_date)');
+        $amounts = $get_total->fetch_sum_curdateCon('sales_returns', 'amount', 'date(return_date)', 'store', $store);
         foreach($amounts as $amount){
             echo "<p class='total_amount' style='color:green; text-align:center'>Total: ₦".number_format($amount->total, 2)."</p>";
         }

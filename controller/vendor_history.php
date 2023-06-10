@@ -1,5 +1,6 @@
 <?php
-    // session_start();
+    session_start();
+    $store = $_SESSION['store_id'];
     $vendor = htmlspecialchars(stripslashes($_POST['vendor']));
     $from = htmlspecialchars(stripslashes($_POST['fromDate']));
     $to = htmlspecialchars(stripslashes($_POST['toDate']));
@@ -12,7 +13,7 @@
     $name = $names->vendor;
     //get purchase history
     $get_purchase = new selects();
-    $details = $get_purchase->fetch_details_2dateCon('purchases', 'vendor', 'date(post_date)', $from, $to, $vendor);
+    $details = $get_purchase->fetch_details_2date2Con('purchases', 'date(post_date)', $from, $to, 'vendor', $vendor, 'store', $store);
     $n = 1;  
 ?>
 <div class="search">
@@ -79,7 +80,7 @@
     }
     // get sum
     $get_total = new selects();
-    $amounts = $get_total->fetch_sum_2col2date1con('purchases', 'cost_price', 'quantity', 'date(post_date)', $from, $to, 'vendor', $vendor);
+    $amounts = $get_total->fetch_sum_2col2date2con('purchases', 'cost_price', 'quantity', 'date(post_date)', $from, $to, 'vendor', $vendor, 'store', $store);
     foreach($amounts as $amount){
         echo "<p class='total_amount' style='color:green; text-align:center'>Total: ₦".number_format($amount->total, 2)."</p>";
     }

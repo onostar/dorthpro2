@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
     if(isset($_SESSION['user_id'])){
@@ -14,6 +15,7 @@
         <section class="addUserForm">
             <div class="inputs">
                 <input type="hidden" name="posted" id="posted" value="<?php echo $user_id?>">
+                <input type="hidden" name="store" id="store" value="<?php echo $store?>">
                 <div class="data" style="width:32%; margin:5px 0;">
                     <label for="exp_date">Transaction Date</label>
                     <input type="date" name="exp_date" id="exp_date" required>

@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     $from = htmlspecialchars(stripslashes($_POST['from_date']));
     $to = htmlspecialchars(stripslashes($_POST['to_date']));
 
@@ -8,7 +9,7 @@
     include "../classes/select.php";
 
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_revenue_catDate($from, $to);
+    $details = $get_revenue->fetch_revenue_catDate($from, $to, $store);
     $n = 1;  
 ?>
 <h2>Revenue by category between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
@@ -36,7 +37,7 @@
 ?>
             <tr>
             <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td><a style="color:#222;" href="javascript:void(0)" title="View items" onclick="viewItems('<?php echo $detail->department?>')"><?php 
+                <td><a style="color:#222;" href="javascript:void(0)" title="View items" onclick="viewItemsDate('<?php echo $from?>', '<?php echo $to?>', '<?php echo $detail->department?>')"><?php 
                     $get_cat = new Selects();
                     $row = $get_cat->fetch_details_group('departments', 'department', 'department_id', $detail->department);
                     echo $row->department?></a></td>
@@ -60,7 +61,7 @@
     }
     // get sum
     $get_total = new selects();
-    $amounts = $get_total->fetch_revenueDate($from, $to);
+    $amounts = $get_total->fetch_revenueDate($from, $to, $store);
     foreach($amounts as $amount){
         $revenue = $amount->total;
         $costSales = $amount->total_cost;

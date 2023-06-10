@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
 
@@ -42,7 +43,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdateGroMany('sales', 'item', 'quantity', 'total_amount', 'date(post_date)', 'sales_status', 2, 'item', 'SUM(quantity)');
+                $details = $get_users->fetch_details_curdateGroMany1c('sales', 'item', 'quantity', 'total_amount', 'date(post_date)', 'sales_status', 2, 'store', $store, 'item', 'SUM(quantity)');
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>

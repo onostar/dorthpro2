@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     $from = htmlspecialchars(stripslashes($_POST['from_date']));
     $to = htmlspecialchars(stripslashes($_POST['to_date']));
 
@@ -8,7 +9,7 @@
     include "../classes/select.php";
 
     $get_returns = new selects();
-    $details = $get_returns->fetch_details_date('sales_returns', 'date(return_date)', $from, $to);
+    $details = $get_returns->fetch_details_date2Con('sales_returns', 'date(return_date)', $from, $to, 'store', $store);
     $n = 1;  
 ?>
 <h2>Sales return Report between <?php echo date("jS M, Y", strtotime($from)) . " and " . date("jS M, Y", strtotime($to))?></h2>
@@ -73,7 +74,7 @@
     }
     // get sum
     $get_total = new selects();
-    $amounts = $get_total->fetch_sum_2date('sales_returns', 'amount', 'date(return_date)', $from, $to);
+    $amounts = $get_total->fetch_sum_2dateCond('sales_returns', 'amount', 'store', 'date(return_date)', $from, $to, $store);
     foreach($amounts as $amount){
         echo "<p class='total_amount' style='color:green; text-align:center'>Total: ₦".number_format($amount->total, 2)."</p>";
     }

@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
     if(isset($_SESSION['user_id'])){

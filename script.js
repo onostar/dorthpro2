@@ -1184,31 +1184,7 @@ function roomPriceForm(item_id){
           return false
      }
  }
-//  search checkIns 
-function searchSalesReturnReport(){
-     let from_date = document.getElementById('from_date').value;
-     let to_date = document.getElementById('to_date').value;
-     /* authentication */
-     if(from_date.length == 0 || from_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date!");
-          $("#from_date").focus();
-          return;
-     }else if(to_date.length == 0 || to_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date range!");
-          $("#to_date").focus();
-          return;
-     }else{
-          $.ajax({
-               type: "POST",
-               url: "../controller/search_return_reports.php",
-               data: {from_date:from_date, to_date:to_date},
-               success: function(response){
-               $(".new_data").html(response);
-               }
-          });
-     }
-     return false;
-}
+
 
 
 
@@ -2370,6 +2346,7 @@ function printSalesTicket(invoice){
 // Post daily expense 
 function postExpense(){
      let posted = document.getElementById("posted").value;
+     let store = document.getElementById("store").value;
      let exp_date = document.getElementById("exp_date").value;
      let exp_head = document.getElementById("exp_head").value;
      let amount = document.getElementById("amount").value;
@@ -2394,7 +2371,7 @@ function postExpense(){
           $.ajax({
                type : "POST",
                url : "../controller/post_expense.php",
-               data : {posted:posted, exp_date:exp_date, exp_head:exp_head, amount:amount, details:details},
+               data : {posted:posted, exp_date:exp_date, exp_head:exp_head, amount:amount, details:details, store:store},
                success : function(response){
                $(".info").html(response);
                }
@@ -2408,31 +2385,7 @@ function postExpense(){
      return false;    
 }
 
-//  search expense 
-function searchExpense(){
-     let from_date = document.getElementById('from_date').value;
-     let to_date = document.getElementById('to_date').value;
-     /* authentication */
-     if(from_date.length == 0 || from_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date!");
-          $("#from_date").focus();
-          return;
-     }else if(to_date.length == 0 || to_date.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select a date range!");
-          $("#to_date").focus();
-          return;
-     }else{
-          $.ajax({
-               type: "POST",
-               url: "../controller/search_expense.php",
-               data: {from_date:from_date, to_date:to_date},
-               success: function(response){
-               $(".new_data").html(response);
-               }
-          });
-     }
-     return false;
-}
+
 //add reasons for removal
 function addReason(){
      let reason = document.getElementById("reason").value;
@@ -2583,12 +2536,24 @@ function showFaq(answer){
      document.getElementById(answer).style.display = "block";
 }
 
-//display items in revenue by category
+//display items in revenue by category for current date
 function viewItems(department_id){
      let department = department_id;
      $.ajax({
           type : "Get",
           url : "../controller/view_revenue_cat_items.php?department="+department,
+          success : function(response){
+               $(".category_info").html(response);
+          }
+     })
+     return false;
+}
+//display items in revenue by category for current date
+function viewItemsDate(from, to, department_id){
+     let department = department_id;
+     $.ajax({
+          type : "Get",
+          url : "../controller/view_revenue_cat_items_date.php?department="+department+"&from="+from+"&to="+to,
           success : function(response){
                $(".category_info").html(response);
           }

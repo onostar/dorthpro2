@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     $from = htmlspecialchars(stripslashes($_POST['from_date']));
     $to = htmlspecialchars(stripslashes($_POST['to_date']));
 
@@ -15,7 +16,7 @@
         <?php
             // get accounts
             $get_revenue = new selects();
-            $rows = $get_revenue->fetch_revenueDate($from, $to);
+            $rows = $get_revenue->fetch_revenueDate($from, $to, $store);
             foreach($rows as $row){
         ?>
         <div class="prof_loss">
@@ -38,7 +39,7 @@
             <?php
                 //get expense
                 $get_exp = new selects();
-                $exps = $get_exp->fetch_sum_2date('expenses', 'amount', 'date(post_date)', $from, $to);
+                $exps = $get_exp->fetch_sum_2dateCond('expenses', 'amount', 'store', 'date(post_date)', $from, $to, $store);
                 foreach($exps as $exp){
             ?>
             <div class="prof">
@@ -54,7 +55,7 @@
 <?php
     // get sum
     $get_total = new selects();
-    $amounts = $get_total->fetch_revenueDate($from, $to);
+    $amounts = $get_total->fetch_revenueDate($from, $to, $store);
     foreach($amounts as $amount){
         $revenue = $amount->total;
         $costSales = $amount->total_cost;
