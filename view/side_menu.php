@@ -485,6 +485,20 @@
                     <?php }?>
                     <?php 
                         $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "64");
+                        if($row > 0 || $role == "Admin"){
+                    ?>
+                    <li><a href="javascript:void(0);" title="All retail transactions" class="page_navs" onclick="showPage('retail_sales.php')"><i class="fas fa-coins"></i> Retail Sales</a></li>
+                    <?php }?>
+                    <?php 
+                        $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "65");
+                        if($row > 0 || $role == "Admin"){
+                    ?>
+                    <li><a href="javascript:void(0);" title="All wholesale transactions" class="page_navs" onclick="showPage('wholesale_report.php')"><i class="fas fa-coins"></i> Wholesale report</a></li>
+                    <?php }?>
+                    <?php 
+                        $get_rights = new selects();
                         $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "42");
                         if($row > 0 || $role == "Admin"){
                     ?>

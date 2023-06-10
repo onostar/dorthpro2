@@ -304,6 +304,20 @@
                 return $rows;
             }
         }
+        //fetch between two dates and 2 condition and grouped
+        public function fetch_details_dateGro2con($table, $condition1, $value1, $value2, $con, $con_value, $con2, $con_value2, $group){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $con = :$con AND $con2 = :$con2 AND $condition1 BETWEEN '$value1' AND '$value2' GROUP BY $group");
+            $get_user->bindValue("$con", $con_value);
+            $get_user->bindValue("$con2", $con_value2);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
         //fetch between two dates and Condition
         public function fetch_details_2dateCon($table, $column, $condition1, $value1, $value2, $column_value){
             $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $column = :$column AND $condition1 BETWEEN '$value1' AND '$value2'");
@@ -357,6 +371,20 @@
         public function fetch_details_curdateGro1con($table, $column, $condition, $value, $group){
             $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE date($column) = CURDATE() AND $condition = :$condition GROUP BY $group");
             $get_user->bindValue("$condition", $value);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
+        //fetch with current date and 2 condition grouped by condition
+        public function fetch_details_curdateGro2con($table, $column, $condition, $value, $condition2, $value2, $group){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE date($column) = CURDATE() AND $condition = :$condition AND $condition2 = :$condition2 GROUP BY $group");
+            $get_user->bindValue("$condition", $value);
+            $get_user->bindValue("$condition2", $value2);
             $get_user->execute();
             if($get_user->rowCount() > 0){
                 $rows = $get_user->fetchAll();
@@ -675,6 +703,20 @@
         public function fetch_sum_2dateCond($table, $column1, $column2, $condition1, $value1, $value2, $value3){
             $get_user = $this->connectdb()->prepare("SELECT SUM($column1) as total FROM $table WHERE $column2 = :$column2 AND $condition1 BETWEEN '$value1' AND '$value2'");
             $get_user->bindValue("$column2", $value3);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
+        //fetch sum between two dates and  2 condition
+        public function fetch_sum_2date2Cond($table, $column1, $column2, $condition1, $condition2, $value1, $value2, $value3, $value4){
+            $get_user = $this->connectdb()->prepare("SELECT SUM($column1) as total FROM $table WHERE $condition1 = :$condition1 AND $condition2 = :$condition2 AND $column2 BETWEEN '$value1' AND '$value2'");
+            $get_user->bindValue("$condition1", $value3);
+            $get_user->bindValue("$condition2", $value4);
             $get_user->execute();
             if($get_user->rowCount() > 0){
                 $rows = $get_user->fetchAll();

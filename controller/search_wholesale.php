@@ -9,21 +9,21 @@
     include "../classes/select.php";
 
     $get_revenue = new selects();
-    $details = $get_revenue->fetch_details_dateGro1con('payments', 'date(post_date)', $from, $to, 'store', $store, 'invoice');
+    $details = $get_revenue->fetch_details_dateGro2con('payments', 'date(post_date)', $from, $to, 'store', $store, 'sales_type', 'Wholesale', 'invoice');
     $n = 1;
 ?>
-<h2>Sales Report between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
+<h2>Retail Sales Report between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>
     <hr>
     <div class="search">
         <input type="search" id="searchRevenue" placeholder="Enter keyword" onkeyup="searchData(this.value)">
-        <a class="download_excel" href="javascript:void(0)" onclick="convertToExcel('data_table', 'Sales report')"title="Download to excel"><i class="fas fa-file-excel"></i></a>
+        <a class="download_excel" href="javascript:void(0)" onclick="convertToExcel('data_table', 'Retail Sales report')"title="Download to excel"><i class="fas fa-file-excel"></i></a>
     </div>
     <table id="data_table" class="searchTable">
         <thead>
         <tr style="background:var(--primaryColor)">
                 <td>S/N</td>
-                <td>Invoice</td>
-                <td>Type</td>
+                <td>Customer</td>
+                <td>Items</td>
                 <td>Amount due</td>
                 <td>Amount paid</td>
                 <td>Discount</td>
@@ -42,8 +42,23 @@
 ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td><a style="color:green" href="javascript:void(0)" title="View invoice details" onclick="showPage('invoice_details.php?payment_id=<?php echo $detail->payment_id?>')"><?php echo $detail->invoice?></a></td>
-                <td><?php echo $detail->sales_type?></td>
+                <td>
+                    <a style="color:green" href="javascript:void(0)" title="View invoice details" onclick="showPage('invoice_details.php?payment_id=<?php echo $detail->payment_id?>')">
+                    <?php 
+                        //get customer name
+                        $get_cust = new selects();
+                        $client = $get_cust->fetch_details_group('customers', 'customer', 'customer_id', $detail->customer);
+                        echo $client->customer;
+                    ?></a>
+                </td>
+                <td style="text-align:Center">
+                    <?php
+                        //get items in invoice;
+                        $get_items = new selects();
+                        $items = $get_items->fetch_count_cond('sales', 'invoice', $detail->invoice);
+                        echo $items;
+                    ?>
+                </td>
                 <td>
                     <?php echo "₦".number_format($detail->amount_due, 2);?>
                 </td>
@@ -85,16 +100,16 @@
                 </td>
                 
             </tr>
-            <?php $n++; }?>
+            <?php $n++; }}?>
         </tbody>
     </table>
 <?php
-    }else{
+    if(gettype($details) == "string"){
         echo "<p class='no_result'>'$details'</p>";
     }
     // get sum
     $get_total = new selects();
-    $amounts = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'store', 'date(post_date)', $from, $to, $store);
+    $amounts = $get_total->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'store', 'sales_type', $from, $to, $store, 'Wholesale');
     foreach($amounts as $amount){
         echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($amount->total, 2)."</p>";
     }

@@ -18,22 +18,22 @@
                 <label>Select to Date</label><br>
                 <input type="date" name="to_date" id="to_date"><br>
             </div>
-            <button type="submit" name="search_date" id="search_date" onclick="search('search_revenue.php')">Search <i class="fas fa-search"></i></button>
+            <button type="submit" name="search_date" id="search_date" onclick="search('search_wholesale.php')">Search <i class="fas fa-search"></i></button>
 </section>
     </div>
 <div class="displays allResults new_data" id="revenue_report">
-    <h2>Sales Report for today</h2>
+    <h2>Wholesale Report for today</h2>
     <hr>
     <div class="search">
         <input type="search" id="searchCheckout" placeholder="Enter keyword" onkeyup="searchData(this.value)">
-        <a class="download_excel" href="javascript:void(0)" onclick="convertToExcel('data_table', 'Sales report')"title="Download to excel"><i class="fas fa-file-excel"></i></a>
+        <a class="download_excel" href="javascript:void(0)" onclick="convertToExcel('data_table', 'Wholesale report')"title="Download to excel"><i class="fas fa-file-excel"></i></a>
     </div>
     <table id="data_table" class="searchTable">
         <thead>
             <tr style="background:var(--primaryColor)">
                 <td>S/N</td>
-                <td>Invoice</td>
-                <td>Type</td>
+                <td>Customer</td>
+                <td>Items</td>
                 <td>Amount due</td>
                 <td>Amount paid</td>
                 <td>Discount</td>
@@ -47,14 +47,29 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdateGro1con('payments', 'date(post_date)', 'store', $store, 'invoice');
+                $details = $get_users->fetch_details_curdateGro2con('payments', 'date(post_date)', 'store', $store, 'sales_type', 'Wholesale', 'invoice');
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td><a style="color:green" href="javascript:void(0)" title="View invoice details" onclick="showPage('invoice_details.php?payment_id=<?php echo $detail->payment_id?>')"><?php echo $detail->invoice?></a></td>
-                <td><?php echo $detail->sales_type?></td>
+                <td>
+                    <a style="color:green" href="javascript:void(0)" title="View invoice details" onclick="showPage('invoice_details.php?payment_id=<?php echo $detail->payment_id?>')">
+                    <?php 
+                        //get customer name
+                        $get_cust = new selects();
+                        $client = $get_cust->fetch_details_group('customers', 'customer', 'customer_id', $detail->customer);
+                        echo $client->customer;
+                    ?></a>
+                </td>
+                <td style="text-align:Center">
+                    <?php
+                        //get items in invoice;
+                        $get_items = new selects();
+                        $items = $get_items->fetch_count_cond('sales', 'invoice', $detail->invoice);
+                        echo $items;
+                    ?>
+                </td>
                 <td>
                     <?php echo "₦".number_format($detail->amount_due, 2);?>
                 </td>
@@ -106,13 +121,10 @@
 
         // get sum
         $get_total = new selects();
-        $amounts = $get_total->fetch_sum_curdateCon('payments', 'amount_paid', 'post_date', 'store', $store);
+        $amounts = $get_total->fetch_sum_curdate2Con('payments', 'amount_paid', 'post_date', 'store', $store, 'sales_type', 'Wholesale');
         foreach($amounts as $amount){
             echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($amount->total, 2)."</p>";
         }
     ?>
 
 </div>
-
-<script src="../jquery.js"></script>
-<script src="../script.js"></script>

@@ -12,8 +12,13 @@
         $payment = $_GET['payment_id'];
         //get invoice;
         $get_invoice = new selects();
-        $payment_invoice = $get_invoice->fetch_details_group('payments', 'invoice', 'payment_id', $payment);
-        $invoice = $payment_invoice->invoice;
+        $payment_invoices = $get_invoice->fetch_details_cond('payments', 'payment_id', $payment);
+        foreach($payment_invoices as $payment_invoice){
+            $invoice = $payment_invoice->invoice;
+            $type = $payment_invoice->sales_type;
+            $customer = $payment_invoice->customer;
+
+        }
         //get invoice details
 
 ?>
@@ -23,7 +28,17 @@
     <!-- <div class="info"></div> -->
     <button class="page_navs" id="back" onclick="showPage('revenue_report.php')"><i class="fas fa-angle-double-left"></i> Back</button>
     <div class="guest_name">
+        <?php
+            //check invoice sales type
+            if($type == "Wholesale"){
+                //get customer name
+                $get_cust = new selects();
+                $client = $get_cust->fetch_details_group('customers', 'customer', 'customer_id', $customer);
+        ?>
+        <h4>Items sold to <?php echo strtoupper($client->customer)?> </h4>
+        <?php }else{?>
         <h4>Items on Invoice => <?php echo $invoice?> </h4>
+        <?php } ?>
         <div class="displays allResults" id="payment_det">
         
             <div class="payment_details">

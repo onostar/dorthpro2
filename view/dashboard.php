@@ -1,6 +1,6 @@
 
 <div class="dashboard_all">
-    <h3>Dashboard</h3>
+    <h3><i class="fas fa-home"></i> Dashboard</h3>
     <?php 
         if($role === "Admin"){
     ?>
