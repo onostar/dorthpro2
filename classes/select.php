@@ -1012,10 +1012,10 @@
             }
         }
         //fetch item history
-        public function fetch_item_history($from, $to, $value3){
-            $get_history = $this->connectdb()->prepare("SELECT * FROM audit_trail WHERE item = :item AND date(post_date) BETWEEN '$from' AND '$to' ORDER BY time(post_date)");
+        public function fetch_item_history($from, $to, $value3, $store){
+            $get_history = $this->connectdb()->prepare("SELECT * FROM audit_trail WHERE item = :item AND store = :store AND date(post_date) BETWEEN '$from' AND '$to' ORDER BY DATE(post_date) ASC");
             $get_history->bindValue("item", $value3);
-            // $get_user->bindValue("$condition2", $value2);
+            $get_history->bindValue("store", $store);
             $get_history->execute();
             if($get_history->rowCount() > 0){
                 $rows = $get_history->fetchAll();

@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    $store = $_SESSION['store_id'];
     $from = htmlspecialchars(stripslashes($_POST['from_date']));
     $to = htmlspecialchars(stripslashes($_POST['to_date']));
     $item = htmlspecialchars(stripslashes($_POST['history_item']));
@@ -13,7 +14,7 @@
     $item_name = $rows->item_name;
 
     $get_history = new selects();
-    $details = $get_history->fetch_item_history($from, $to, $item);
+    $details = $get_history->fetch_item_history($from, $to, $item, $store);
     $n = 1;  
 ?>
 <div class="search">
@@ -25,12 +26,14 @@
         <thead>
             <tr style="background:var(--moreColor)">
                 <td>S/N</td>
-                <td>Qty</td>
+                <td>Opening Balance</td>
                 <td>Purchased</td>
                 <td>Sold</td>
                 <td>Sales return</td>
                 <td>Adjusted to</td>
                 <td>Removed</td>
+                <td>Transferred</td>
+                <td>Accepted</td>
                 <td>Date</td>
                 <td>Time</td>
                 <td>Posted by</td>
@@ -44,7 +47,7 @@
 ?>
         <tr>
             <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td>
+                <td style="text-align:center; color:green;">
                     <?php echo  $detail->previous_qty;
 
                     ?>
@@ -99,6 +102,26 @@
                         }
                     ?>
                 </td>
+                <td style="color:var(--otherColor); text-align:center">
+                    <?php 
+                        //get transaction type;
+                        if($detail->transaction == "transfer"){
+                            echo $detail->quantity;
+                        }else{
+                            echo "0";
+                        }
+                    ?>
+                </td>
+                <td style="color:var(--otherColor); text-align:center">
+                    <?php 
+                        //get transaction type;
+                        if($detail->transaction == "accept"){
+                            echo $detail->quantity;
+                        }else{
+                            echo "0";
+                        }
+                    ?>
+                </td>
                 <td><?php echo date("m-d-Y", strtotime($detail->post_date));?></td>
                 <td><?php echo date("H:i:sa", strtotime($detail->post_date));?></td>
                 <td>
@@ -118,8 +141,11 @@
     //get total quantity
     if(gettype($details) == "array"){
     $get_qty = new selects();
-    $total = $get_qty->fetch_details_group('items', 'quantity', 'item_id', $item);
-    echo "<p class='total_amount' style='color:green; text-align:center; text-decoration:underline'>Current quantity = ".$total->quantity."</p>";
+    $totals = $get_qty->fetch_details_2cond('inventory', 'item', 'store', $item, $store);
+    foreach($totals as $total){
+        echo "<p class='total_amount' style='color:green; text-align:center; text-decoration:underline'>Current quantity = ".$total->quantity."</p>";
+
+    }
     }
     if(gettype($details) == "string"){
         echo "<p class='no_result'>'$details'</p>";

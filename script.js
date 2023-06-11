@@ -811,6 +811,40 @@ function checkStockinHistory(item_id){
      // }
      
  }
+ //display customer statement/transaction history
+function getCustomerStatement(customer_id){
+     let customer = customer_id;
+          
+          $.ajax({
+               type : "GET",
+               url : "../controller/customer_statement.php?customer="+customer,
+               success : function(response){
+                    $(".new_data").html(response);
+               }
+          })
+          $("#sales_item").html("");
+          return false;
+     // }
+     
+ }
+ //display items in each customer inivoice under statement/transaction history
+function viewCustomerInvoice(invoice_id){
+     let invoice = invoice_id;
+          
+          $.ajax({
+               type : "GET",
+               url : "../controller/customer_invoices.php?invoice="+invoice,
+               success : function(response){
+                    $("#customer_invoices").html(response);
+                    // window.scrollTo(0, 0);
+                    document.getElementById("customer_invoices").scrollIntoView();
+               }
+          })
+          $("#sales_item").html("");
+          return false;
+     // }
+     
+ }
  //stockin in items
 function stockin(){
      let posted_by = document.getElementById("posted_by").value;
@@ -1417,6 +1451,42 @@ function getItemTransfer(item_name){
                }
           }
      }
+     
+}
+//get customer statement
+function getCustomer(customer_id){
+     let customer = customer_id;
+     // alert(check_room);
+     // return;
+     let fromDate = document.getElementById("fromDate").value;
+     let toDate = document.getElementById("toDate").value;
+     if(fromDate.length == 0 || fromDate.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select a date range!");
+          $("#fromDate").focus();
+          return;
+     }else if(toDate.length == 0 || toDate.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select a date range!");
+          $("#toDate").focus();
+          return;
+     }else{
+     if(customer.length >= 3){
+          if(customer){
+               $.ajax({
+                    type : "POST",
+                    url :"../controller/get_customer.php",
+                    data : {customer:customer, fromDate:fromDate, toDate:toDate},
+                    success : function(response){
+                         $("#sales_item").html(response);
+                    }
+               })
+               /* $("#fromDate").attr("readonly", true);
+               $("#toDate").attr("readonly", true); */
+               return false;
+          }else{
+               $("#sales_item").html("<p>Please enter atleast 3 letters</p>");
+          }
+     }
+}
      
 }
 //get item for stockin history

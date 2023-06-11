@@ -55,11 +55,16 @@
         //update invoice amount in payment table
         //get total invoice amount from payment table
         $get_amount = new selects();
-        $amounts = $get_amount->fetch_details_group('payments', 'amount_paid', 'invoice', $invoice);
-        $invoice_amount = $amounts->amount_paid;
+        $amounts = $get_amount->fetch_details_cond('payments', 'invoice', $invoice);
+        foreach($amounts as $amount){
+            $invoice_amount = $amount->amount_paid;
+            $invoice_due = $amount->amount_due;
+        }
+       
         $new_inv_amount = $invoice_amount - $removed_amount;
+        $new_inv_due = $invoice_due - $removed_amount;
         $update_payment = new Update_table();
-        $update_payment->update('payments', 'amount_paid', 'invoice', $new_inv_amount, $invoice);        
+        $update_payment->update_double('payments', 'amount_paid', $new_inv_amount, 'amount_due', $new_inv_due, 'invoice', $invoice);
         // if($update_payment){
             //insert into sales return table
             $sales_return = new sales_return($item, $quantity, $removed_amount, $reason, $user, $invoice, $store);

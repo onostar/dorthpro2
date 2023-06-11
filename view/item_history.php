@@ -35,7 +35,7 @@
             <button type="submit" name="search_date" id="search_date" onclick="getItemHistory()">Search <i class="fas fa-search"></i></button>
 </section>
     </div>
-<div class="displays allResults new_data">
+<div class="displays allResults new_data" style="width:100%!important">
     
 </div>
 

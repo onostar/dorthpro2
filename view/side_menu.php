@@ -546,6 +546,13 @@
                     ?>
                     <li><a href="javascript:void(0);" title="Check daily expenses" class="page_navs" onclick="showPage('expense_report.php')"><i class="fas fa-money-check"></i> Expense Report</a></li>
                     <?php }?>
+                    <?php 
+                        $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "66");
+                        if($row > 0 || $role == "Admin"){
+                    ?>
+                    <li><a href="javascript:void(0);" title="Check customers statement of account" class="page_navs" onclick="showPage('customer_statement.php')"><i class="fas fa-users"></i> Customer statement</a></li>
+                    <?php }?>
                     <li><a href="javascript:void(0);" title="Help and Faqs" class="page_navs" onclick="showPage('financial_help.php')"><i class="fas fa-question-circle"></i> Help</a></li>
                 </ul>
             </li>
