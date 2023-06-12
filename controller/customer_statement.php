@@ -151,17 +151,26 @@
                 if(gettype($details) == "string"){
                     echo "<p class='no_result'>'$details'</p>";
                 }
-                // get sum
-                $get_total = new selects();
-                $amounts = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'customer', 'date(post_date)', $from, $to, $customer);
-                foreach($amounts as $amount){
-                    if($amount->total > 0){
-                        echo "<p class='total_amount' style='color:green;font-size:1rem;'>Customer balance: ₦".number_format($amount->total, 2)."</p>";    
+                // get sum of credit
+                $get_credits = new selects();
+                $credits = $get_credits->fetch_sum_2date2Cond('customer_trail', 'amount', 'date(post_date)', 'customer', 'description', $from, $to, $customer, 'credit sales');
+                foreach($credits as $credit){
+                    $debt = $credit->total;
+                }
+                // get sum of deposit
+                $get_deposits = new selects();
+                $debits = $get_total->fetch_sum_2date2Cond('customer_trail', 'amount', 'date(post_date)', 'customer', 'description', $from, $to, $customer, 'deposit');
+                foreach($debits as $debit){
+                    $deposits = $debit->total;
+                }
+                $total_due = $deposits - $debt;
+                    if($total_due > 0){
+                        echo "<p class='total_amount' style='color:green;font-size:1rem;'>Customer balance: ₦".number_format($total_due, 2)."</p>";    
                     }else{
-                        echo "<p class='total_amount' style='color:red;font-size:1rem;'>Customer balance: ₦".number_format($amount->total, 2)."</p>";
+                        echo "<p class='total_amount' style='color:red;font-size:1rem;'>Customer balance: ₦".number_format($total_due, 2)."</p>";
 
                     }
-                }
+                
             ?>
         </div>
     </div>

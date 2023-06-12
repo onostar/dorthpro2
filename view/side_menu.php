@@ -321,6 +321,13 @@
                     ?>
                     <li><a href="javascript:void(0);" title="Post daily expenses" class="page_navs" onclick="showPage('post_expense.php')"><i class="fas fa-money-check-alt"></i> Post Expense</a></li>
                     <?php }?>
+                    <?php 
+                        $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "69");
+                        if($row > 0 || $role == "Admin"){
+                    ?>
+                    <li><a href="javascript:void(0);" title="Pay customers debt" class="page_navs" onclick="showPage('pay_debt.php')"><i class="fas fa-money-check-alt"></i> Pay debt</a></li>
+                    <?php }?>
                     <li><a href="javascript:void(0);" title="Help and Faqs" class="page_navs" onclick="showPage('expense_help.php')"><i class="fas fa-question-circle"></i> Help</a></li>
                 </ul>
             </li>
