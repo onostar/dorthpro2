@@ -2387,7 +2387,7 @@ function printSalesTicket(invoice){
      return false;
  
  }
- //search revenue by category
+ //perform any type of search with just two date
  function search(url){
      let from_date = document.getElementById('from_date').value;
      let to_date = document.getElementById('to_date').value;
@@ -2407,6 +2407,34 @@ function printSalesTicket(invoice){
                data: {from_date:from_date, to_date:to_date},
                success: function(response){
                $(".new_data").html(response);
+               }
+          });
+     }
+     return false;
+}
+ //search dashboard reports
+ function searchDashboard(){
+     let store = document.getElementById('store').value;
+     /* authentication */
+     if(store.length == 0 || store.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select a store!");
+          $("#store").focus();
+          return;
+    /*  }else if(from_date.length == 0 || from_date.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select a date!");
+          $("#from_date").focus();
+          return;
+     }else if(to_date.length == 0 || to_date.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select a date range!");
+          $("#to_date").focus();
+          return; */
+     }else{
+          $.ajax({
+               type: "POST",
+               url: "../controller/search_dashboard.php",
+               data: {store:store},
+               success: function(response){
+               $("#general_dashboard").html(response);
                }
           });
      }

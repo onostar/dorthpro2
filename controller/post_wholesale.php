@@ -91,6 +91,14 @@ include "../classes/inserts.php";
                     $update_qty->update_inv_qty($row->quantity, $row->item, $store);
                     
                 }
+                //check if payment is credit and insert into customer trail and debtors list
+                if($payment_type == "Credit"){
+                    //insert to customer_trail
+                    $insert_credit = new customer_trail($customer, $store, 'Credit sales', $inv_amount, $user);
+
+                    //insert to debtors list
+                    $add_debt = new add_debtor($customer, $store, $invoice, $inv_amount, $user);
+                }
                 
 ?>
 <div id="printBtn">

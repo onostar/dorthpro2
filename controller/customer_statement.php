@@ -127,7 +127,7 @@
                     <?php
                         //get transaction history
                         $get_transactions = new selects();
-                        $details = $get_transactions->fetch_details_dateGro1con('payments', 'date(post_date)', $from, $to, 'customer', $customer, 'invoice');
+                        $details = $get_transactions->fetch_details_cond('customer_trail', 'customer', $customer);
                         $n = 1;
                         if(gettype($details) === 'array'){
                         foreach($details as $detail){
@@ -136,24 +136,10 @@
                     <tr>
                         <td style="text-align:center; color:red;"><?php echo $n?></td>
                         <td style="color:var(--moreColor)"><?php echo date("d-m-Y", strtotime($detail->post_date));?></td>
-                        <td><a style="color:green" href="javascript:void(0)" title="View invoice details" onclick="showPage('customer_invoice_details.php?invoice=<?php echo $detail->invoice?>')"><?php echo $detail->invoice?></a></td>  
-                        <!-- <td style="text-align:center">
-                            <?php
-                                //get items in invoice;
-                                $get_items = new selects();
-                                $items = $get_items->fetch_count_cond('sales', 'invoice', $detail->invoice);
-                                echo $items;
-                            ?>
-                        </td>    -->
+                        <td><?php echo $detail->description?></td>  
                         <td>
-                            <?php 
-                                //get sum of invoice
-                                $get_sum = new selects();
-                                $sums = $get_sum->fetch_sum_single('payments', 'amount_paid', 'invoice', $detail->invoice);
-                                foreach($sums as $sum){
-                                    echo "₦".number_format($sum->total, 2);
+                            <?php echo "₦".number_format($detail->amount, 2);
 
-                                }
                             ?>
                         </td>
                         

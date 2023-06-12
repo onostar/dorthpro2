@@ -173,6 +173,20 @@
             }
         }
         //fetch with one condition group by
+        public function fetch_details_condGroup($table, $condition1, $value1, $group){
+            $get_user = $this->connectdb()->prepare("SELECT * FROM $table WHERE $condition1 = :$condition1 GROUP BY $group");
+            $get_user->bindValue("$condition1", $value1);
+            // $get_user->bindValue("$condition2", $value2);
+            $get_user->execute();
+            if($get_user->rowCount() > 0){
+                $rows = $get_user->fetchAll();
+                return $rows;
+            }else{
+                $rows = "No records found";
+                return $rows;
+            }
+        }
+        //fetch with one condition group by
         public function fetch_AllStock(){
             $get_user = $this->connectdb()->prepare("SELECT SUM(DISTINCT quantity) AS total, cost_price, item FROM inventory GROUP BY item");
             $get_user->execute();
@@ -1067,8 +1081,9 @@
         }
         
         // fetch daily checkins
-        public function fetch_daily_sales(){
-            $get_daily = $this->connectdb()->prepare("SELECT COUNT(distinct invoice) AS customers, SUM(amount_paid) AS revenue, post_date FROM payments GROUP BY date(post_date) ORDER BY date(post_date) DESC");
+        public function fetch_daily_sales($store){
+            $get_daily = $this->connectdb()->prepare("SELECT COUNT(distinct invoice) AS customers, SUM(amount_paid) AS revenue, post_date FROM payments WHERE store = :store GROUP BY date(post_date) ORDER BY date(post_date) DESC");
+            $get_daily->bindValue('store', $store);
             $get_daily->execute();
             if($get_daily->rowCount() > 0){
                 $rows = $get_daily->fetchAll();
@@ -1080,8 +1095,9 @@
             }
         }
         //fetch monthly check ins
-        public function fetch_monthly_sales(){
-            $get_monthly = $this->connectdb()->prepare("SELECT COUNT(distinct invoice) AS customers, SUM(amount_paid) AS revenue, post_date, COUNT(post_date) AS arrivals, COUNT(DISTINCT post_date) AS daily_average FROM payments GROUP BY MONTH(post_date) ORDER BY post_date DESC");
+        public function fetch_monthly_sales($store){
+            $get_monthly = $this->connectdb()->prepare("SELECT COUNT(distinct invoice) AS customers, SUM(amount_paid) AS revenue, post_date, COUNT(post_date) AS arrivals, COUNT(DISTINCT post_date) AS daily_average FROM payments WHERE store = :store GROUP BY MONTH(post_date) ORDER BY post_date DESC");
+            $get_monthly->bindValue('store', $store);
             $get_monthly->execute();
             if($get_monthly->rowCount() > 0){
                 $rows = $get_monthly->fetchAll();

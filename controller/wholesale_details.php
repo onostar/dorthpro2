@@ -97,6 +97,7 @@
                         <option value="Cash">CASH</option>
                         <option value="POS">POS</option>
                         <option value="Transfer">TRANSFER</option>
+                        <option value="Credit">CREDIT</option>
                         <option value="Multiple">MULTIPLE PAYMENT</option>
                     </select>
                 </div>

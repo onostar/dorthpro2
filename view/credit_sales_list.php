@@ -18,26 +18,23 @@
                 <label>Select to Date</label><br>
                 <input type="date" name="to_date" id="to_date"><br>
             </div>
-            <button type="submit" name="search_date" id="search_date" onclick="search('search_revenue.php')">Search <i class="fas fa-search"></i></button>
-        </section>
+            <button type="submit" name="search_date" id="search_date" onclick="search('search_credit.php')">Search <i class="fas fa-search"></i></button>
+</section>
     </div>
 <div class="displays allResults new_data" id="revenue_report">
-    <h2>Sales Report for today</h2>
+    <h2>Credit Sales Report for today</h2>
     <hr>
     <div class="search">
-        <input type="search" id="searchCheckout" placeholder="Enter keyword" onkeyup="searchData(this.value)">
-        <a class="download_excel" href="javascript:void(0)" onclick="convertToExcel('data_table', 'Sales report')"title="Download to excel"><i class="fas fa-file-excel"></i></a>
+        <input type="search" id="searchCredit" placeholder="Enter keyword" onkeyup="searchData(this.value)">
+        <a class="download_excel" href="javascript:void(0)" onclick="convertToExcel('data_table', 'Credit Sales report')"title="Download to excel"><i class="fas fa-file-excel"></i></a>
     </div>
     <table id="data_table" class="searchTable">
         <thead>
             <tr style="background:var(--primaryColor)">
                 <td>S/N</td>
+                <td>Customer</td>
                 <td>Invoice</td>
-                <td>Type</td>
-                <td>Amount due</td>
-                <td>Amount paid</td>
-                <td>Discount</td>
-                <td>Payment Mode</td>
+                <td>Amount</td>
                 <td>Post Time</td>
                 <td>Posted by</td>
                 
@@ -47,43 +44,23 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_curdateGro1con('payments', 'date(post_date)', 'store', $store, 'invoice');
+                $details = $get_users->fetch_details_date2Cond('payments', 'date(post_date)', 'payment_mode', 'Credit', 'store', $store);
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
-                <td><a style="color:green" href="javascript:void(0)" title="View invoice details" onclick="showPage('invoice_details.php?payment_id=<?php echo $detail->payment_id?>')"><?php echo $detail->invoice?></a></td>
-                <td><?php echo $detail->sales_type?></td>
                 <td>
-                    <?php echo "₦".number_format($detail->amount_due, 2);?>
-                </td>
-                <td style="color:var(--otherColor)">
-                    <?php 
-                        //get sum of invoice
-                        $get_sum = new selects();
-                        $sums = $get_sum->fetch_sum_single('payments', 'amount_paid', 'invoice', $detail->invoice);
-                        foreach($sums as $sum){
-                            echo "₦".number_format($sum->total, 2);
-
-                        }
+                    <?php
+                        //get customer
+                        $get_customer = new selects();
+                        $clients = $get_customer->fetch_details_group('customers', 'customer', 'customer_id', $detail->customer);
+                        echo $clients->customer;
                     ?>
                 </td>
-                <td style="color:red">
-                    <?php echo "₦".number_format($detail->discount, 2);?>
-                </td>
-                <td>
-                    <?php 
-                        //get payment mode
-                        $get_mode = new selects();
-                        $rows = $get_mode->fetch_count_cond('payments', 'invoice', $detail->invoice);
-                        if($rows >= 2){
-                            echo "Multiple payment";
-                        }else{
-                        echo $detail->payment_mode;
-                        }
-                     ?>
-                </td>
+                <td><a style="color:green" href="javascript:void(0)" title="View payment details" onclick="showPage('invoice_details.php?payment_id=<?php echo $detail->payment_id?>')"><?php echo $detail->invoice?></a></td>
+                <td><?php echo "₦".number_format($detail->amount_paid, 2)?></td>
+                
                 <td style="color:var(--moreColor)"><?php echo date("H:i:sa", strtotime($detail->post_date));?></td>
                 <td>
                     <?php
@@ -106,7 +83,7 @@
 
         // get sum
         $get_total = new selects();
-        $amounts = $get_total->fetch_sum_curdateCon('payments', 'amount_paid', 'post_date', 'store', $store);
+        $amounts = $get_total->fetch_sum_curdate2Con('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'Credit', 'store', $store);
         foreach($amounts as $amount){
             echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($amount->total, 2)."</p>";
         }

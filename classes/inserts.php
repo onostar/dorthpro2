@@ -112,6 +112,26 @@
         
             
         }
+        //Insert into customer trail
+        protected function customer_trail($customer, $details, $amount, $posted, $store){
+            $audit = $this->connectdb()->prepare("INSERT INTO customer_trail (customer, description, amount, posted_by, store) VALUES (:customer, :description, :amount, :posted_by, :store)");
+            $audit->bindValue("customer", $customer);
+            $audit->bindValue("description", $details);
+            $audit->bindValue("amount", $amount);
+            $audit->bindValue("posted_by", $posted);
+            $audit->bindValue("store", $store);
+            $audit->execute();
+        }
+        //Insert into debtors list
+        protected function add_debtor($customer, $invoice, $amount, $posted, $store){
+            $audit = $this->connectdb()->prepare("INSERT INTO debtors (customer, invoice, amount, posted_by, store) VALUES (:customer, :invoice, :amount, :posted_by, :store)");
+            $audit->bindValue("customer", $customer);
+            $audit->bindValue("invoice", $invoice);
+            $audit->bindValue("amount", $amount);
+            $audit->bindValue("posted_by", $posted);
+            $audit->bindValue("store", $store);
+            $audit->execute();   
+        }
         //add items
         protected function add_items($value1, $value2, $value3, $value4, $value5){
             //check if item exists
@@ -698,6 +718,46 @@
         }
         public function add_expense(){
             $this->post_expense($this->value1, $this->value2, $this->value3, $this->value4, $this->value5, $this->value6);
+        }
+    }
+    // controller for posting customer trail
+    class customer_trail extends inserts{
+        private $customer;
+        private $store;
+        private $detail;
+        private $amount;
+        private $posted;
+
+        public function __construct($customer, $store, $detail, $amount, $posted)
+        {
+            $this->customer = $customer;
+            $this->store = $store;
+            $this->detail = $detail;
+            $this->amount = $amount;
+            $this->posted = $posted;
+        }
+        public function add_trail(){
+            $this->customer_trail($this->customer, $this->detail, $this->amount, $this->posted, $this->store);
+        }
+    }
+    // controller for adding debtor
+    class add_debtor extends inserts{
+        private $customer;
+        private $store;
+        private $invoice;
+        private $amount;
+        private $posted;
+
+        public function __construct($customer, $store, $invoice, $amount, $posted)
+        {
+            $this->customer = $customer;
+            $this->store = $store;
+            $this->invoice = $invoice;
+            $this->amount = $amount;
+            $this->posted = $posted;
+        }
+        public function add_debt(){
+            $this->add_debtor($this->customer, $this->invoice, $this->amount, $this->posted, $this->store);
         }
     }
     // controller for stock adjustment

@@ -520,6 +520,13 @@
                     <?php }?>
                     <?php 
                         $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "67");
+                        if($row > 0 || $role == "Admin"){
+                    ?>
+                    <li><a href="javascript:void(0);" title="Credit sales list report" class="page_navs" onclick="showPage('credit_sales_list.php')"><i class="fas fa-coins"></i> Credit Sales list</a></li>
+                    <?php }?>
+                    <?php 
+                        $get_rights = new selects();
                         $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "45");
                         if($row > 0 || $role == "Admin"){
                     ?>
@@ -552,6 +559,13 @@
                         if($row > 0 || $role == "Admin"){
                     ?>
                     <li><a href="javascript:void(0);" title="Check customers statement of account" class="page_navs" onclick="showPage('customer_statement.php')"><i class="fas fa-users"></i> Customer statement</a></li>
+                    <?php }?>
+                    <?php 
+                        $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "68");
+                        if($row > 0 || $role == "Admin"){
+                    ?>
+                    <li><a href="javascript:void(0);" title="Check list of debtors" class="page_navs" onclick="showPage('debtors_list.php')"><i class="fas fa-users"></i> Debtors report</a></li>
                     <?php }?>
                     <li><a href="javascript:void(0);" title="Help and Faqs" class="page_navs" onclick="showPage('financial_help.php')"><i class="fas fa-question-circle"></i> Help</a></li>
                 </ul>

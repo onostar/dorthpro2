@@ -1,9 +1,38 @@
-
+<div id="general_dashboard">
 <div class="dashboard_all">
-    <h3><i class="fas fa-home"></i> Dashboard</h3>
+    <h3><i class="fas fa-home"></i> Dashboard for <span style="color:var(--secondaryColor);font-size:1rem"><?php echo $store?></span></h3>
     <?php 
         if($role === "Admin"){
     ?>
+    <!-- check other stores dashboard -->
+    <div class="select_date">
+        <!-- <form method="POST"> -->
+        <section>
+            <div class="from_to_date">
+                <!-- <label>Select store</label><br> -->
+                <select name="store" id="store" required>
+                    <option value="<?php echo $store_id?>"><?php echo $store?></option>
+                    <!-- get stores -->
+                    <?php
+                        $get_store = new selects();
+                        $strs = $get_store->fetch_details('stores');
+                        foreach($strs as $str){
+                    ?>
+                    <option value="<?php echo $str->store_id?>"><?php echo $str->store?></option>
+                    <?php }?>
+                </select>
+            </div>
+            <!-- <div class="from_to_date">
+                <label>Select From Date</label><br>
+                <input type="date" name="from_date" id="from_date"><br>
+            </div>
+            <div class="from_to_date">
+                <label>Select to Date</label><br>
+                <input type="date" name="to_date" id="to_date"><br>
+            </div> -->
+            <button type="submit" name="search_date" id="search_date" onclick="searchDashboard()" style="background:var(--primaryColor);width:auto!important;font-size:.9rem">View <i class="fas fa-eye"></i></button>
+        </section>
+    </div>
     <div id="dashboard">
         <div class="cards" id="card4">
             <a href="javascript:void(0)" onclick="showPage('revenue_report.php')">
@@ -12,7 +41,7 @@
                     <p>
                     <?php
                         $get_sales = new selects();
-                        $rows = $get_sales->fetch_sum_curdate('payments', 'amount_paid', 'post_date');
+                        $rows = $get_sales->fetch_sum_curdatecon('payments', 'amount_paid', 'post_date', 'store', $store_id);
                         foreach($rows as $row){
                             echo "₦".number_format($row->total);
                         }
@@ -28,7 +57,7 @@
                     <p>
                     <?php
                         $get_cost = new selects();
-                        $costs = $get_cost->fetch_sum_curdateCon('sales', 'cost', 'date(post_date)', 'sales_status', 2);
+                        $costs = $get_cost->fetch_sum_curdate2Con('sales', 'cost', 'date(post_date)', 'sales_status', 2, 'store', $store_id);
                         foreach($costs as $cost){
                             echo "₦".number_format($cost->total, 2);
                         }
@@ -44,7 +73,7 @@
                     <p>
                     <?php
                         $get_exp = new selects();
-                        $exps = $get_exp->fetch_sum_curdate('expenses', 'amount', 'date(expense_date)');
+                        $exps = $get_exp->fetch_sum_curdateCon('expenses', 'amount', 'date(expense_date)', 'store', $store_id);
                         foreach($exps as $exp){
                             echo "₦".number_format($exp->total, 2);
                         }
@@ -61,18 +90,18 @@
                     <?php
                         //get total sales
                         $get_sales = new selects();
-                        $rows = $get_sales->fetch_sum_curdate('payments', 'amount_paid', 'post_date');
+                        $rows = $get_sales->fetch_sum_curdateCon('payments', 'amount_paid', 'post_date', 'store', $store_id);
                         foreach($rows as $row){
                             $sales = $row->total;
                         }
                         //get cost of sales
                         $get_cost = new selects();
-                        $costs = $get_cost->fetch_sum_curdateCon('sales', 'cost', 'date(post_date)', 'sales_status', 2);
+                        $costs = $get_cost->fetch_sum_curdate2Con('sales', 'cost', 'date(post_date)', 'sales_status', 2, 'store', $store_id);
                         foreach($costs as $cost){   $sales_cost = $cost->total;
                         }
                         //get expenses
                         $get_exp = new selects();
-                        $exps = $get_exp->fetch_sum_curdate('expenses', 'amount', 'date(expense_date)');
+                        $exps = $get_exp->fetch_sum_curdateCon('expenses', 'amount', 'date(expense_date)', 'store', $store_id);
                         foreach($exps as $exp){
                             $expense = $exp->total;
                         }
@@ -181,7 +210,7 @@
                 <?php
                     $n = 1;
                     $get_daily = new selects();
-                    $dailys = $get_daily->fetch_daily_sales();
+                    $dailys = $get_daily->fetch_daily_sales($store_id);
                     if(gettype($dailys) == "array"){
                     foreach($dailys as $daily):
 
@@ -220,7 +249,7 @@
                 <?php
                     $n =1;
                     $get_monthly = new selects();
-                    $monthlys = $get_monthly->fetch_monthly_sales();
+                    $monthlys = $get_monthly->fetch_monthly_sales($store_id);
                     if(gettype($monthlys) == "array"){
                     foreach($monthlys as $monthly):
 
@@ -326,3 +355,4 @@
 <?php
     }
 ?>
+</div>
