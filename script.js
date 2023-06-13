@@ -845,6 +845,23 @@ function viewCustomerInvoice(invoice_id){
      // }
      
  }
+ //display payment form for credit payments
+function addPayment(invoice_id){
+     let invoice = invoice_id;          
+          $.ajax({
+               type : "GET",
+               url : "../controller/get_payment.php?invoice="+invoice,
+               success : function(response){
+                    $("#customer_invoices").html(response);
+                    // window.scrollTo(0, 0);
+                    document.getElementById("customer_invoices").scrollIntoView();
+               }
+          })
+          // $("#sales_item").html("");
+          return false;
+     // }
+     
+ }
  //stockin in items
 function stockin(){
      let posted_by = document.getElementById("posted_by").value;
@@ -2810,4 +2827,26 @@ function addCustomer(){
      $("#phone_number").val('');
      $("#customer").focus();
      return false;    
+}
+
+//post other payments
+//post other Transfer payments for guest
+function postOtherPayment(){
+     let mode = document.getElementById("mode").value;
+     let posted = document.getElementById("posted").value;
+     let customer = document.getElementById("customer").value;
+     let invoice = document.getElementById("invoice").value;
+     let amount = document.getElementById("amount").value;
+     
+     $.ajax({
+          type : "POST",
+          url : "../controller/post_other_payments.php",
+          data : {posted:posted, customer:customer, mode:mode, amount:amount, invoice:invoice},
+          success : function(response){
+               $("#debt_payment").html(response);
+          }
+     })
+     
+     return false;    
+
 }

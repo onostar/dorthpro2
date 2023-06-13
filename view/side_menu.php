@@ -326,7 +326,7 @@
                         $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "69");
                         if($row > 0 || $role == "Admin"){
                     ?>
-                    <li><a href="javascript:void(0);" title="Pay customers debt" class="page_navs" onclick="showPage('pay_debt.php')"><i class="fas fa-money-check-alt"></i> Pay debt</a></li>
+                    <li><a href="javascript:void(0);" title="Pay customers debt" class="page_navs" onclick="showPage('pay_debt.php')"><i class="fas fa-hand-holding-usd"></i> Pay debt</a></li>
                     <?php }?>
                     <li><a href="javascript:void(0);" title="Help and Faqs" class="page_navs" onclick="showPage('expense_help.php')"><i class="fas fa-question-circle"></i> Help</a></li>
                 </ul>
@@ -573,6 +573,13 @@
                         if($row > 0 || $role == "Admin"){
                     ?>
                     <li><a href="javascript:void(0);" title="Check list of debtors" class="page_navs" onclick="showPage('debtors_list.php')"><i class="fas fa-users"></i> Debtors report</a></li>
+                    <?php }?>
+                    <?php 
+                        $get_rights = new selects();
+                        $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "68");
+                        if($row > 0 || $role == "Admin"){
+                    ?>
+                    <li><a href="javascript:void(0);" title="Check debt payments" class="page_navs" onclick="showPage('debt_payment_report.php')"><i class="fas fa-hand-holding-usd"></i> Debt payment report</a></li>
                     <?php }?>
                     <li><a href="javascript:void(0);" title="Help and Faqs" class="page_navs" onclick="showPage('financial_help.php')"><i class="fas fa-question-circle"></i> Help</a></li>
                 </ul>

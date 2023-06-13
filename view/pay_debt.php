@@ -6,7 +6,7 @@
 
 
 ?>
-<div id="debtorsList" class="displays management">
+<div id="pay_debt" class="displays management">
     
 <div class="displays allResults new_data" id="revenue_report" style="width:60%!important; margin:0 20px!important;">
     <h2>Debtors List</h2>
@@ -43,12 +43,12 @@
                         echo $client->customer;
                     ?>
                 </td>
-                <td>
+                <td style="color:red">
                     <?php echo "₦".number_format($detail->amount, 2);?>
                 </td>
             
                 <td>
-                    <a style="color:#fff;background:var(--primaryColor); padding:5px; border-radius:5px" href="javascript:void(0)" title="View invoice details" onclick="showPage('debt_details.php?customer=<?php echo $detail->customer?>')">View <i class="fas fa-eye"></i></a>
+                    <a style="color:#fff;background:var(--primaryColor); padding:5px; border-radius:5px" href="javascript:void(0)" title="View invoice details" onclick="showPage('debt_payment.php?customer=<?php echo $detail->customer?>')">View <i class="fas fa-eye"></i></a>
                 </td>
                 
             </tr>

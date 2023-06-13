@@ -2975,6 +2975,17 @@ x
     width:49%;
     margin:0!important;
 }
+#pay_modes{
+    display:flex;
+
+}
+#pay_modes button{
+    background:var(--otherColor);
+    color:#fff;
+    padding:5px 8px;
+    margin:3px;
+    border-radius: 5px;
+}
 @media screen and (max-width: 800px){
     #topHeader{
         justify-content: space-between;

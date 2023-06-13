@@ -363,6 +363,18 @@
             $payment->execute();
             
         }
+        //post other payments
+        protected function post_otherpayment($posted, $mode, $amount, $invoice, $customer){
+            
+            $payment = $this->connectdb()->prepare("INSERT INTO other_payments (amount, payment_mode, posted_by, invoice, customer) VALUES (:amount, :payment_mode, :posted_by, :invoice, :customer)");
+            $payment->bindValue("amount", $amount);
+            $payment->bindValue("payment_mode", $mode);
+            $payment->bindValue("posted_by", $posted);
+            $payment->bindValue("invoice", $invoice);
+            $payment->bindValue("customer", $customer);
+            $payment->execute();
+            
+        }
 
         //stock in item quantity
         protected function stockin_item($posted, $store, $item, $vendor, $invoice, $quantity, $cost, $sales, $expiration){
@@ -605,6 +617,27 @@
 
         public function payment(){
             $this->post_payment($this->posted, $this->mode, $this->bank, $this->amount_due, $this->amount_paid, $this->discount, $this->invoice, $this->store, $this->type, $this->customer);
+        }
+    }
+    //controller for payments
+    class other_payments extends inserts{
+        private $posted;
+        private $mode;
+        private $amount;
+        private $invoice;
+        private $customer;
+
+        public function __construct($posted, $mode, $amount, $invoice, $customer)
+        {
+            $this->posted = $posted;
+            $this->mode = $mode;
+            $this->amount = $amount;
+            $this->invoice = $invoice;
+            $this->customer = $customer;
+        }
+
+        public function other_payment(){
+            $this->post_otherpayment($this->posted, $this->mode,$this->amount, $this->invoice, $this->customer);
         }
     }
 

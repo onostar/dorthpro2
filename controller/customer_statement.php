@@ -164,7 +164,7 @@
                     $deposits = $debit->total;
                 }
                 $total_due = $deposits - $debt;
-                    if($total_due > 0){
+                    if($total_due >= 0){
                         echo "<p class='total_amount' style='color:green;font-size:1rem;'>Customer balance: ₦".number_format($total_due, 2)."</p>";    
                     }else{
                         echo "<p class='total_amount' style='color:red;font-size:1rem;'>Customer balance: ₦".number_format($total_due, 2)."</p>";
