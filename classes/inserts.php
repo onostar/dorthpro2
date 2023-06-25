@@ -13,90 +13,21 @@
             }
         }
 
-        //insert user into database
-        protected function setUser($fullname, $username, $role, $store, $password){
-            $set_user = $this->connectdb()->prepare("INSERT INTO users (full_name, username, user_role, store, user_password) VALUES (:full_name, :username, :user_role, :store, :user_password)");
-            $set_user->bindValue("full_name", $fullname);
-            $set_user->bindValue("username", $username);
-            $set_user->bindValue("user_role", $role);
-            $set_user->bindValue("store", $store);
-            $set_user->bindValue("user_password", $password);
-            $set_user->execute();
-            if($set_user){
-                echo "<p><span>$username</span> created successfully!</p>";
-            }
-        }
-
-        //insert category
-
+       
         
-        //add single items
-        protected function add_single($table, $column, $item){
-            //check if exits exists
-            $check_item = $this->connectdb()->prepare("SELECT * FROM $table WHERE $column = :$column");
-            $check_item->bindValue("$column", $item);
-            $check_item->execute();
-            if(!$check_item->rowCount() > 0){
-                $add_item = $this->connectdb()->prepare("INSERT INTO $table ($column) VALUES (:$column)");
-                $add_item->bindValue("$column", $item);
-                $add_item->bindValue("$column", $item);
-                $add_item->execute();
-                if($add_item){
-                    echo "<p><span>$item</span> Created successfully!</p>";
-                }else{
-                    echo "<p class='exist'><span>$item</span> could not be createda!</p>";
-                }
-            }else{
-                echo "<p class='exist'><span>$item</span> already exists!</p>";
+        
+        //new class to insert any number of data
+        protected function add_data($table, $data){
+            $add_data = $this->connectdb()->prepare("INSERT INTO $table (" . implode(', ', array_keys($data)) .") VALUES (:" . implode(', :', array_keys($data)). ")");
+            foreach($data as $column => $value){
+                $add_data->bindValue($column, $value);
             }
+            $add_data->execute();
             
         }
         
-        //add categeories
-        protected function add_categories($value1, $value2){
-            //check if item exists
-            $check_item = $this->connectdb()->prepare("SELECT * FROM categories WHERE department = :department AND category = :category");
-            $check_item->bindValue("department", $value1);
-            $check_item->bindValue("category", $value2);
-            $check_item->execute();
-            if($check_item->rowCount() > 0){
-                echo "<p class='exist'><span>$value2</span> already exists!</p>";
-                die();
-                
-            }else{
-                $add_item = $this->connectdb()->prepare("INSERT INTO categories (department, category) VALUES (:department, :category)");
-                $add_item->bindValue("department", $value1);
-                $add_item->bindValue("category", $value2);
-                $add_item->execute();
-                if($add_item){
-                    echo "<p><span>$value2</span> added successfully!</p>";
-                }else{
-                    echo "<p class='exist'><span>$value2</span> could not be created!</p>";
-                }
-            }
-            
-        }
-        //add rights to user
-        protected function add_rights($user, $menu, $sub_menu){
-            //check if rights exists for user
-            $check_right = $this->connectdb()->prepare("SELECT * FROM rights WHERE user = :user AND sub_menu = :sub_menu");
-            $check_right->bindValue("user", $user);
-            $check_right->bindValue("sub_menu", $sub_menu);
-            $check_right->execute();
-            if($check_right->rowCount() > 0){
-                echo "<p class='exist'>User already have this right!</p>";
-                die();
-                
-            }else{
-                $add_right = $this->connectdb()->prepare("INSERT INTO rights (user, menu, sub_menu) VALUES (:user, :menu, :sub_menu)");
-                $add_right->bindValue("user", $user);
-                $add_right->bindValue("menu", $menu);
-                $add_right->bindValue("sub_menu", $sub_menu);
-                $add_right->execute();
-                
-            }
-            
-        }
+        
+        
         //Insert into audit trail
         protected function audit($item, $trans, $prev_qty, $qty, $posted, $store){
             
@@ -132,111 +63,7 @@
             $audit->bindValue("store", $store);
             $audit->execute();   
         }
-        //add items
-        protected function add_items($value1, $value2, $value3, $value4, $value5){
-            //check if item exists
-            $check_item = $this->connectdb()->prepare("SELECT * FROM items WHERE department = :department AND category = :category AND item_name = :item_name");
-            $check_item->bindValue("department", $value1);
-            $check_item->bindValue("category", $value2);
-            $check_item->bindValue("item_name", $value3);
-            $check_item->execute();
-            if($check_item->rowCount() > 0){
-                echo "<p class='exist'><span>$value3</span> already exists!</p>";
-                die();
-                
-            }else{
-                $add_item = $this->connectdb()->prepare("INSERT INTO items (department, category, item_name, barcode, reorder_level) VALUES (:department, :category, :item_name, :barcode, :reorder_level)");
-                $add_item->bindValue("department", $value1);
-                $add_item->bindValue("category", $value2);
-                $add_item->bindValue("item_name", $value3);
-                $add_item->bindValue("barcode", $value4);
-                $add_item->bindValue("reorder_level", $value5);
-                $add_item->execute();
-                if($add_item){
-                    echo "<p><span>$value3</span> added successfully!</p>";
-                }else{
-                    echo "<p class='exist'><span>$value3</span> could not be created!</p>";
-                }
-            }
-            
-        }
-        //add customers
-        protected function create_customer($value1, $value2, $value3, $value4){
-            //check if item exists
-            $check_item = $this->connectdb()->prepare("SELECT * FROM customers WHERE customer = :customer");
-            $check_item->bindValue("customer", $value1);
-            
-            $check_item->execute();
-            if($check_item->rowCount() > 0){
-                echo "<p class='exist'><span>$value1</span> already exists!</p>";
-                die();
-                
-            }else{
-                $add_item = $this->connectdb()->prepare("INSERT INTO customers (customer, phone_numbers, customer_address, customer_email) VALUES (:customer, :phone_numbers, :customer_address, :customer_email)");
-                $add_item->bindValue("customer", $value1);
-                $add_item->bindValue("phone_numbers", $value2);
-                $add_item->bindValue("customer_email", $value3);
-                $add_item->bindValue("customer_address", $value4);
-                $add_item->execute();
-                if($add_item){
-                    echo "<p><span>$value1</span> added successfully!</p>";
-                }else{
-                    echo "<p class='exist'><span>$value1</span> could not be created!</p>";
-                }
-            }
-            
-        }
-        //add stores
-        protected function add_stores($value1, $value2, $value3, $value4){
-            //check if item exists
-            $check_item = $this->connectdb()->prepare("SELECT * FROM stores WHERE company = :company AND store = :store");
-            $check_item->bindValue("company", $value1);
-            $check_item->bindValue("store", $value2);
-            $check_item->execute();
-            if($check_item->rowCount() > 0){
-                echo "<p class='exist'><span>$value2</span> already exists!</p>";
-                die();
-                
-            }else{
-                $add_item = $this->connectdb()->prepare("INSERT INTO stores (company, store, store_address, phone_number) VALUES (:company, :store, :store_address, :phone_number)");
-                $add_item->bindValue("company", $value1);
-                $add_item->bindValue("store", $value2);
-                $add_item->bindValue("store_address", $value3);
-                $add_item->bindValue("phone_number", $value4);
-                $add_item->execute();
-                if($add_item){
-                    echo "<p><span>$value2</span> created successfully!</p>";
-                }else{
-                    echo "<p class='exist'><span>$value2</span> could not be created!</p>";
-                }
-            }
-            
-        }
-        //add staffs
-        protected function add_staffs($value1, $value2, $value3){
-            //check if item exists
-            $check_item = $this->connectdb()->prepare("SELECT * FROM staffs WHERE staff_name = :staff_name OR phone_number = :phone_number");
-            $check_item->bindValue("staff_name", $value1);
-            $check_item->bindValue("phone_number", $value2);
-            $check_item->execute();
-            if($check_item->rowCount() > 0){
-                echo "<p class='exist'><span>$value1</span> already exists!</p>";
-                die();
-                
-            }else{
-                $add_item = $this->connectdb()->prepare("INSERT INTO staffs (staff_name, phone_number, home_address) VALUES (:staff_name, :phone_number, :home_address)");
-                $add_item->bindValue("staff_name", $value1);
-                $add_item->bindValue("phone_number", $value2);
-                $add_item->bindValue("home_address", $value3);
-                $add_item->execute();
-                if($add_item){
-                    echo "<p><span>$value1</span> added successfully!</p>";
-                }else{
-                    echo "<p class='exist'><span>$value1</span> could not be created!</p>";
-                }
-            }
-            
-        }
+        
         //add vendors
         protected function add_vendors($value1, $value2, $value3, $value4){
             //check if item exists
@@ -308,30 +135,7 @@
             
             
         }
-        //add banks
-        protected function add_bank($value1, $value2){
-            //check if item exists
-            $check_item = $this->connectdb()->prepare("SELECT * FROM banks WHERE bank = :bank AND account_number = :account_number");
-            $check_item->bindValue("bank", $value1);
-            $check_item->bindValue("account_number", $value2);
-            $check_item->execute();
-            if($check_item->rowCount() > 0){
-                echo "<p class='exist'>This <span>$value1 Account</span> already exists!</p>";
-                die();
-                
-            }else{
-                $add_item = $this->connectdb()->prepare("INSERT INTO banks (bank, account_number) VALUES (:bank, :account_number)");
-                $add_item->bindValue("bank", $value1);
-                $add_item->bindValue("account_number", $value2);
-                $add_item->execute();
-                if($add_item){
-                    echo "<p><span>$value1</span> added successfully!</p>";
-                }else{
-                    echo "<p class='exist'><span>$value1</span> could not be created!</p>";
-                }
-            }
-            
-        }
+        
 
         //insert multiple payment
         protected function multiple_pay($posted, $invoice, $cash, $pos, $transfer, $bank, $store){
@@ -454,78 +258,23 @@
         }
     }
 
-
-    // add user controller
-    class Add_userController extends inserts{
-        private $fullname;
-        private $username;
-        private $role;
-        private $store;
-        private $password;
-
-        public function __construct($fullname, $username, $role, $store, $password)
-        {
-            $this->fullname = $fullname;
-            $this->username = $username;
-            $this->role = $role;
-            $this->store = $store;
-            $this->password = $password;
-        }
-
-        public function create_user(){
-            $this->checkUser($this->username);
-            $this->setUser($this->fullname, $this->username, $this->role, $this->store, $this->password);
-        }
-    }
-
     
-
-    //add single items controller
-    class add_single_item extends inserts{
+    //controller for adding any item in any data base
+    class add_data extends inserts{
         private $table;
-        private $column1;
-        private $value1;
+        private $data;
 
-        public function __construct($table, $column1, $value1)
+        public function __construct($table, $data)
         {
             $this->table = $table;
-            $this->column1 = $column1;
-            $this->value1 = $value1;
+            $this->data = $data;
         }
-        public function create_single_item(){
-            $this->add_single($this->table, $this->column1, $this->value1);
-        }
-    }
-    //add categories controller
-    class add_cats extends inserts{
-        private $value1;
-        private $value2;
-
-        public function __construct($value1, $value2)
-        {
-            $this->value1 = $value1;
-            $this->value2 = $value2;
-        }
-        public function create_category(){
-            $this->add_categories($this->value1, $this->value2);
+        public function create_data(){
+            $this->add_data($this->table, $this->data);
         }
     }
-    //add user rights controller
-    class add_rights extends inserts{
-        private $user;
-        private $menu;
-        private $sub_menu;
-
-        public function __construct($user, $menu, $sub_menu)
-        {
-            $this->user = $user;
-            $this->menu = $menu;
-            $this->sub_menu = $sub_menu;
-        }
-        public function add_right(){
-            $this->add_rights($this->user, $this->menu, $this->sub_menu);
-        }
-    }
+    
+    
     //add audit trail controller
     class audit_trail extends inserts{
         private $item;
@@ -548,20 +297,7 @@
             $this->audit($this->item, $this->trans, $this->prev_qty, $this->qty, $this->posted, $this->store);
         }
     }
-    //add bank controller
-    class add_banks extends inserts{
-        private $value1;
-        private $value2;
-
-        public function __construct($value1, $value2)
-        {
-            $this->value1 = $value1;
-            $this->value2 = $value2;
-        }
-        public function create_bank(){
-            $this->add_bank($this->value1, $this->value2);
-        }
-    }
+    
 
     //controller for multiple payment
     class multiple_payment extends inserts{
@@ -641,78 +377,8 @@
         }
     }
 
-    // controller for adding new items
-    class add_items extends inserts{
-        private $value1;
-        private $value2;
-        private $value3;
-        private $value4;
-        private $value5;
-
-        public function __construct($value1, $value2, $value3, $value4, $value5)
-        {
-            $this->value1 = $value1;
-            $this->value2 = $value2;
-            $this->value3 = $value3;
-            $this->value4 = $value4;
-            $this->value5 = $value5;
-        }
-        public function create_item(){
-            $this->add_items($this->value1, $this->value2, $this->value3, $this->value4, $this->value5);
-        }
-    }
-    // controller for adding new items
-    class add_customer extends inserts{
-        private $value1;
-        private $value2;
-        private $value3;
-        private $value4;
-
-        public function __construct($value1, $value2, $value3, $value4)
-        {
-            $this->value1 = $value1;
-            $this->value2 = $value2;
-            $this->value3 = $value3;
-            $this->value4 = $value4;
-        }
-        public function add_customer(){
-            $this->create_customer($this->value1, $this->value2, $this->value3, $this->value4);
-        }
-    }
-    // controller for adding new stores
-    class add_store extends inserts{
-        private $value1;
-        private $value2;
-        private $value3;
-        private $value4;
-
-        public function __construct($value1, $value2, $value3, $value4)
-        {
-            $this->value1 = $value1;
-            $this->value2 = $value2;
-            $this->value3 = $value3;
-            $this->value4 = $value4;
-        }
-        public function create_store(){
-            $this->add_stores($this->value1, $this->value2, $this->value3, $this->value4);
-        }
-    }
-    // controller for adding staffs
-    class add_staff extends inserts{
-        private $value1;
-        private $value2;
-        private $value3;
-
-        public function __construct($value1, $value2, $value3)
-        {
-            $this->value1 = $value1;
-            $this->value2 = $value2;
-            $this->value3 = $value3;
-        }
-        public function create_staff(){
-            $this->add_staffs($this->value1, $this->value2, $this->value3);
-        }
-    }
+    
+    
     // controller for adding new supplier
     class add_suppliers extends inserts{
         private $value1;

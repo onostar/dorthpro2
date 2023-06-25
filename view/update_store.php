@@ -1,11 +1,12 @@
 <?php
     session_start();
+    $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
 
     //get store details
     $get_store = new selects();
-    $rows = $get_store->fetch_details("stores");
+    $rows = $get_store->fetch_details_cond('stores', 'store_id', $store);
     foreach($rows as $row){
 ?>
 
