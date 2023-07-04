@@ -34,8 +34,17 @@
         echo "<div class='notify' style='padding:4px!important'><p style='color:#fff!important'><span>$name</span> do not have enough quantity! Cannot proceed</p>";
     }else{
     //insert into audit trail
-    $inser_trail = new audit_trail($item, $trans_type, $inv_qty, $quantity, $posted, $store_from);
-    $inser_trail->audit_trail();
+    //data to insert in audit trail
+    $audit_data = array(
+        'item' => $item,
+        'transaction' => $trans_type,
+        'previous_qty' => $inv_qty,
+        'quantity' => $quantity,
+        'posted_by' => $posted,
+        'store' => $store_from
+    );
+    $inser_trail = new add_data('audit_trail', $audit_data);
+    $inser_trail->create_data();
     //check if item is in store inventory
     $check_item = new selects();
     if(gettype($prev_qtys) === 'array'){
@@ -46,9 +55,19 @@
     }
     
     //transfer item
-    $transfer = new transfers($item, $invoice, $quantity, $posted, $cost_price, $store_from, $store_to, $expiration);
-
-    $transfer->transfer();
+    //data to transfer
+    $transfer_data = array(
+        'item' => $item,
+        'invoice' => $invoice,
+        'cost_price' => $cost_price,
+        'quantity' => $quantity,
+        'posted_by' => $posted,
+        'expiration' => $expiration,
+        'from_store' => $store_from,
+        'to_store' => $store_to
+    );
+    $transfer = new add_data('transfers', $transfer_data);
+    $transfer->create_data();
     
     if($transfer){
         

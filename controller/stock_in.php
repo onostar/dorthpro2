@@ -36,9 +36,19 @@
     if(gettype($prev_qtys) === 'string'){
         $inv_qty = 0;
     }
+
+    //data to insert into audit trail
+    $audit_data = array(
+        'item' => $item,
+        'transaction' => $trans_type,
+        'previous_qty' => $inv_qty,
+        'quantity' => $quantity,
+        'posted_by' => $posted,
+        'store' => $store
+    );
     //insert into audit trail
-    $inser_trail = new audit_trail($item, $trans_type, $inv_qty, $quantity, $posted, $store);
-    $inser_trail->audit_trail();
+    $inser_trail = new add_data('audit_trail', $audit_data);
+    $inser_trail->create_data();
     //check if item is in store inventory
     $check_item = new selects();
     if(gettype($prev_qtys) === 'array'){
@@ -49,13 +59,33 @@
     }
     //add to inventory if not found
     if(gettype($prev_qtys) === 'string'){
-        $insert_item = new add_inventory($item, $quantity, $cost_price, $expiration, $store, $reorder_level);
-        $insert_item->insert_inventory();
+        //data to insert into inventory
+        $inventory_data = array(
+            'item' => $item,
+            'cost_price' => $cost_price,
+            'expiration_date' => $expiration,
+            'quantity' => $quantity,
+            'reorder_level' => $reorder_level,
+            'store' => $store
+        );
+        $insert_item = new add_data('inventory', $inventory_data);
+        $insert_item->create_data();
     }
     //stockin item
-    $stock_in = new stockins($item, $supplier, $invoice, $quantity, $cost_price, $sales_price, $expiration, $posted, $store);
-
-    $stock_in->stockin();
+    //data to stockin into purchases
+    $purchase_data = array(
+        'item' => $item,
+        'invoice' => $invoice,
+        'cost_price' => $cost_price,
+        'vendor' => $supplier,
+        'sales_price' => $sales_price,
+        'expiration_date' => $expiration,
+        'quantity' => $quantity,
+        'posted_by' => $posted,
+        'store' => $store
+    );
+    $stock_in = new add_data('purchases', $purchase_data);
+    $stock_in->create_data();
     
     if($stock_in){
         

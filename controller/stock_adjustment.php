@@ -7,6 +7,7 @@
         $item = htmlspecialchars(stripslashes($_POST['item_id']));
         $quantity = htmlspecialchars(stripslashes($_POST['quantity']));
 
+        
         // instantiate classes
         include "../classes/dbh.php";
         include "../classes/update.php";
@@ -18,9 +19,26 @@
         foreach($inv_qtys as $inv_qty){
             $prev_qty = $inv_qty->quantity;
         }
+        //data to insert in stock adjustment
+        $data = array(
+            'item' => $item,
+            'adjusted_by' => $adjusted_by,
+            'previous_qty' => $prev_qty,
+            'new_qty' => $quantity,
+            'store' => $store
+        );
+        //data to insert in audit trail
+        $data2 = array(
+            'transaction' => $trans_type,
+            'item' => $item,
+            'posted_by' => $adjusted_by,
+            'previous_qty' => $prev_qty,
+            'quantity' => $quantity,
+            'store' => $store
+        );
         //insert into audit trail
-        $inser_trail = new audit_trail($item, $trans_type, $prev_qty, $quantity, $adjusted_by, $store);
-        $inser_trail->audit_trail();
+        $add_data2 = new add_data('audit_trail', $data2);
+        $add_data2->create_data();
         //get item details
         $get_name = new selects();
         $rows = $get_name->fetch_details_cond('items', 'item_id', $item);
@@ -31,11 +49,11 @@
         $change_qty = new Update_table();
         $change_qty->update2cond('inventory', 'quantity', 'item', 'store', $quantity, $item, $store);
         if($change_qty){
-            //insert into adjustments table
-            $adjust_qty = new stock_adjustment($item, $adjusted_by, $prev_qty, $quantity, $store);
-            $adjust_qty->adjust();
-             echo "<div class='success'><p>$item_name quantity adjusted successfully! <i class='fas fa-thumbs-up'></i></p></div>";
-        }else{
-            echo "<p style='background:red; color:#fff; padding:5px'>Failed to modify quantity <i class='fas fa-thumbs-down'></i></p>";
+            //insert into stock adjustment table
+            $add_data = new add_data('stock_adjustments', $data);
+            $add_data->create_data();
+            if($add_data){
+                echo "<div class='success'><p>$item_name quantity adjusted successfully! <i class='fas fa-thumbs-up'></i></p></div>";
+            }
         }
     // }

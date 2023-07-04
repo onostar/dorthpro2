@@ -17,7 +17,7 @@
     if($results > 0){
         echo "<p class='exist'><span>$reason</span> already exists</p>";
     }else{
-        //create user
+        //add reason
         $add_data = new add_data('remove_reasons', $data);
         $add_data->create_data();
         if($add_data){

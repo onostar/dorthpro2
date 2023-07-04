@@ -14,6 +14,7 @@
         include "../classes/select.php";
         include "../classes/inserts.php";
 
+    
         //get item details
         $get_name = new selects();
         $rows = $get_name->fetch_details_cond('items', 'item_id', $item);
@@ -30,19 +31,38 @@
             echo "<script>alert('Error! You cannot remove more than available quantity');
             </script>";
         }else{
-        //insert into audit trail
-        $inser_trail = new audit_trail($item, $trans_type, $prev_qty, $quantity, $removed_by, $store);
-        $inser_trail->audit_trail();
-        //update quantity in inventory
-        $new_qty = $prev_qty - $quantity;
-        $change_qty = new Update_table();
-        $change_qty->update2cond('inventory', 'quantity', 'item', 'store', $new_qty, $item, $store);
-        if($change_qty){
-            //insert into remove item table
-            $remove_qty = new remove_qty($item, $quantity, $reason, $removed_by, $prev_qty, $store);
-            $remove_qty->remove();
-             echo "<div class='success'><p>$quantity $item_name removed from inventory successfully! <i class='fas fa-thumbs-up'></i></p></div>";
-        }else{
-            echo "<p style='background:red; color:#fff; padding:5px'>Failed to remove quantity <i class='fas fa-thumbs-down'></i></p>";
+            //data to insert into remove item table
+            $data = array(
+                'item' => $item,
+                'quantity' => $quantity,
+                'reason' => $reason,
+                'removed_by' => $removed_by,
+                'previous_qty' => $prev_qty,
+                'store' => $store
+            );
+            //data to insert into audit trail
+            $data2 = array(
+                'item' => $item,
+                'transaction' => $trans_type,
+                'quantity' => $quantity,
+                'posted_by' => $removed_by,
+                'previous_qty' => $prev_qty,
+                'store' => $store
+            );
+            //insert into audit trail
+            $add_data2 = new add_data('audit_trail', $data2);
+            $add_data2->create_data();
+            //update quantity in inventory
+            $new_qty = $prev_qty - $quantity;
+            $change_qty = new Update_table();
+            $change_qty->update2cond('inventory', 'quantity', 'item', 'store', $new_qty, $item, $store);
+            if($change_qty){
+                $add_data = new add_data('remove_items', $data);
+                $add_data->create_data();
+                if($add_data){
+                    echo "<div class='success'><p>$quantity $item_name removed from inventory successfully! <i class='fas fa-thumbs-up'></i></p></div>";
+                }
+            }else{
+                echo "<p style='background:red; color:#fff; padding:5px'>Failed to remove quantity <i class='fas fa-thumbs-down'></i></p>";
+            }
         }
-    }

@@ -44,8 +44,16 @@
         $inv_qty = 0;
     }
     //insert into audit trail
-    $inser_trail = new audit_trail($item, $trans_type, $inv_qty, $quantity, $accepted, $store);
-    $inser_trail->audit_trail();
+    $audit_data = array(
+        'item' => $item,
+        'transaction' => $trans_type,
+        'previous_qty' => $inv_qty,
+        'quantity' => $quantity,
+        'posted_by' => $accepted,
+        'store' => $store
+    );
+    $inser_trail = new add_data('audit_trail', $audit_data);
+    $inser_trail->create_data();
     //check if item is in store inventory
     if(gettype($prev_qtys) === 'array'){
         //update current quantity in inventory
@@ -58,8 +66,17 @@
     }
     //add to inventory if not found
     if(gettype($prev_qtys) == "string"){
-        $insert_item = new add_inventory($item, $quantity, $cost_price, $expiration, $store, $reorder_level);
-        $insert_item->insert_inventory();
+        //data to insert
+        $inventory_data = array(
+            'item' => $item,
+            'cost_price' => $cost_price,
+            'expiration_date' => $expiration,
+            'quantity' => $quantity,
+            'reorder_level' => $reorder_level,
+            'store' => $store
+        );
+        $insert_item = new add_data('inventory', $inventory_data);
+        $insert_item->create_data();
     }
     //update transfer item
     if($status == -1){
