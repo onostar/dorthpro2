@@ -21,7 +21,7 @@
 <!-- display items with same invoice number -->
 
 <?php
-    include "sales_details.php";
+    include "wholesale_details.php";
         }else{
         
         //update quantity

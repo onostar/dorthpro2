@@ -54,7 +54,11 @@ include "../classes/inserts.php";
                     $inv_amount = $result->total;
                 }
                 //get amount paid
-                $amount_paid = $inv_amount - $discount;
+                if($payment_type == "Credit"){
+                    $amount_paid = 0;
+                }else{
+                    $amount_paid = $inv_amount - $discount;
+                }
                 //insert payments
                 if($payment_type == "Multiple"){
                     //insert into payments
