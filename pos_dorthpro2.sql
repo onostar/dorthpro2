@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2023 at 01:38 PM
+-- Generation Time: Jul 22, 2023 at 10:42 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -244,7 +244,33 @@ INSERT INTO `audit_trail` (`audit_id`, `store`, `item`, `transaction`, `previous
 (207, 1, 16, 'sales_return', 10, 1, 1, '2023-06-11 09:19:51'),
 (208, 1, 16, 'sales_return', 11, 1, 1, '2023-06-11 09:21:58'),
 (209, 1, 13, 'transfer', 18, 2, 1, '2023-06-11 09:31:51'),
-(210, 2, 13, 'accept', 48, 2, 43, '2023-06-11 09:34:24');
+(210, 2, 13, 'accept', 48, 2, 43, '2023-06-11 09:34:24'),
+(211, 1, 20, 'sales_return', 96, 2, 1, '2023-06-11 16:10:29'),
+(212, 2, 16, 'sales', 6, 1, 43, '2023-06-12 10:04:33'),
+(213, 2, 13, 'sales', 50, 1, 43, '2023-06-12 10:04:33'),
+(214, 1, 14, 'sales', 17, 2, 1, '2023-06-12 21:05:44'),
+(215, 1, 14, 'sales_return', 15, 2, 1, '2023-06-12 21:41:24'),
+(216, 1, 14, 'sales', 17, 2, 1, '2023-06-12 21:42:43'),
+(217, 1, 14, 'sales_return', 15, 2, 1, '2023-06-12 21:59:44'),
+(218, 1, 14, 'sales', 17, 2, 1, '2023-06-12 22:00:09'),
+(219, 1, 16, 'sales', 12, 2, 1, '2023-06-15 12:00:37'),
+(220, 1, 18, 'sales', 9, 2, 1, '2023-06-15 12:00:37'),
+(221, 1, 13, 'transfer', 16, 4, 1, '2023-06-17 22:52:02'),
+(222, 1, 14, 'sales', 15, 1, 1, '2023-06-17 22:54:14'),
+(223, 1, 18, 'sales', 7, 2, 1, '2023-06-21 18:13:05'),
+(224, 1, 13, 'transfer', 12, 3, 1, '2023-06-30 16:22:12'),
+(225, 2, 13, 'accept', 49, 3, 43, '2023-06-30 16:25:13'),
+(226, 1, 13, 'sales', 9, 3, 1, '2023-06-30 16:36:37'),
+(227, 1, 14, 'adjust', 14, 13, 1, '2023-07-04 12:43:16'),
+(228, 1, 14, 'remove', 13, 1, 1, '2023-07-04 13:12:37'),
+(229, 1, 23, 'purchase', 0, 30, 1, '2023-07-04 13:42:35'),
+(230, 1, 23, 'purchase', 30, 1, 1, '2023-07-04 13:45:23'),
+(231, 1, 23, 'transfer', 31, 10, 1, '2023-07-04 14:00:27'),
+(232, 1, 13, 'accept', 6, 4, 1, '2023-07-04 14:01:53'),
+(233, 2, 23, 'accept', 0, 10, 43, '2023-07-04 14:11:36'),
+(234, 1, 18, 'sales', 5, 1, 1, '2023-07-07 14:38:54'),
+(235, 1, 16, 'sales', 10, 2, 1, '2023-07-07 14:39:59'),
+(236, 1, 13, 'sales', 10, 1, 1, '2023-07-18 10:28:46');
 
 -- --------------------------------------------------------
 
@@ -263,7 +289,8 @@ CREATE TABLE `banks` (
 --
 
 INSERT INTO `banks` (`bank_id`, `bank`, `account_number`) VALUES
-(1, 'Access Bank', '0030596252');
+(1, 'Access Bank', '0030596252'),
+(3, 'Opay', '7068897068');
 
 -- --------------------------------------------------------
 
@@ -284,7 +311,9 @@ CREATE TABLE `categories` (
 
 INSERT INTO `categories` (`category_id`, `department`, `category`, `price`) VALUES
 (22, '4', 'Supermarket Items', 0),
-(23, '5', 'Drugs', 0);
+(23, '5', 'Drugs', 0),
+(24, '9', 'Many Data', 0),
+(25, '13', 'More', 0);
 
 -- --------------------------------------------------------
 
@@ -355,21 +384,60 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`customer_id`, `customer`, `phone_numbers`, `customer_address`, `customer_email`, `reg_date`) VALUES
 (2, 'Onostar Media', '07068897068', '23 Onostar Wary', 'onostarmedia@gmail.com', '2023-06-07 17:58:31'),
-(3, 'Merb Resources', '89089898', 'Merb Way, Warri', 'maerb@mail.com', '2023-06-10 13:23:22');
+(3, 'Merb Resources', '89089898', 'Merb Way, Warri', 'maerb@mail.com', '2023-06-10 13:23:22'),
+(4, 'Applied Macrosystems', '08069114149', '23 Iziegne Stree', 'sales@appliedmacros.com', '2023-06-25 13:57:49');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customer_trails`
+-- Table structure for table `customer_trail`
 --
 
-CREATE TABLE `customer_trails` (
+CREATE TABLE `customer_trail` (
   `id` int(11) NOT NULL,
   `customer` int(11) NOT NULL,
   `description` varchar(1024) COLLATE utf8mb4_unicode_ci NOT NULL,
   `amount` int(11) NOT NULL,
+  `store` int(11) NOT NULL,
+  `posted_by` int(11) NOT NULL,
   `post_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `customer_trail`
+--
+
+INSERT INTO `customer_trail` (`id`, `customer`, `description`, `amount`, `store`, `posted_by`, `post_date`) VALUES
+(2, 3, 'Credit sales', 10000, 1, 1, '2023-06-12 22:00:09'),
+(3, 3, 'Deposit', 10000, 1, 1, '2023-06-13 23:15:14'),
+(5, 2, 'Credit sales', 5000, 1, 1, '2023-06-17 22:54:14'),
+(6, 2, 'Credit sales', 6000, 1, 1, '2023-07-18 10:28:47');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `debtors`
+--
+
+CREATE TABLE `debtors` (
+  `debtor_id` int(11) NOT NULL,
+  `customer` int(11) NOT NULL,
+  `invoice` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `amount` int(11) NOT NULL,
+  `store` int(11) NOT NULL,
+  `debt_status` int(11) NOT NULL,
+  `posted_by` int(11) NOT NULL,
+  `post_date` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `debtors`
+--
+
+INSERT INTO `debtors` (`debtor_id`, `customer`, `invoice`, `amount`, `store`, `debt_status`, `posted_by`, `post_date`) VALUES
+(2, 3, 'WS120623101745661', 10000, 1, 1, 1, '2023-06-12 22:00:09'),
+(3, 2, 'WS170623111266251', 5000, 1, 0, 1, '2023-06-17 22:54:14'),
+(4, 2, 'WS180723111343911', 6000, 1, 0, 1, '2023-07-18 10:28:47');
 
 -- --------------------------------------------------------
 
@@ -392,7 +460,8 @@ INSERT INTO `departments` (`department_id`, `department`) VALUES
 (6, 'Treatment'),
 (7, 'Others'),
 (8, 'Dema'),
-(9, 'Many');
+(9, 'Many'),
+(13, 'Many More');
 
 -- --------------------------------------------------------
 
@@ -423,7 +492,8 @@ INSERT INTO `expenses` (`expense_id`, `store`, `posted_by`, `expense_head`, `amo
 (16, 0, 1, '1', 2000, 'Bought Fuel For Generator', '2023-02-05 00:00:00', '2023-02-05 17:33:52'),
 (17, 0, 1, '2', 2000, 'Transport To Oka Market', '2023-03-02 00:00:00', '2023-03-02 18:00:14'),
 (18, 1, 1, '1', 3000, 'Fuel For The Office Generator', '2023-06-08 00:00:00', '2023-06-10 18:11:17'),
-(19, 1, 1, '2', 1000, 'Transport To Buy Fuel', '2023-06-10 00:00:00', '2023-06-10 18:15:14');
+(19, 1, 1, '2', 1000, 'Transport To Buy Fuel', '2023-06-10 00:00:00', '2023-06-10 18:15:14'),
+(20, 1, 1, '1', 3000, 'Fuel For Genertaotor', '2023-07-07 00:00:00', '2023-07-07 14:46:59');
 
 -- --------------------------------------------------------
 
@@ -468,18 +538,20 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`inventory_id`, `item`, `store`, `cost_price`, `quantity`, `batch_number`, `expiration_date`, `reorder_level`, `post_date`) VALUES
-(7, 18, 1, 500, 9, 0, '2023-06-30', 5, '2023-06-01 15:25:31'),
-(8, 14, 1, 3200, 17, 0, '2023-10-30', 5, '2023-06-01 15:25:50'),
-(9, 16, 2, 100, 6, 0, '2025-12-30', 10, '2023-06-02 15:49:17'),
+(7, 18, 1, 500, 4, 0, '2023-06-30', 5, '2023-06-01 15:25:31'),
+(8, 14, 1, 3200, 12, 0, '2023-10-30', 5, '2023-06-01 15:25:50'),
+(9, 16, 2, 100, 5, 0, '2025-12-30', 10, '2023-06-02 15:49:17'),
 (10, 19, 2, 500, 6, 0, '2024-03-30', 10, '2023-06-02 15:49:51'),
-(11, 16, 1, 100, 12, 0, '2025-12-30', 10, '2023-06-02 21:30:44'),
+(11, 16, 1, 100, 8, 0, '2025-12-30', 10, '2023-06-02 21:30:44'),
 (12, 14, 2, 3200, 0, 0, '2023-06-02', 5, '2023-06-02 21:50:43'),
 (13, 19, 1, 500, 2, 0, '2024-03-30', 10, '2023-06-02 21:58:50'),
 (14, 18, 2, 500, 1, 0, '2023-06-30', 5, '2023-06-03 14:22:11'),
-(15, 13, 2, 250, 50, 0, '2024-12-30', 10, '2023-06-04 13:26:20'),
-(16, 20, 1, 45, 96, 0, '2024-05-30', 10, '2023-06-10 17:09:05'),
+(15, 13, 2, 250, 52, 0, '2024-12-30', 10, '2023-06-04 13:26:20'),
+(16, 20, 1, 45, 98, 0, '2024-05-30', 10, '2023-06-10 17:09:05'),
 (17, 21, 1, 250, 19, 0, '2024-07-30', 10, '2023-06-10 17:09:50'),
-(18, 13, 1, 250, 16, 0, '2024-12-30', 10, '2023-06-10 19:04:30');
+(18, 13, 1, 250, 9, 0, '2024-12-30', 10, '2023-06-10 19:04:30'),
+(19, 23, 1, 1500, 21, 0, '2026-03-30', 10, '2023-07-04 13:42:35'),
+(20, 23, 2, 1500, 10, 0, '2026-03-30', 10, '2023-07-04 14:11:37');
 
 -- --------------------------------------------------------
 
@@ -498,7 +570,6 @@ CREATE TABLE `items` (
   `pack_price` int(11) NOT NULL,
   `wholesale` int(11) NOT NULL,
   `wholesale_pack` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
   `reorder_level` int(11) NOT NULL,
   `barcode` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item_status` int(11) NOT NULL,
@@ -509,17 +580,19 @@ CREATE TABLE `items` (
 -- Dumping data for table `items`
 --
 
-INSERT INTO `items` (`item_id`, `department`, `category`, `item_name`, `cost_price`, `sales_price`, `pack_size`, `pack_price`, `wholesale`, `wholesale_pack`, `quantity`, `reorder_level`, `barcode`, `item_status`, `date_created`) VALUES
-(12, '4', 22, 'Heineken', 450, 700, 10, 600, 500, 470, 13, 10, '89000988991', 0, '2023-01-09 21:18:09'),
-(13, '5', 23, 'Amlodipine 10mg (teva)', 250, 600, 2, 500, 450, 400, 44, 10, '000', 0, '2023-01-09 21:18:23'),
-(14, '4', 22, 'Milo Refill 320kg', 3200, 5000, 1, 5000, 5000, 0, 6, 5, '000', 0, '2023-01-09 21:18:37'),
-(15, '4', 22, 'Fanta 33cl', 100, 150, 24, 130, 120, 0, 23, 10, '0000', 0, '2023-01-09 21:18:45'),
-(16, '4', 22, 'Coke 33cl', 100, 150, 12, 130, 120, 110, 19, 10, '000', 0, '2023-01-09 21:18:50'),
-(17, '4', 22, 'Hollandia Yoghurt 1litre', 750, 1000, 0, 0, 0, 0, 18, 10, '000', 0, '2023-01-09 21:19:03'),
-(18, '4', 22, 'Vita Milk', 500, 800, 10, 700, 650, 600, 7, 5, '0000', 0, '2023-01-24 12:46:29'),
-(19, '4', 22, 'Peng Wei Yuan Cracker', 500, 800, 0, 0, 700, 0, 1, 10, '6943443500222', 0, '2023-01-24 12:54:04'),
-(20, '5', 23, 'Emzor Paracetamol Tab', 45, 100, 8, 80, 70, 60, 0, 10, '0999', 0, '2023-06-10 17:07:34'),
-(21, '5', 23, 'Ibuprofen Syrup 30ml', 250, 500, 10, 450, 400, 350, 0, 10, '23444', 0, '2023-06-10 17:07:49');
+INSERT INTO `items` (`item_id`, `department`, `category`, `item_name`, `cost_price`, `sales_price`, `pack_size`, `pack_price`, `wholesale`, `wholesale_pack`, `reorder_level`, `barcode`, `item_status`, `date_created`) VALUES
+(12, '4', 22, 'Heineken', 450, 700, 10, 600, 500, 470, 10, '89000988991', 0, '2023-01-09 21:18:09'),
+(13, '5', 23, 'Amlodipine 10mg (teva)', 250, 600, 2, 500, 450, 400, 10, '000', 0, '2023-01-09 21:18:23'),
+(14, '4', 22, 'Milo Refill 320kg', 3200, 5000, 1, 5000, 5000, 0, 5, '000', 0, '2023-01-09 21:18:37'),
+(15, '4', 22, 'Fanta 33cl', 100, 150, 24, 130, 120, 0, 10, '0000', 0, '2023-01-09 21:18:45'),
+(16, '4', 22, 'Coke 33cl', 100, 150, 12, 130, 120, 110, 10, '000', 0, '2023-01-09 21:18:50'),
+(17, '4', 22, 'Hollandia Yoghurt 1litre', 750, 1000, 0, 0, 0, 0, 10, '000', 0, '2023-01-09 21:19:03'),
+(18, '4', 22, 'Vita Milk', 500, 800, 10, 700, 650, 600, 5, '0000', 0, '2023-01-24 12:46:29'),
+(19, '4', 22, 'Peng Wei Yuan Cracker', 500, 800, 0, 0, 700, 0, 10, '6943443500222', 0, '2023-01-24 12:54:04'),
+(20, '5', 23, 'Emzor Paracetamol Tab', 45, 100, 8, 80, 70, 60, 10, '0999', 0, '2023-06-10 17:07:34'),
+(21, '5', 23, 'Ibuprofen Syrup 30ml', 250, 500, 10, 450, 400, 350, 10, '23444', 0, '2023-06-10 17:07:49'),
+(22, '5', 23, 'Emzolyn Syrup', 0, 0, 0, 0, 0, 0, 10, '0', 0, '2023-06-25 13:47:53'),
+(23, '4', 22, 'Carotone 250ml Lotion', 1500, 2800, 1, 0, 2500, 0, 10, '0909909', 0, '2023-07-04 13:41:13');
 
 -- --------------------------------------------------------
 
@@ -582,6 +655,29 @@ INSERT INTO `multiple_payments` (`id`, `store`, `invoice`, `cash`, `transfer`, `
 (13, 0, 'RT25052312176611', 2000, 2000, 1000, 1, 1, '2023-05-25 11:59:57'),
 (14, 0, 'RT25052305190457', 500, 0, 500, 1, 1, '2023-05-25 17:10:28'),
 (15, 1, 'RT100623041715881', 450, 5000, 5000, 1, 1, '2023-06-10 15:21:32');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `other_payments`
+--
+
+CREATE TABLE `other_payments` (
+  `payment_id` int(11) NOT NULL,
+  `customer` int(11) NOT NULL,
+  `invoice` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `amount` int(11) NOT NULL,
+  `payment_mode` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `posted_by` int(11) NOT NULL,
+  `post_date` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `other_payments`
+--
+
+INSERT INTO `other_payments` (`payment_id`, `customer`, `invoice`, `amount`, `payment_mode`, `posted_by`, `post_date`) VALUES
+(2, 3, 'WS120623101745661', 10000, 'Cash', 1, '2023-06-13 23:15:14');
 
 -- --------------------------------------------------------
 
@@ -763,11 +859,19 @@ INSERT INTO `payments` (`payment_id`, `sales_type`, `customer`, `amount_due`, `s
 (211, 'Retail', 0, 600, 2, 600, 0, 'POS', 1, '2023-06-10 17:01:40', 43, 'RT1006230643560722'),
 (212, 'Retail', 0, 500, 1, 500, 0, 'Cash', 0, '2023-06-10 17:10:10', 1, 'RT100623061918431'),
 (213, 'Retail', 0, 200, 1, 200, 0, 'Cash', 0, '2023-06-10 17:10:27', 1, 'RT100623061285061'),
-(214, 'Retail', 0, 200, 1, 200, 0, 'Cash', 0, '2023-06-11 08:10:25', 1, 'RT110623091197451'),
 (215, 'Retail', 0, 600, 1, 600, 0, 'Cash', 0, '2023-06-11 08:59:51', 1, 'RT110623091480941'),
 (216, 'Wholesale', 3, 450, 1, 450, 0, 'Cash', 0, '2023-06-11 09:07:57', 1, 'WS110623101523301'),
 (217, 'Retail', 0, 800, 1, 800, 0, 'POS', 1, '2023-06-11 09:16:41', 1, 'RT110623101902861'),
-(219, 'Retail', 0, 150, 1, 150, 0, 'Cash', 0, '2023-06-11 09:19:37', 1, 'RT110623101526521');
+(219, 'Retail', 0, 150, 1, 150, 0, 'Cash', 0, '2023-06-11 09:19:37', 1, 'RT110623101526521'),
+(220, 'Retail', 0, 750, 2, 750, 0, 'Cash', 0, '2023-06-12 10:04:33', 43, 'RT1206231143609122'),
+(223, 'Wholesale', 3, 10000, 1, 10000, 0, 'Credit', 0, '2023-06-12 22:00:09', 1, 'WS120623101745661'),
+(224, 'Retail', 0, 1900, 1, 1900, 0, 'Cash', 0, '2023-06-15 12:00:38', 1, 'RT150623121446571'),
+(225, 'Wholesale', 2, 5000, 1, 5000, 0, 'Credit', 0, '2023-06-17 22:54:14', 1, 'WS170623111266251'),
+(226, 'Retail', 0, 1600, 1, 1600, 0, 'Cash', 0, '2023-06-21 18:13:05', 1, 'RT210623071443351'),
+(227, 'Retail', 0, 1500, 1, 1200, 300, 'Cash', 0, '2023-06-30 16:36:38', 1, 'RT300623051151441'),
+(228, 'Retail', 0, 800, 1, 800, 0, 'Cash', 0, '2023-07-07 14:38:55', 1, 'RT070723031978591'),
+(229, 'Retail', 0, 300, 1, 300, 0, 'POS', 1, '2023-07-07 14:39:59', 1, 'RT070723031783281'),
+(230, 'Wholesale', 2, 6000, 1, 6000, 0, 'Credit', 0, '2023-07-18 10:28:46', 1, 'WS180723111343911');
 
 -- --------------------------------------------------------
 
@@ -824,7 +928,9 @@ INSERT INTO `purchases` (`purchase_id`, `store`, `invoice`, `item`, `cost_price`
 (71, 2, 'uhubnjbhs', 13, 250, 600, 3, 50, '2024-08-03', 43, '2023-06-04 13:26:20'),
 (72, 1, '677yhhhpara', 20, 45, 100, 4, 100, '2024-05-30', 1, '2023-06-10 17:09:05'),
 (73, 1, '677yhhhpara', 21, 250, 500, 4, 20, '2024-07-30', 1, '2023-06-10 17:09:50'),
-(74, 1, 'oiiouo', 13, 250, 600, 2, 20, '2024-12-30', 1, '2023-06-10 19:04:30');
+(74, 1, 'oiiouo', 13, 250, 600, 2, 20, '2024-12-30', 1, '2023-06-10 19:04:30'),
+(75, 1, '9juujhhrr', 23, 1500, 2800, 5, 30, '2025-03-25', 1, '2023-07-04 13:42:36'),
+(76, 1, 'jehjsdn99', 23, 1500, 2800, 1, 1, '2026-03-30', 1, '2023-07-04 13:45:23');
 
 -- --------------------------------------------------------
 
@@ -850,7 +956,8 @@ CREATE TABLE `remove_items` (
 INSERT INTO `remove_items` (`remove_id`, `item`, `store`, `previous_qty`, `quantity`, `reason`, `removed_by`, `removed_date`) VALUES
 (5, 14, 1, 10, 5, 'Damages', 1, '2023-06-01 17:50:58'),
 (6, 16, 2, 7, 1, 'Damages', 43, '2023-06-04 13:41:37'),
-(7, 18, 1, 4, 1, 'Expiration', 1, '2023-06-04 13:46:46');
+(7, 18, 1, 4, 1, 'Expiration', 1, '2023-06-04 13:46:46'),
+(8, 14, 1, 13, 1, 'Expiration', 1, '2023-07-04 13:12:37');
 
 -- --------------------------------------------------------
 
@@ -911,7 +1018,9 @@ INSERT INTO `rights` (`right_id`, `menu`, `sub_menu`, `user`) VALUES
 (29, 5, 58, 43),
 (30, 2, 13, 43),
 (31, 6, 41, 43),
-(32, 5, 38, 43);
+(32, 5, 38, 43),
+(33, 4, 25, 43),
+(34, 4, 69, 43);
 
 -- --------------------------------------------------------
 
@@ -1164,11 +1273,25 @@ INSERT INTO `sales` (`sales_id`, `item`, `store`, `sales_type`, `customer`, `inv
 (508, 13, 2, 'Retail', 0, 'RT1006230643560722', 1, 600, 600, 250, 43, 2, '2023-06-10 17:01:22'),
 (509, 21, 1, 'Retail', 0, 'RT100623061918431', 1, 500, 500, 250, 1, 2, '2023-06-10 17:10:03'),
 (510, 20, 1, 'Retail', 0, 'RT100623061285061', 2, 100, 200, 90, 1, 2, '2023-06-10 17:10:17'),
-(511, 20, 1, 'Retail', 0, 'RT110623091197451', 2, 100, 200, 90, 1, 2, '2023-06-11 08:10:17'),
 (512, 13, 1, 'Retail', 0, 'RT110623091480941', 1, 600, 600, 500, 1, 2, '2023-06-11 08:59:44'),
 (513, 13, 1, 'Wholesale', 3, 'WS110623101523301', 1, 450, 450, 500, 1, 2, '2023-06-11 09:07:43'),
 (514, 18, 1, 'Retail', 0, 'RT110623101902861', 1, 800, 800, 500, 1, 2, '2023-06-11 09:16:34'),
-(516, 16, 1, 'Retail', 0, 'RT110623101526521', 1, 150, 150, 300, 1, 2, '2023-06-11 09:19:31');
+(516, 16, 1, 'Retail', 0, 'RT110623101526521', 1, 150, 150, 300, 1, 2, '2023-06-11 09:19:31'),
+(517, 16, 2, 'Retail', 0, 'RT1206231143609122', 1, 150, 150, 100, 43, 2, '2023-06-12 10:04:13'),
+(518, 13, 2, 'Retail', 0, 'RT1206231143609122', 1, 600, 600, 250, 43, 2, '2023-06-12 10:04:17'),
+(521, 14, 1, 'Wholesale', 3, 'WS120623101745661', 2, 5000, 10000, 6400, 1, 2, '2023-06-12 21:59:59'),
+(522, 16, 1, 'Retail', 0, 'RT150623121446571', 2, 150, 300, 200, 1, 2, '2023-06-15 11:59:51'),
+(523, 18, 1, 'Retail', 0, 'RT150623121446571', 2, 800, 1600, 1000, 1, 2, '2023-06-15 12:00:27'),
+(524, 13, 1, 'Retail', 0, 'RT150623011846881', 1, 600, 600, 250, 1, 0, '2023-06-15 12:35:08'),
+(525, 14, 1, 'Wholesale', 2, 'WS170623111266251', 1, 5000, 5000, 3200, 1, 2, '2023-06-17 22:53:38'),
+(526, 18, 1, 'Retail', 0, 'RT210623071443351', 2, 800, 1600, 1000, 1, 2, '2023-06-21 18:10:06'),
+(527, 16, 1, 'Wholesale', 3, 'WS210623071235661', 1, 120, 120, 100, 1, 0, '2023-06-21 18:14:10'),
+(528, 13, 1, 'Retail', 0, 'RT300623051151441', 3, 500, 1500, 750, 1, 2, '2023-06-30 16:35:33'),
+(529, 18, 1, 'Retail', 0, 'RT070723031978591', 1, 800, 800, 500, 1, 2, '2023-07-07 14:37:24'),
+(530, 16, 1, 'Retail', 0, 'RT070723031783281', 2, 150, 300, 200, 1, 2, '2023-07-07 14:39:29'),
+(531, 13, 1, 'Wholesale', 2, 'WS180723111343911', 1, 6000, 6000, 250, 1, 2, '2023-07-18 10:27:29'),
+(532, 14, 1, 'Retail', 0, 'RT180723111435181', 1, 5000, 5000, 3200, 1, 0, '2023-07-18 10:32:55'),
+(533, 13, 1, 'Retail', 0, 'RT180723111984001', 1, 600, 600, 250, 1, 0, '2023-07-18 10:40:41');
 
 -- --------------------------------------------------------
 
@@ -1215,7 +1338,10 @@ INSERT INTO `sales_returns` (`return_id`, `invoice`, `store`, `item`, `quantity`
 (32, 'WS110623101523301', 1, 13, 1, 450, 'Test Again', 1, '2023-06-11 09:08:19'),
 (33, 'RT110623101131631', 1, 16, 3, 450, '1', 1, '2023-06-11 09:17:26'),
 (34, 'RT110623101526521', 1, 16, 1, 150, 'Reddff', 1, '2023-06-11 09:19:51'),
-(35, 'RT110623101526521', 1, 16, 1, 150, 'Jhjhjhk', 1, '2023-06-11 09:21:58');
+(35, 'RT110623101526521', 1, 16, 1, 150, 'Jhjhjhk', 1, '2023-06-11 09:21:58'),
+(36, 'RT110623091197451', 1, 20, 2, 200, '1', 1, '2023-06-11 16:10:30'),
+(37, 'WS120623101546801', 1, 14, 2, 10000, 'Hghjggh', 1, '2023-06-12 21:41:24'),
+(38, 'WS120623101285691', 1, 14, 2, 10000, '2hjk', 1, '2023-06-12 21:59:44');
 
 -- --------------------------------------------------------
 
@@ -1265,7 +1391,8 @@ INSERT INTO `stock_adjustments` (`adjust_id`, `item`, `store`, `adjusted_by`, `p
 (8, 14, 1, 1, 5, 10, '2023-06-01 17:51:09'),
 (9, 16, 1, 1, 9, 20, '2023-06-04 13:31:49'),
 (10, 18, 1, 1, 2, 10, '2023-06-10 13:24:22'),
-(11, 14, 1, 1, 2, 21, '2023-06-10 13:24:29');
+(11, 14, 1, 1, 2, 21, '2023-06-10 13:24:29'),
+(12, 14, 1, 1, 14, 13, '2023-07-04 12:43:17');
 
 -- --------------------------------------------------------
 
@@ -1288,7 +1415,8 @@ CREATE TABLE `stores` (
 
 INSERT INTO `stores` (`store_id`, `company`, `store`, `store_address`, `phone_number`, `date_created`) VALUES
 (1, 1, 'Sales Store', '42 Pz road, off sapele road, Benin city', '07068897068, 07057456881', '2023-04-23 15:36:25'),
-(2, 1, 'Warehouse', '23 test street benin', '09889000', '2023-05-30 19:54:43');
+(2, 1, 'Warehouse', '23 test street benin', '09889000', '2023-05-30 19:54:43'),
+(3, 1, 'PZ Road', '38 PZ road, Besides Verofy Schools, Off Sapel road', '07033348221', '2023-06-25 13:06:24');
 
 -- --------------------------------------------------------
 
@@ -1371,7 +1499,11 @@ INSERT INTO `sub_menus` (`sub_menu_id`, `menu`, `sub_menu`) VALUES
 (63, 5, 'Customer list'),
 (64, 6, 'Retail sales'),
 (65, 6, 'Wholesale Report'),
-(66, 6, 'Customer statement');
+(66, 6, 'Customer statement'),
+(67, 6, 'credit sales list'),
+(68, 6, 'Debtors report'),
+(69, 4, 'Pay debt'),
+(70, 6, 'Debt payment report');
 
 -- --------------------------------------------------------
 
@@ -1401,7 +1533,10 @@ CREATE TABLE `transfers` (
 INSERT INTO `transfers` (`transfer_id`, `item`, `from_store`, `to_store`, `invoice`, `quantity`, `cost_price`, `expiration`, `transfer_status`, `posted_by`, `accept_by`, `post_date`) VALUES
 (42, 16, 1, 2, 'TR04062312273193411', 1, 100, '2025-12-30', 2, 1, 43, '2023-06-04 11:27:46'),
 (43, 19, 1, 2, 'TR04062312273193411', 1, 500, '2024-03-30', -2, 1, 1, '2023-06-04 11:27:52'),
-(44, 13, 1, 2, 'TR11062310315466411', 2, 250, '2024-12-30', 2, 1, 43, '2023-06-11 09:31:51');
+(44, 13, 1, 2, 'TR11062310315466411', 2, 250, '2024-12-30', 2, 1, 43, '2023-06-11 09:31:51'),
+(45, 13, 1, 2, 'TR17062311515012911', 4, 250, '2024-12-30', -2, 1, 1, '2023-06-17 22:52:03'),
+(46, 13, 1, 2, 'TR30062305215245411', 3, 250, '2024-12-30', 2, 1, 43, '2023-06-30 16:22:13'),
+(47, 23, 1, 2, 'TR04072303004901011', 10, 1500, '2026-03-30', 2, 1, 43, '2023-07-04 14:00:27');
 
 -- --------------------------------------------------------
 
@@ -1428,7 +1563,8 @@ INSERT INTO `users` (`user_id`, `full_name`, `username`, `user_role`, `user_pass
 (1, 'Administrator', 'Admin', 'Admin', '$2y$10$dcUrnR/.PvfK7XeYcP60hOyW2qnPSSvEq/Wxee6lv5DETW8pbGXYu', 1, 1, '2022-09-27 13:47:21'),
 (43, 'Kelly Ikpefua', 'Onostar', 'Cashier', '$2y$10$/E7gAsBvDMR.j.ctjI3tR.0Q2pRhOvpGzE/vGKqnptbArT4bEh.Gy', 0, 2, '2022-12-06 09:13:06'),
 (44, 'User', 'User', 'Admin', '$2y$10$X0vbmCJmOIbhMgRKoZ4QbueRbR0AcmFkAGa.UIJH0LYoeyTHwwFyK', 0, 1, '2023-03-07 23:19:22'),
-(45, 'Gazelle Classics', 'Gazelle', 'Sales Rep', '123', 0, 2, '2023-05-30 19:55:34');
+(45, 'Gazelle Classics', 'Gazelle', 'Sales Rep', '123', 0, 2, '2023-05-30 19:55:34'),
+(46, 'Kenneth Okhuakhua', 'Ken', 'Cashier', '123', 0, 3, '2023-06-25 13:17:58');
 
 -- --------------------------------------------------------
 
@@ -1453,7 +1589,8 @@ INSERT INTO `vendors` (`vendor_id`, `vendor`, `contact_person`, `phone`, `email_
 (1, 'Oswin Supermarket', 'Mr Oswin', '07057456881', 'oswin@mail.com', '2022-12-10 11:20:54'),
 (2, 'Druccicare Pharmacy', 'Pharm Chris Oisakede', '08076765445', 'druci@mail.com', '2022-12-10 11:26:07'),
 (3, 'Anambra Supermarket', 'Anambra', '09000', 'ma@mail.com', '2023-01-09 21:24:12'),
-(4, 'Initial Stock', 'Nil', '090909', 'nil', '2023-05-31 12:39:18');
+(4, 'Initial Stock', 'Nil', '090909', 'nil', '2023-05-31 12:39:18'),
+(5, 'K And K Enterprise', 'Kk Dwon', '090989878878', 'kmail@gmail.com', '2023-06-25 21:56:51');
 
 --
 -- Indexes for dumped tables
@@ -1496,10 +1633,16 @@ ALTER TABLE `customers`
   ADD PRIMARY KEY (`customer_id`);
 
 --
--- Indexes for table `customer_trails`
+-- Indexes for table `customer_trail`
 --
-ALTER TABLE `customer_trails`
+ALTER TABLE `customer_trail`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `debtors`
+--
+ALTER TABLE `debtors`
+  ADD PRIMARY KEY (`debtor_id`);
 
 --
 -- Indexes for table `departments`
@@ -1542,6 +1685,12 @@ ALTER TABLE `menus`
 --
 ALTER TABLE `multiple_payments`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `other_payments`
+--
+ALTER TABLE `other_payments`
+  ADD PRIMARY KEY (`payment_id`);
 
 --
 -- Indexes for table `payments`
@@ -1635,19 +1784,19 @@ ALTER TABLE `vendors`
 -- AUTO_INCREMENT for table `audit_trail`
 --
 ALTER TABLE `audit_trail`
-  MODIFY `audit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
+  MODIFY `audit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=237;
 
 --
 -- AUTO_INCREMENT for table `banks`
 --
 ALTER TABLE `banks`
-  MODIFY `bank_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `bank_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `check_ins`
@@ -1665,25 +1814,31 @@ ALTER TABLE `companies`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `customer_trails`
+-- AUTO_INCREMENT for table `customer_trail`
 --
-ALTER TABLE `customer_trails`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `customer_trail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `debtors`
+--
+ALTER TABLE `debtors`
+  MODIFY `debtor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
-  MODIFY `department_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `department_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `expense_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `expense_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `expense_heads`
@@ -1695,13 +1850,13 @@ ALTER TABLE `expense_heads`
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `menus`
@@ -1716,22 +1871,28 @@ ALTER TABLE `multiple_payments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
+-- AUTO_INCREMENT for table `other_payments`
+--
+ALTER TABLE `other_payments`
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=220;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=231;
 
 --
 -- AUTO_INCREMENT for table `purchases`
 --
 ALTER TABLE `purchases`
-  MODIFY `purchase_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `purchase_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `remove_items`
 --
 ALTER TABLE `remove_items`
-  MODIFY `remove_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `remove_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `remove_reasons`
@@ -1743,19 +1904,19 @@ ALTER TABLE `remove_reasons`
 -- AUTO_INCREMENT for table `rights`
 --
 ALTER TABLE `rights`
-  MODIFY `right_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `right_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=517;
+  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=534;
 
 --
 -- AUTO_INCREMENT for table `sales_returns`
 --
 ALTER TABLE `sales_returns`
-  MODIFY `return_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `return_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `staffs`
@@ -1767,37 +1928,37 @@ ALTER TABLE `staffs`
 -- AUTO_INCREMENT for table `stock_adjustments`
 --
 ALTER TABLE `stock_adjustments`
-  MODIFY `adjust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `adjust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `stores`
 --
 ALTER TABLE `stores`
-  MODIFY `store_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `store_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sub_menus`
 --
 ALTER TABLE `sub_menus`
-  MODIFY `sub_menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `sub_menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `transfers`
 --
 ALTER TABLE `transfers`
-  MODIFY `transfer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `transfer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `vendors`
 --
 ALTER TABLE `vendors`
-  MODIFY `vendor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `vendor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -15,7 +15,7 @@
 }
 body{
     position:relative;
-    font:14px/1.5 'Poppins', Sans-serif;
+    font:13px/1.5 'Poppins', Sans-serif;
     color:#222;
     background:#fcfafa;
     /* overflow: hidden; */
@@ -204,13 +204,10 @@ nav i{
 /* .menu-icon, .menu_icon{
     display:none;
 } */
-.for_mobile{
-    display:none!important;
-}
-.for_desktop{
+/* .for_desktop{
     display:block;
     margin:12px 0 5px;
-}
+} */
 button{
     background: var(--primaryColor);
     color:#fff;
@@ -1126,7 +1123,7 @@ main hr{
     border:1px solid #c4c4c4;
 }
 table tr:nth-child(even){
-    background:#f7ead1!important;
+    background:#fcf7ef!important;
 }
 .allResults table thead{
     background:var(--primaryColor);
@@ -1279,8 +1276,8 @@ table tr:nth-child(even){
 }
 /* aside */
 .admin_main aside{
-    width:18vw;
-    background:var(--otherColor);
+    width:17vw;
+    background:#fff;
     height:100vh;
     position:fixed;
     color:#fff!;
@@ -1324,14 +1321,14 @@ table tr:nth-child(even){
     letter-spacing: 2px;
     margin-top:20px;
     border-bottom: 1px solid rgba(202, 198, 198, 0.4);
-    border-top: 1px solid rgba(202, 198, 198, 0.4);
+    /* border-top: 1px solid rgba(202, 198, 198, 0.4); */
     display:block;
     width:100%;
     /* text-align:center; */
     padding:5px;
 }
 .admin_main aside nav h3 a{
-    color: #fff;
+    color: var(--menuColor);
 }
 .admin_main aside nav ul{
     width:100%;
@@ -1348,10 +1345,10 @@ table tr:nth-child(even){
     margin-bottom:40px!important;
 }
 .admin_main aside nav ul li a{
-    color:#fff;
-    padding:15px 20px;
+    color:var(--menuColor);
+    padding:10px;
     display:flex;
-    gap:.5rem;
+    gap:.1rem;
     /* justify-content: space-between; */
     align-items:Center;
     width:100%;
@@ -1359,7 +1356,9 @@ table tr:nth-child(even){
 .admin_main aside nav ul li ul li a{
     padding:2px!important;
     gap:.1rem;
+    /* color:#fff; */
 }
+
 .right{
     float:right!important;
     box-shadow:none;
@@ -1367,7 +1366,7 @@ table tr:nth-child(even){
 }
 
 .admin_main aside nav ul li a i{
-    color:#fff!important;
+    color:var(--menuColor)!important;
     font-size:1rem;
     padding:10px;
     /* background:var(--primaryColor); */
@@ -1377,7 +1376,7 @@ table tr:nth-child(even){
 
 }
 .admin_main aside nav ul li a:hover, .admin_main aside nav ul li a:focus{
-    background:var(--primaryColor);
+    background:var(--otherColor);
     color:#fff;
     
 }
@@ -1391,6 +1390,7 @@ table tr:nth-child(even){
     display:none;
     margin-left:15px;
     transform:scale(0);
+    background:transparent;
     /* border-left:1px solid rgba(146, 140, 140, .4); */
     border-color: rgba(202, 198, 198, 0.4)!important;
     overflow-x: hidden!important;
@@ -1415,17 +1415,18 @@ table tr:nth-child(even){
 }
 .admin_main aside nav ul li ul li a{
     padding:10px 15px;
+
 }
 .admin_main aside nav ul li ul li a:hover, .admin_main aside nav ul li ul li a:focus{
     background:none;
-    color:#fff;
+    color:var(--menuColor);
     /* border-bottom: 1px solid var(--secondaryColor); */
 }
 .admin_main aside nav ul li ul li a:hover i, .admin_main aside nav ul li ul li a:focus i{
     color:var(--secondaryColor)!important;
 }
 .admin_main aside nav ul li .more_option{
-    color:#fff!important;
+    color:#695b5b!important;
     background:transparent!important;
     box-shadow:none!important;
     float:right!important;
@@ -1436,16 +1437,19 @@ table tr:nth-child(even){
 .admin_main aside nav ul li ul li i{
     background:none;
     box-shadow: none !important;
-    color:#fff!important;
+    /* color:#fff!important; */
 }
 .allMenus{
     display:flex;
     justify-content: space-between;
     align-items: center;
 }
+.allMenus .second_icon{
+    text-align: right;
+}
 #contents{
-    margin-left:18vw;
-    width:85vw;
+    margin-left:17vw;
+    width:83vw;
     margin-top:0;
 }
 /* quick links */
@@ -1492,7 +1496,14 @@ table tr:nth-child(even){
     font-size:.8rem;
     text-transform: capitalize;
 }
-
+/* change dashboard */
+.change_dashboard label{
+    color:var(--otherColor);
+    text-transform: capitalize;
+}
+.change_dashboard select{
+    padding:5px 10px;
+}
 #dashboard{
     display:flex;
     flex-wrap:wrap;
@@ -1553,7 +1564,7 @@ table tr:nth-child(even){
     margin:auto;
 }
 #dashboard .cards{
-    min-width:220px;
+    min-width:23%;
     height:80px;
     margin: 0;
     box-shadow:2px 2px 2px 2px #c4c4c4;
@@ -3207,12 +3218,11 @@ x
     .admin_main .main_menu, .admin_main .mobile_menu{
         display:none;
         position:fixed;
-        top:10vh;
-        left:0;
+        top:8vh;
         width:60vw;
         height:100vh;
         margin:0;
-        z-index:3;
+        z-index:1;
         /* overflow-y:scroll; */
         animation:.4s slideIn 1;
         animation-timing-function: linear;
@@ -3346,17 +3356,24 @@ x
         align-items:center;
     }
     #dashboard .cards{
-        min-width:140px;
-        /* margin:10px; */
-        margin:0;
-        min-height:auto;
+        min-width:90%;
+        height:60px;
+        margin: 0;
+        box-shadow:2px 2px 2px 2px #c4c4c4;
+        border-radius:4px;
+        padding:10px;
+        cursor:pointer;
+        transition: .2s all ease-in-out;
+    }
+    #dashboard .cards .infos{
+        justify-content:space-between!important;
+        gap:.5rem;
+        text-align: left!important;
+        font-size:1.4rem;
+
     }
     #dashboard .cards p{
         font-size:.9rem;
-    }
-    #dashboard .cards .infos{
-        font-size:1.4rem;
-        gap:.5rem;
     }
     #reg_success, .reg_success{   
         width:90%;
@@ -3646,27 +3663,8 @@ x
     .reg_form .inputs .data{
         width:47%
     }
-    #dashboard .cards{
-        min-width:90%;
-        height:60px;
-        margin: 0;
-        box-shadow:2px 2px 2px 2px #c4c4c4;
-        border-radius:4px;
-        padding:10px;
-        cursor:pointer;
-        transition: .2s all ease-in-out;
-    }
-    #dashboard .cards .infos{
-        justify-content:space-between!important;
-        gap:.5rem;
-        text-align: left!important;
-    }
-    .for_mobile{
-        display:block!important;
-    }
-    .for_desktop{
-        display:none;
-    }
+    
+   
     
 }
 

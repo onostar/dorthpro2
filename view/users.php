@@ -39,8 +39,8 @@
         $_SESSION['store'] = $store;
         $_SESSION['address'] = $store_address;
         $_SESSION['phone'] = $phone;
-        // }
-    // echo $menus;
+        
+    
         
 ?>
 <!DOCTYPE html>
@@ -60,7 +60,34 @@
 </head>
 <body>
     <main>
-        
+        <header>
+            <div class="menu_icon" id="menu_icon">
+                <a href="javascript:void(0)"><i class="fas fa-bars"></i></a>
+            </div>
+            <h1 class="logo for_mobile">
+                <a href="users.php" title="Logistics">
+                    <img src="../images/logo.png" alt="Logo" class="img-fluid">
+                </a>
+            </h1>
+            <h2 style="margin-left:50px!important"><?php echo $company?></h2>
+            <!-- <div class="other_menu">
+                <a href="#" title="Our Gallery"><?php echo ucwords($role);?></a>
+            </div> -->
+            <a href="#" title="current store" class="other_menu"><?php echo ucwords($store);?></a>
+
+            <div class="login">
+                
+                <button id="loginDiv"><i class="far fa-user"></i> <?php echo ucwords($fullname);?> <i class="fas fa-chevron-down"></i><br><p><?php echo ucwords($role);?></p></button>
+                
+                <div class="login_option">
+                    <div>
+                        <a class="password_link page_navs" href="javascript:void(0)" data-page="update_password" onclick="showPage('update_password.php')">Change password <i class="fas fa-key"></i></a>
+                        <button id="loginBtn"><a href="../controller/logout.php">Log out <i class="fas fa-power-off"></i></a></button>
+                    </div>
+                </div>
+            </div>
+            
+        </header>
         <div class="admin_main">
             
             <!-- side menu -->
@@ -68,34 +95,7 @@
             <!-- main contents -->
             <section id="contents">
                 <!-- header -->
-                <header>
-                    <div class="menu_icon" id="menu_icon">
-                        <a href="javascript:void(0)"><i class="fas fa-bars"></i></a>
-                    </div>
-                    <h1 class="logo for_mobile">
-                        <a href="users.php" title="Logistics">
-                            <img src="../images/logo.png" alt="Logo" class="img-fluid">
-                        </a>
-                    </h1>
-                    <h2 style="margin-left:50px!important"><?php echo $company?></h2>
-                    <!-- <div class="other_menu">
-                        <a href="#" title="Our Gallery"><?php echo ucwords($role);?></a>
-                    </div> -->
-                    <a href="#" title="my role" class="other_menu"><?php echo ucwords($store);?></a>
-
-                    <div class="login">
-                        
-                        <button id="loginDiv"><i class="far fa-user"></i> <?php echo ucwords($fullname);?> <i class="fas fa-chevron-down"></i><br><p><?php echo ucwords($role);?></p></button>
-                        
-                        <div class="login_option">
-                            <div>
-                                <a class="password_link page_navs" href="javascript:void(0)" data-page="update_password" onclick="showPage('update_password.php')">Change password <i class="fas fa-key"></i></a>
-                                <button id="loginBtn"><a href="../controller/logout.php">Log out <i class="fas fa-power-off"></i></a></button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </header>
+                
                 <!-- quick links -->
                 <div id="quickLinks">
                     <div class="quick_links">
@@ -161,10 +161,29 @@
                             </p>
                         </div>
                     </div>
+                    <?php
+                        if($role == "Admin"){
+                    ?>
+                    <div class="change_dashboard">
+                        <!-- check other stores dashboard -->
+                        <!-- <form method="POST"> -->
+                        <section>
+                            <label>Change store</label><br>
+                            <select name="store" id="store" required onchange="changeStore(this.value, <?php echo $user_id?>)">
+                                <option value="<?php echo $store_id?>"><?php echo $store?></option>
+                                <!-- get stores -->
+                                <?php
+                                    $get_store = new selects();
+                                    $strs = $get_store->fetch_details('stores');
+                                    foreach($strs as $str){
+                                ?>
+                                <option value="<?php echo $str->store_id?>"><?php echo $str->store?></option>
+                                <?php }?>
+                            </select>
+                        </section>
+                    </div>
+                    <?php }?>
                 </div>
-                <!-- <div class="quick_links">
-
-                </div> -->
 
                 <div class="contents">
 

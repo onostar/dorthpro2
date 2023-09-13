@@ -4,35 +4,7 @@
     <?php 
         if($role === "Admin"){
     ?>
-    <!-- check other stores dashboard -->
-    <div class="select_date">
-        <!-- <form method="POST"> -->
-        <section>
-            <div class="from_to_date">
-                <!-- <label>Select store</label><br> -->
-                <select name="store" id="store" required>
-                    <option value="<?php echo $store_id?>"><?php echo $store?></option>
-                    <!-- get stores -->
-                    <?php
-                        $get_store = new selects();
-                        $strs = $get_store->fetch_details('stores');
-                        foreach($strs as $str){
-                    ?>
-                    <option value="<?php echo $str->store_id?>"><?php echo $str->store?></option>
-                    <?php }?>
-                </select>
-            </div>
-            <!-- <div class="from_to_date">
-                <label>Select From Date</label><br>
-                <input type="date" name="from_date" id="from_date"><br>
-            </div>
-            <div class="from_to_date">
-                <label>Select to Date</label><br>
-                <input type="date" name="to_date" id="to_date"><br>
-            </div> -->
-            <button type="submit" name="search_date" id="search_date" onclick="searchDashboard()" style="background:var(--primaryColor);width:auto!important;font-size:.9rem">View <i class="fas fa-eye"></i></button>
-        </section>
-    </div>
+    
     <div id="dashboard">
         <div class="cards" id="card4">
             <a href="javascript:void(0)" onclick="showPage('revenue_report.php')">
@@ -50,7 +22,7 @@
                 </div>
             </a>
         </div> 
-        <div class="cards" id="card3">
+        <div class="cards" id="card1">
             <a href="javascript:void(0)" class="page_navs">
                 <div class="infos">
                     <p><i class="fas fa-users"></i> Cost of sales</p>
@@ -229,7 +201,7 @@
             </table>
             <?php
                 if(gettype($dailys) == "string"){
-                    echo "<p class='no_result'>'$details'</p>";
+                    echo "<p class='no_result'>'$dailys'</p>";
                 }
             ?>
         </div>

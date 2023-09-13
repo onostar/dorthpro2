@@ -32,7 +32,7 @@
                 foreach($details as $detail):
             ?>
             <tr>
-                <td style="text-align:center; color:red;"><a style="box-shadow:2px 2px 2px #c4c4c4; padding:5px 10px;" href="javascript:void(0)" title="Disable user account" onclick="disableUser('<?php echo $detail->user_id?>')"><?php echo $n?></a></td>
+                <td><a style="box-shadow:2px 2px 2px #c4c4c4; padding:5px 10px; text-align:center; color:red!important;" href="javascript:void(0)" title="Disable user account" onclick="disableUser('<?php echo $detail->user_id?>')"><?php echo $n?></a></td>
                 <td><?php echo $detail->full_name;?></td>
                 <td><?php echo $detail->username;?></td>
                 <td><?php echo $detail->user_role;?></td>

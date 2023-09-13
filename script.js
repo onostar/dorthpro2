@@ -5,7 +5,6 @@ function displayMenu(){
      if(window.innerWidth <= "800"){
           $("#menu_icon").click(function(){
                if(main_menu.style.display == "block"){
-                 
                     $(".main_menu").hide();
                     $("#menu_icon").html("<a href='javascript:void(0)'><i class='fas fa-bars'></i></a>");
                }else{
@@ -16,6 +15,18 @@ function displayMenu(){
                
           
      }
+     // else{
+          /* $("#menu_icon").click(function(){
+               if(main_menu.style.display == "block"){
+               alert (window.innerWidth);
+
+                    main_menu.style.display == "none"
+                    $("#menu_icon").html("<a href='javascript:void(0)'><i class='fas fa-close'></i></a>");
+                    document.getElementById("contents").style.width = "100vw";
+                    document.getElementById("contents").style.marginLeft = "0";
+               }
+          })
+     } */
 }
 displayMenu();
 //checck the screen width 
@@ -2430,8 +2441,8 @@ function printSalesTicket(invoice){
      return false;
 }
  //search dashboard reports
- function searchDashboard(){
-     let store = document.getElementById('store').value;
+ function searchDashboard(board){
+     let store = board;
      /* authentication */
      if(store.length == 0 || store.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please select a store!");
@@ -2457,7 +2468,10 @@ function printSalesTicket(invoice){
      }
      return false;
 }
-
+//change store
+function changeStore(store, user){
+     window.open("../controller/change_store.php?store="+store+"&user="+user, "_self");
+}
 // Post daily expense 
 function postExpense(){
      let posted = document.getElementById("posted").value;
@@ -2611,15 +2625,15 @@ function addRights(right){
                data : {user:user, menu:menu, sub_menu:sub_menu},
                success : function(response){
                     $(".info").html(response);
+                    getRights(user);
                }              
           })
-          /* $("#user_rights").load("add_rights.php #user_rights"); */
           return false;
      }
 
 }
 //delete right from user
-function removeRight(right){
+function removeRight(right, user){
      let remove = confirm("Do you want to remove this right from the user?", "");
      if(remove){
           $.ajax({
@@ -2627,6 +2641,8 @@ function removeRight(right){
                url : "../controller/delete_right.php?right="+right,
                success : function(response){
                     $(".info").html(response);
+                    getRights(user);
+
                }
           })
      }else{
@@ -2849,4 +2865,142 @@ function postOtherPayment(){
      
      return false;    
 
+}
+
+//add menu
+function addMenu(){
+     let menu = document.getElementById("menu").value;
+     if(menu.length == 0 || menu.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input menu!");
+          $("#menu").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/add_menu.php",
+               data : {menu:menu},
+               success : function(response){
+               $(".info").html(response);
+               }
+          })
+     }
+     $("#menu").val('');
+     $("#menu").focus();
+     return false;
+}
+//add sub-menu
+function addSubMenu(){
+     let menus = document.getElementById("menus").value;
+     let sub_menu = document.getElementById("sub_menu").value;
+     let sub_menu_url = document.getElementById("sub_menu_url").value;
+     if(menus.length == 0 || menus.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select menu!");
+          $("#menus").focus();
+          return;
+     }else if(sub_menu.length == 0 || sub_menu.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input sub-menu!");
+          $("#sub_menu").focus();
+          return;
+     }else if(sub_menu_url.length == 0 || sub_menu_url.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input sub-menu url!");
+          $("#sub_menu_url").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/add_sub_menu.php",
+               data : {menus:menus, sub_menu:sub_menu, sub_menu_url:sub_menu_url},
+               success : function(response){
+               $(".info").html(response);
+               }
+          })
+     }
+     // $("#menus").val('');
+     $("#sub_menu").val('');
+     $("#sub_menu_url").val('');
+     $("#sub_menu").focus();
+     return false;
+}
+//update submenu details
+function updateSubMenu(){
+     let sub_menu_id = document.getElementById("sub_menu_id").value;
+     let menu = document.getElementById("menu").value;
+     let sub_menu = document.getElementById("sub_menu").value;
+     let url = document.getElementById("url").value;
+     if(menu.length == 0 || menu.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select menuy!");
+          $("#menu").focus();
+          return;
+     }else if(sub_menu.length == 0 || sub_menu.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input sub-menu!");
+          $("#sub_menu").focus();
+          return;
+     }else if(url.length == 0 || url.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input sub-menu url!");
+          $("#url").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/update_submenu.php",
+               data: {sub_menu_id:sub_menu_id, menu:menu, sub_menu:sub_menu, url:url},
+               success : function(response){
+                    $("#change_sub_menu").html(response);
+               }
+          })
+          setTimeout(function(){
+               $("#change_sub_menu").load("edit_sub_menu.php #change_sub_menu");
+          }, 1000);
+          return false
+     }
+ }
+ //get customer on key press for editing
+function getCustomerEdit(input){
+     $("#search_results").show();
+     if(input.length >= 3){
+          $.ajax({
+               type : "POST",
+               url : "../controller/get_customer_edit.php?input="+input,
+               success : function(response){
+                    $("#search_results").html(response);
+               }
+          })
+     }
+     
+}
+// update customer details
+function updateCustomer(){
+     let customer_id = document.getElementById("customer_id").value;
+     let customer = document.getElementById("customer").value;
+     let phone_number = document.getElementById("phone_number").value;
+     let address = document.getElementById("address").value;
+     let email = document.getElementById("email").value;
+     if(customer.length == 0 || customer.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter customer name!");
+          $("#customer").focus();
+          return;
+     }else if(phone_number.length == 0 || phone_number.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter customer phone number").focus();
+          $("#phone_number").focus();
+          return;
+     }else if(address.length == 0 || address.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input customer address");
+          $("#address").focus();
+          return;
+     }else if(email.length == 0 || email.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter customer email address");
+          $("#email").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/update_customer.php",
+               data : {customer_id:customer_id, customer:customer, phone_number:phone_number, email:email, address:address},
+               success : function(response){
+               $("#update_customer").html(response);
+               }
+          })
+     }
+     $("#customer").focus();
+     return false;    
 }

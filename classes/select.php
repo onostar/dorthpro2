@@ -462,6 +462,18 @@
                 return $rows;
             }
         }
+         //fetch all item grouped by a column
+         public function fetch_single_grouped($table, $group){
+            $get_details = $this->connectdb()->prepare("SELECT * FROM $table GROUP BY $group");
+            $get_details->execute();
+            if($get_details->rowCount() > 0){
+                $row = $get_details->fetchAll();
+                return $row;
+            }else{
+                $row = "No record found";
+                return $row;
+            }
+        }
         //fetch sales order with current date
         public function fetch_salesOrder($store){
             $get_user = $this->connectdb()->prepare("SELECT SUM(total_amount) AS total, invoice, posted_by, post_date FROM sales WHERE sales_status = 1 AND store = :store AND date(post_date) = CURDATE() GROUP BY invoice ORDER BY post_date DESC");

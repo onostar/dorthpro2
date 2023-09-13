@@ -9,10 +9,10 @@
                     <label for="exp_head">Expense Head</label>
                     <input type="text" name="exp_head" id="exp_head" placeholder="Input expense head" required>
                 </div>
-                
-            </div>
-            <div class="inputs">
-                <button type="submit" id="add_exp_head" name="add_exp_head" onclick="addExpHead()">Sae record <i class="fas fa-layer-group"></i></button>
+                <div class="data">
+                    <button type="submit" id="add_exp_head" name="add_exp_head" onclick="addExpHead()">Sae record <i class="fas fa-layer-group"></i></button>
+
+                </div>
             </div>
 </section>    
     </div>

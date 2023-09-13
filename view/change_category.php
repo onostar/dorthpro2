@@ -58,7 +58,7 @@
                     </td>
                     <td><?php echo $row->item_name?></td>
                     <td class="prices">
-                        <a style="background:var(--moreColor)!important; color:#fff!important; padding:4px; border-radius:5px;" href="javascript:void(0)" data-form="check<?php echo $row->item_id?>" class="each_prices" onclick="getForm('<?php echo $row->item_id?>', 'get_item_category.php');">change <i class="fas fa-pen"></i></a>
+                        <a style="background:var(--moreColor)!important; color:#fff!important; padding:5px 6px; border-radius:5px;" href="javascript:void(0)" data-form="check<?php echo $row->item_id?>" class="each_prices" onclick="getForm('<?php echo $row->item_id?>', 'get_item_category.php');"><i class="fas fa-pen"></i></a>
                     </td>
                 </tr>
             </tbody>

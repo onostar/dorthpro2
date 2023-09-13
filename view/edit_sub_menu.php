@@ -1,4 +1,4 @@
-<div id="edit_item_name">
+<div id="change_sub_menu" style="width:80%;">
 <?php
 
     include "../classes/dbh.php";
@@ -11,19 +11,19 @@
 ?>
 
     <div class="info"></div>
-    <div class="displays allResults" style="width:70%;">
-        <h2>Modify item names</h2>
+    <div class="displays allResults">
+        <h2>Update sub-menu details</h2>
         <hr>
         <div class="search">
-            <input type="search" id="searchGuestPayment" placeholder="Enter keyword" onkeyup="searchData(this.value)">
+            <input type="search" id="searchSubmenu" placeholder="Enter keyword" onkeyup="searchData(this.value)">
         </div>
-        <table id="priceTable" class="searchTable">
+        <table id="subMenuTable" class="searchTable">
             <thead>
                 <tr style="background:var(--otherColor)">
                     <td>S/N</td>
-                    <td>Department</td>
-                    <td>Category</td>
-                    <td>item</td>
+                    <td>Menu</td>
+                    <td>Sub-menu</td>
+                    <td>Url</td>
                     <td></td>
                 </tr>
             </thead>
@@ -31,7 +31,7 @@
             <?php
                 $n = 1;
                 $select_cat = new selects();
-                $rows = $select_cat->fetch_details('items');
+                $rows = $select_cat->fetch_details('sub_menus');
                 if(gettype($rows) == "array"){
                 foreach($rows as $row):
             ?>
@@ -41,24 +41,21 @@
                     
                     <td>
                         <?php 
-                            //get department
+                            //get menu
                             $get_dep = new selects();
-                            $detail = $get_dep->fetch_details_group('departments', 'department', 'department_id', $row->department);
-                            echo $detail->department;
+                            $detail = $get_dep->fetch_details_group('menus', 'menu', 'menu_id', $row->menu);
+                            echo $detail->menu;
                         ?>
                     </td>
                     <td>
                         <?php
-                            //get category
-                            $get_cat = new selects();
-                            $detail = $get_cat->fetch_details_group('categories', 'category', 'category_id', $row->category);
-                            echo $detail->category;
+                            echo $row->sub_menu;
                             
                         ?>
                     </td>
-                    <td><?php echo $row->item_name?></td>
+                    <td><?php echo $row->url?>.php</td>
                     <td class="prices">
-                        <a style="background:var(--moreColor)!important; color:#fff!important; padding:6px; border-radius:5px;" href="javascript:void(0)" data-form="check<?php echo $row->item_id?>" class="each_prices" onclick="getForm('<?php echo $row->item_id?>', 'get_item_name.php');"><i class="fas fa-pen"></i></a>
+                        <a style="background:var(--moreColor)!important; color:#fff!important; padding:5px; border-radius:5px;" href="javascript:void(0)"class="each_prices" onclick="getForm('<?php echo $row->sub_menu_id?>', 'get_sub_menu.php');"><i class="fas fa-pen"></i></a>
                     </td>
                 </tr>
             </tbody>
