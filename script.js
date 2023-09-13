@@ -2954,6 +2954,20 @@ function updateSubMenu(){
           return false
      }
  }
+ //get customer on key press
+function getCustomers(input){
+     $("#search_results").show();
+     if(input.length >= 3){
+          $.ajax({
+               type : "POST",
+               url : "../controller/get_customer_name.php?input="+input,
+               success : function(response){
+                    $("#search_results").html(response);
+               }
+          })
+     }
+     
+}
  //get customer on key press for editing
 function getCustomerEdit(input){
      $("#search_results").show();

@@ -28,6 +28,8 @@ include "../classes/select.php";
             $pay_mode = $payment->payment_mode;
             $customer = $payment->customer;
             $type = $payment->sales_type;
+            $paid_date = $payment->post_date;
+
         }
                 
 ?>
@@ -127,7 +129,7 @@ include "../classes/select.php";
         $row = $get_seller->fetch_details_group('users', 'full_name', 'user_id', $user);
         echo ucwords("<p class='sold_by'>Sold by: <strong>$row->full_name</strong></p>");
     ?>
-    
+    <p style="margin-top:20px;text-align:center"><strong>Thanks for your patronage!</strong></p>
 </div> 
    
 <?php

@@ -31,7 +31,7 @@
                     <td></td>
                 </tr>
             </thead>
-
+            <tbody>
             <?php
                 $n = 1;
                 $select_cat = new selects();
@@ -39,7 +39,6 @@
                 if(gettype($rows) == "array"){
                 foreach($rows as $row):
             ?>
-            <tbody>
                 <tr>
                     <td style="text-align:center;"><?php echo $n?></td>
                     
@@ -64,9 +63,9 @@
                         <a style="background:var(--moreColor)!important; color:#fff!important; padding:8px; border-radius:5px;" href="javascript:void(0)" class="each_prices" onclick="getForm('<?php echo $row->item?>', 'get_removal.php');">Remove <i class="fas fa-eject"></i></a>
                     </td>
                 </tr>
+            <?php $n++; endforeach; }?>
             </tbody>
 
-            <?php $n++; endforeach; }?>
         </table>
         
         <?php

@@ -20,8 +20,8 @@
             <section class="addUserForm">
                 <div class="inputs">
                     <!-- bar items form -->
-                    <div class="data" style="width:60%">
-                    <label for="customer">Search customer</label>
+                    <div class="data" style="width:100%; position:relative;">
+                    <label for="customer" style="color:var(--primaryColor)">Search customer</label>
                         <input type="text" name="customer" id="customer" oninput="getCustomerEdit(this.value)" placeholder="Enter customer name or phone number">
                         <div class="search_results" id="search_results">
 

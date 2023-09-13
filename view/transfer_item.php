@@ -12,8 +12,12 @@
         //generate receipt invoice
         //get current date
         $todays_date = date("dmyhi");
-        $random_num = random_int(10000, 99999);
-        $invoice = "TR".$todays_date.$random_num.$store.$user_id;
+        $ran_num ="";
+        for($i = 0; $i < 5; $i++){
+            $random_num = random_int(0, 9);
+            $ran_num .= $random_num;
+        }
+        $invoice = "TR".$ran_num.$store.$todays_date.$user_id;
         $_SESSION['invoice'] = $invoice;
     ?>
     <div class="add_user_form" style="width:50%; margin:10px 0;">

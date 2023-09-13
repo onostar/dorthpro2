@@ -21,11 +21,22 @@ include "../classes/select.php";
             $phone = $row->phone_number;
 
         }
-
-                
+        //get post date and time
+        $get_date = new selects();
+        $dts = $get_date->fetch_details_cond('sales', 'invoice', $invoice);
+        foreach($dts as $dt){
+            $posted_date = $dt->post_date;
+        }
 ?>
 <div class="displays allResults sales_receipt">
-    <?php include "receipt_header.php"?>
+<h2><?php echo $_SESSION['company'];?></h2>
+    <p><?php echo $address?></p>
+    <p>Tel: <?php echo $phone?></p>
+    <!-- get sales type -->
+        <p>Date: <?php echo date("d-m-Y", strtotime($posted_date))?>, <?php echo date("h:m:ia", strtotime($posted_date))?></p>
+
+    <div class="receipt_head">
+        <p><?php echo $invoice?></p>
     <p><strong>ORDER TICKET</strong></p>
     </div>
     <table id="postsales_table" class="searchTable" style="border-collapse:collapse;">

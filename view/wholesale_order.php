@@ -6,11 +6,18 @@
     if(isset($_SESSION['user_id'])){
         $user_id = $_SESSION['user_id'];
         // echo $user_id;
+        if(isset($_GET['customer'])){
+            $customer = $_GET['customer'];
+            //get customer name
+            $get_customer = new selects();
+            $rows = $get_customer->fetch_details_group('customers', 'customer', 'customer_id', $customer);
+            $customer_name = $rows->customer;
 
 ?>
-<div id="sales_order">
+<div id="direct_sales">
 <div id="sales_form" class="displays all_details">
     <?php
+    
         //generate receipt invoice
         //get current date
         $todays_date = date("dmyh");
@@ -19,12 +26,12 @@
             $random_num = random_int(0, 9);
             $ran_num .= $random_num;
         }
-        $invoice = "RT".$store.$todays_date.$ran_num.$user_id;
+        $invoice = "WS".$store.$todays_date.$ran_num.$user_id;
         $_SESSION['invoice'] = $invoice;
     ?>
     
     <div class="add_user_form" style="width:50%; margin:10px 0; box-shadow:none">
-        <h3 style="background:var(--primaryColor); color:#ff; text-align:left!important;" >Sales order <?php echo $invoice?></h3>
+        <h3 style="background:var(--primaryColor); color:#ff; text-align:left!important;" >Wholesale order for <?php echo $customer_name. " (".$invoice.")"?></h3>
         
             <!-- search forms -->
         <!-- <form method="POST" id="addUserForm"> -->
@@ -33,9 +40,9 @@
                     <!-- bar items form -->
                     <div class="data" id="bar_items" style="width:100%; margin:2px 0">
                         <label for="item"> Search Items</label>
+                        <input type="hidden" name="customer" id="customer" value="<?php echo $customer?>">
                         <input type="hidden" name="sales_invoice" id="sales_invoice" value="<?php echo $invoice?>">
-                        <input type="hidden" name="staff" id="staff" value="<?php echo $staff?>">
-                        <input type="text" name="item" id="item" required placeholder="Input item name or barcode" onkeyup="getItemsOrder(this.value)">
+                        <input type="text" name="item" id="item" required placeholder="Input item name or barcode" onkeyup="getWholesaleItems(this.value)">
                         <div id="sales_item">
                             
                         </div>
@@ -53,6 +60,7 @@
 <!-- showing all items in the sales order -->
 <div class="sales_order"></div>
 <?php
+        }
     }else{
         header("Location: ../index.php");
     }

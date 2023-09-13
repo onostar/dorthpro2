@@ -119,7 +119,7 @@
                     ?>
                 </td>
                 <td>
-                    <a style="color:red; font-size:1rem" href="javascript:void(0) "title="delete purchase" onclick="deleteTransfer('<?php echo $detail->transfer_id?>', <?php echo $detail->item?>)"><i class="fas fa-trash"></i></a>
+                    <a style="color:red; font-size:1rem" href="javascript:void(0) "title="delete item" onclick="deleteTransfer('<?php echo $detail->transfer_id?>', <?php echo $detail->item?>)"><i class="fas fa-trash"></i></a>
                 </td>
                 
             </tr>
