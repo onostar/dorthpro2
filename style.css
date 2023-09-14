@@ -2058,7 +2058,7 @@ table tr:nth-child(even){
     text-align:center;
     font-size: 1rem;
     text-transform: uppercase;
-    background:linear-gradient(45deg, rgba(199, 21, 95, 0.8), rgba(238, 95, 155, 0.8));
+    background:linear-gradient(45deg, rgba(212, 0, 35, 0.8), rgba(184, 11, 83, 0.8));
     
 }
 .daily_monthly div{
