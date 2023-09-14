@@ -18,6 +18,7 @@
         $address = $row->customer_address;
         $email = $row->customer_email;
         $joined = $row->reg_date;
+        $wallet = $row->wallet_balance;
     }
     
 ?>
@@ -43,8 +44,12 @@
             <p><?php echo $email?></p>
         </div>
         <div class="demo_block">
-            <h4>Registered:</h4>
+            <h4><i class="fas fa-calendar"></i> Registered:</h4>
             <p><?php echo date("jS M, Y", strtotime($joined))?></p>
+        </div>
+        <div class="demo_block" style="color:green">
+            <h4 style="color:green"><i class="fas fa-piggy-bank"></i> Wallet:</h4>
+            <p><?php echo "₦".number_format($wallet, 2)?></p>
         </div>
     </div>
     <h3 style="background:red; text-align:center; color:#fff; padding:10px;margin:0;">Transactions</h3>
@@ -85,13 +90,24 @@
                         </td>   
                         <td>
                             <?php 
-                                //get sum of invoice
-                                $get_sum = new selects();
-                                $sums = $get_sum->fetch_sum_single('payments', 'amount_paid', 'invoice', $detail->invoice);
-                                foreach($sums as $sum){
-                                    echo "₦".number_format($sum->total, 2);
+                                if($detail->payment_mode == "Credit"){
+                                    //get sum of invoice
+                                    $get_sum = new selects();
+                                    $sums = $get_sum->fetch_sum_single('payments', 'amount_due', 'invoice', $detail->invoice);
+                                    foreach($sums as $sum){
+                                        echo "₦".number_format($sum->total, 2);
 
+                                    }
+                                }else{
+                                    //get sum of invoice
+                                    $get_sum = new selects();
+                                    $sums = $get_sum->fetch_sum_single('payments', 'amount_paid', 'invoice', $detail->invoice);
+                                    foreach($sums as $sum){
+                                        echo "₦".number_format($sum->total, 2);
+
+                                    }
                                 }
+                                
                             ?>
                         </td>
                         
@@ -107,7 +123,23 @@
                 $get_total = new selects();
                 $amounts = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'customer', 'date(post_date)', $from, $to, $customer);
                 foreach($amounts as $amount){
-                    echo "<p class='total_amount' style='color:red; font-size:1rem;'>Total: ₦".number_format($amount->total, 2)."</p>";
+                    $paid_amount = $amount->total;
+                }
+                // if credit was sold
+                $get_credit = new selects();
+                $credits = $get_credit->fetch_sum_2date2Cond('payments', 'amount_due', 'date(post_date)', 'payment_mode', 'customer', $from, $to, 'Credit', $customer);
+                if(gettype($credits) === "array"){
+                    foreach($credits as $credit){
+                        $owed_amount = $credit->total;
+                    }
+                    $total_revenue = $owed_amount + $paid_amount;
+                    echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($total_revenue, 2)."</p>";
+
+                }
+                //if no credit sales
+                if(gettype($credits) == "string"){
+                    echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($paid_amount, 2)."</p>";
+                    
                 }
             ?>
         </div>
@@ -127,7 +159,7 @@
                     <?php
                         //get transaction history
                         $get_transactions = new selects();
-                        $details = $get_transactions->fetch_details_cond('customer_trail', 'customer', $customer);
+                        $details = $get_transactions->fetch_details_2condNeg2Date('customer_trail', 'customer', 'description', $customer, 'Credit sales', 'date(post_date)', $from, $to);
                         $n = 1;
                         if(gettype($details) === 'array'){
                         foreach($details as $detail){
@@ -153,21 +185,21 @@
                 }
                 // get sum of credit
                 $get_credits = new selects();
-                $credits = $get_credits->fetch_sum_2date2Cond('customer_trail', 'amount', 'date(post_date)', 'customer', 'description', $from, $to, $customer, 'credit sales');
+                $credits = $get_credits->fetch_sum_double('debtors', 'amount', 'customer', $customer, 'debt_status', 0);
                 foreach($credits as $credit){
                     $debt = $credit->total;
                 }
-                // get sum of deposit
+                /* // get sum of deposit
                 $get_deposits = new selects();
                 $debits = $get_total->fetch_sum_2date2Cond('customer_trail', 'amount', 'date(post_date)', 'customer', 'description', $from, $to, $customer, 'deposit');
                 foreach($debits as $debit){
                     $deposits = $debit->total;
-                }
-                $total_due = $deposits - $debt;
-                    if($total_due >= 0){
-                        echo "<p class='total_amount' style='color:green;font-size:1rem;'>Customer balance: ₦".number_format($total_due, 2)."</p>";    
+                } */
+                $total_due = $debt;
+                    if($total_due > 0){
+                        echo "<p class='total_amount' style='color:red;font-size:1rem;'>Receivables: ₦-".number_format($total_due, 2)."</p>";    
                     }else{
-                        echo "<p class='total_amount' style='color:red;font-size:1rem;'>Customer balance: ₦".number_format($total_due, 2)."</p>";
+                        echo "<p class='total_amount' style='color:green;font-size:1rem;'>Receivables: ₦".number_format($total_due, 2)."</p>";
 
                     }
                 
