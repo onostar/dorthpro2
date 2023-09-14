@@ -11,7 +11,7 @@
         <h3 style="background:var(--moreColor); text-align:left!important;" >Purchase history per vendors</h3>
         <!-- <form method="POST" id="addUserForm"> -->
         <section class="addUserForm">
-            <div class="inputs" style="align-items:center;">
+            <div class="inputs" style="align-items:flex-end;">
                 
                 <div class="data">
                     <label for="fromDate">From Date</label>
@@ -21,7 +21,7 @@
                     <label for="toDate">To Date</label>
                     <input type="date" name="toDate" id="toDate" required>
                 </div>
-                <div class="data" style="margin:10px 0">
+                <div class="data" style="margin:10px 0 0">
                     <label for="">select a Vendor</label>
                     <select name="vendor" id="vendor">
                         <option value=""selected>choose vendor</option>

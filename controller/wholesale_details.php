@@ -99,6 +99,7 @@
                         <option value="Transfer">TRANSFER</option>
                         <option value="Credit">CREDIT</option>
                         <option value="Multiple">MULTIPLE PAYMENT</option>
+                        <option value="Wallet">WALLET</option>
                     </select>
                 </div>
                 <div class="inputs" id="multiples">
@@ -126,6 +127,18 @@
                         <option value="<?php echo $row->bank_id?>"><?php echo $row->bank?>(<?php echo $row->account_number?>)</option>
                         <?php endforeach?>
                     </select>
+                </div>
+                <div class="data" id="account_balance">
+                    <?php
+                        //get wallet balance
+                        $get_bal = new selects();
+                        $bal = $get_bal->fetch_details_group('customers', 'wallet_balance', 'customer_id', $customer);
+                        $wallet = $bal->wallet_balance;
+                    ?>
+                    <label for="wallet">Wallet balance</label>
+                    <input type="hidden" name="wallet" id="wallet" value="<?php echo $wallet?>">
+                    <input type="text" value="<?php echo "₦".number_format($wallet, 2)?>">
+
                 </div>
                 <div class="data">
                     <button onclick="postWholesale()" style="background:green; padding:8px; border-radius:5px;font-size:.9rem;">Save and Print <i class="fas fa-print"></i></button>

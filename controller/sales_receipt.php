@@ -113,6 +113,8 @@ include "../classes/select.php";
         //get amount due
         if($pay_mode == "Credit"){
             echo "<p class='total_amount' style='color:green'>Amount due: ₦".number_format($total_amount, 2)."</p>";
+            //amount paid
+            echo "<p class='total_amount' style='color:green'>Amount Paid: ₦".number_format($amount_paid, 2)."</p>";
         }else{
             //amount due
             if($discount != 0){

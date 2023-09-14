@@ -18,6 +18,7 @@ include "../classes/inserts.php";
             $discount = htmlspecialchars(stripslashes($_POST['discount']));
             $store = htmlspecialchars(stripslashes($_POST['store']));
             $type = "Wholesale";
+            $wallet = htmlspecialchars(stripslashes($_POST['wallet']));
             $customer = htmlspecialchars(stripslashes($_POST['customer_id']));
             //insert into audit trail
             //get items and quantity sold in the invoice
@@ -81,7 +82,12 @@ include "../classes/inserts.php";
                     $insert_payment = new payments($user, $payment_type, $bank, $inv_amount, $amount_paid, $discount, $invoice, $store, $type, $customer);
                     $insert_payment->payment();
                 }
-                
+                if($payment_type == "Wallet"){
+                    //update wallet balance
+                    $new_balance = $wallet - $amount_paid;
+                    $update_wallet = new Update_table();
+                    $update_wallet->update('customers', 'wallet_balance', 'customer_id', $new_balance, $customer);
+                }
                 if($insert_payment){
                 
                 //update quantity of the items in inventory
@@ -101,8 +107,15 @@ include "../classes/inserts.php";
                     $insert_credit = new customer_trail($customer, $store, 'Credit sales', $inv_amount, $user);
                     $insert_credit->add_trail();
                     //insert to debtors list
-                    $add_debt = new add_debtor($customer, $store, $invoice, $inv_amount, $user);
-                    $add_debt->add_debt();
+                    $debt_data = array(
+                        'customer' => $customer,
+                        'invoice' => $invoice,
+                        'amount' => $inv_amount,
+                        'posted_by' => $user,
+                        'store' => $store
+                    );
+                    $add_debt = new add_data('debtors', $debt_data);
+                    $add_debt->create_data();
                 }
                 
 ?>

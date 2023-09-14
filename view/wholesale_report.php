@@ -33,6 +33,7 @@
             <tr style="background:var(--primaryColor)">
                 <td>S/N</td>
                 <td>Customer</td>
+                <td>Invoice</td>
                 <td>Items</td>
                 <td>Amount due</td>
                 <td>Amount paid</td>
@@ -54,14 +55,14 @@
             <tr>
                 <td style="text-align:center; color:red;"><?php echo $n?></td>
                 <td>
-                    <a style="color:green" href="javascript:void(0)" title="View invoice details" onclick="showPage('invoice_details.php?payment_id=<?php echo $detail->payment_id?>')">
                     <?php 
                         //get customer name
                         $get_cust = new selects();
                         $client = $get_cust->fetch_details_group('customers', 'customer', 'customer_id', $detail->customer);
                         echo $client->customer;
-                    ?></a>
+                    ?>
                 </td>
+                <td><a style="color:green" href="javascript:void(0)" title="View invoice details" onclick="showPage('invoice_details.php?payment_id=<?php echo $detail->payment_id?>')"><?php echo $detail->invoice?></a></td>
                 <td style="text-align:Center">
                     <?php
                         //get items in invoice;
@@ -123,7 +124,23 @@
         $get_total = new selects();
         $amounts = $get_total->fetch_sum_curdate2Con('payments', 'amount_paid', 'post_date', 'store', $store, 'sales_type', 'Wholesale');
         foreach($amounts as $amount){
-            echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($amount->total, 2)."</p>";
+            $paid_amount = $amount->total;
+        }
+        //if credit was sold
+        $get_credit = new selects();
+        $credits = $get_credit->fetch_sum_curdate3Con('payments', 'amount_due', 'post_date', 'payment_mode', 'Credit', 'sales_type', 'WHolesale', 'store', $store);
+        if(gettype($credits) === "array"){
+            foreach($credits as $credit){
+                $owed_amount = $credit->total;
+            }
+            $total_revenue = $owed_amount + $paid_amount;
+            echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($total_revenue, 2)."</p>";
+
+        }
+        //if no credit sales
+        if(gettype($credits) == "string"){
+            echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($paid_amount, 2)."</p>";
+            
         }
     ?>
 

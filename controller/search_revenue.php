@@ -96,6 +96,22 @@
     $get_total = new selects();
     $amounts = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'store', 'date(post_date)', $from, $to, $store);
     foreach($amounts as $amount){
-        echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($amount->total, 2)."</p>";
+        $paid_amount = $amount->total;
+    }
+    // if credit was sold
+    $get_credit = new selects();
+    $credits = $get_credit->fetch_sum_2date2Cond('payments', 'amount_due', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Credit', $store);
+    if(gettype($credits) === "array"){
+        foreach($credits as $credit){
+            $owed_amount = $credit->total;
+        }
+        $total_revenue = $owed_amount + $paid_amount;
+        echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($total_revenue, 2)."</p>";
+
+    }
+    //if no credit sales
+    if(gettype($credits) == "string"){
+        echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($paid_amount, 2)."</p>";
+        
     }
 ?>

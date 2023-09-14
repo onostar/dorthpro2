@@ -2083,15 +2083,24 @@ function checkMode(mode){
      let pay_mode = mode;
      let bank_input = document.getElementById("selectBank");
      let multiples = document.getElementById("multiples");
+     let wallet = document.getElementById("account_balance");
      if(pay_mode == "POS" || pay_mode == "Transfer"){
           bank_input.style.display = "block";
           multiples.style.display = "none";
+          wallet.style.display = "none";
      }else if(pay_mode == "Multiple"){
           multiples.style.display = "block";
           bank_input.style.display = "block";
+          wallet.style.display = "none";
+     }else if(pay_mode == "Wallet"){
+          wallet.style.display = "block";
+          multiples.style.display = "none";
+          bank_input.style.display = "none";
      }else{
           bank_input.style.display = "none";
           multiples.style.display = "none";
+          wallet.style.display = "none";
+
      }
 }
 //post direct sales payment
@@ -2230,11 +2239,19 @@ function postWholesale(){
           let multi_cash = document.getElementById("multi_cash").value;
           let multi_pos = document.getElementById("multi_pos").value;
           let multi_transfer = document.getElementById("multi_transfer").value;
+          let wallet = document.getElementById("wallet").value;
           let sum_amount = parseInt(multi_cash) + parseInt(multi_pos) + parseInt(multi_transfer);
           if(document.getElementById("multiples").style.display == "block"){
                if(sum_amount != (total_amount - discount)){
                     alert("Amount entered is not equal to total amount");
                     $("#multi_cash").focus();
+                    return;
+               }
+          }
+          if(document.getElementById("account_balance").style.display == "block"){
+               if(parseInt(total_amount - discount) > parseInt(wallet)){
+                    alert("Insufficient balance! Kindly fund wallet");
+                    $("#payment_type").focus();
                     return;
                }
           }
@@ -2250,7 +2267,7 @@ function postWholesale(){
                $.ajax({
                     type : "POST",
                     url : "../controller/post_wholesale.php",
-                    data : {sales_invoice:sales_invoice, payment_type:payment_type, bank:bank, multi_cash:multi_cash, multi_pos:multi_pos, multi_transfer:multi_transfer, discount:discount, store:store, customer_id:customer_id},
+                    data : {sales_invoice:sales_invoice, payment_type:payment_type, bank:bank, multi_cash:multi_cash, multi_pos:multi_pos, multi_transfer:multi_transfer, discount:discount, wallet:wallet, store:store, customer_id:customer_id},
                     success : function(response){
                          $("#direct_sales").html(response);
                     }
@@ -3018,3 +3035,100 @@ function updateCustomer(){
      $("#customer").focus();
      return false;    
 }
+
+ //pay debt
+ function payDebt(invoice, customer, balance, amount_owed){
+     if(parseFloat(amount_owed) > parseFloat(balance)){
+          alert("Insufficient balance! Kindly fund customer wallet to continue");
+          return;
+     }else{
+          let confirm_pay = confirm("Are you sure to complete this transaction?", "");
+          if(confirm_pay){
+               $.ajax({
+                    type : "GET",
+                    url : "../controller/pay_debt.php?receipt="+invoice+"&customer="+customer+"&amount_owed="+amount_owed,
+                    success : function(response){
+                         $("#pay_debts").html(response);
+                    }
+               })
+               setTimeout(() => {
+                    $("#pay_debts").load("debt_payment.php?customer="+customer + "#pay_debts");
+               }, 1500);
+               return false;
+          }else{
+               return;
+          }
+     }
+}
+
+//reverse deposits
+function reverseDeposit(deposit, customer){
+     let confirm_reverse = confirm("Are you sure you want to reverse this transaction?", "");
+     if(confirm_reverse){
+          $.ajax({
+               type : "GET",
+               url : "../controller/reverse_deposit.php?deposit_id="+deposit+"&customer="+customer,
+               success : function(response){
+                    $("#reverse_dep").html(response);
+               }
+          })
+          setTimeout(() => {
+               $("#reverse_dep").load("reverse_deposit.php #reverse_dep");
+          }, 1500);
+          return false;
+          
+     }else{
+          return;
+     }
+}
+// Fund customer wallet via deposit 
+function deposit(){
+     let invoice = document.getElementById("invoice").value;
+     let posted = document.getElementById("posted").value;
+     let customer = document.getElementById("customer").value;
+     let store = document.getElementById("store").value;
+     let amount = document.getElementById("amount").value;
+     let payment_mode = document.getElementById("payment_mode").value;
+     let details = document.getElementById("details").value;
+     if(payment_mode.length == 0 || payment_mode.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please select payment_mode!");
+          $("#exp_date").focus();
+          return;
+     }else if(amount.length == 0 || amount.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input transaction amount");
+          $("#amount").focus();
+          return;
+     }else if(details.length == 0 || details.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please enter description of transaction");
+          $("#details").focus();
+          return;
+     }else{
+          $.ajax({
+               type : "POST",
+               url : "../controller/deposit.php",
+               data : {posted:posted, customer:customer, payment_mode:payment_mode, amount:amount, details:details, store:store, invoice:invoice},
+               success : function(response){
+               $("#fund_account").html(response);
+               }
+          })
+     }
+     return false;    
+}
+
+// prinit deposit receipt for fund wallet
+function printDepositReceipt(invoice){
+     window.open("../controller/deposit_receipt.php?receipt="+invoice);
+     // alert(item_id);
+     /* $.ajax({
+          type : "GET",
+          url : "../controller/sales_receipt.php?receipt="+invoice,
+          success : function(response){
+               $("#direct_sales").html(response);
+          }
+     }) */
+     /* setTimeout(function(){
+          $("#direct_sales").load("direct_sales.php #direct_sales");
+     }, 100); */
+     return false;
+ 
+ }

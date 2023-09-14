@@ -109,18 +109,25 @@ include "../classes/select.php";
             $amount_due = $row->amount_due;
             $discount = $row->discount;
         }
-        //amount due
-        if($discount != 0){
+        //get amount due
+        if($pay_mode == "Credit"){
             echo "<p class='total_amount' style='color:green'>Amount due: ₦".number_format($total_amount, 2)."</p>";
-        }
-        
-        //amount paid
-        echo "<p class='total_amount' style='color:green'>Amount Paid: ₦".number_format($amount_paid, 2)."</p>";
+            //amount paid
+            echo "<p class='total_amount' style='color:green'>Amount Paid: ₦".number_format($amount_paid, 2)."</p>";
+        }else{
+            //amount due
+            if($discount != 0){
+                echo "<p class='total_amount' style='color:green'>Amount due: ₦".number_format($total_amount, 2)."</p>";
+            }
+            
+            //amount paid
+            echo "<p class='total_amount' style='color:green'>Amount Paid: ₦".number_format($amount_paid, 2)."</p>";
 
-        //discount
-        if($discount != 0){
-            echo "<p class='total_amount' style='color:green'>Discount: ₦".number_format($discount, 2)."</p>";
+            //discount
+            if($discount != 0){
+                echo "<p class='total_amount' style='color:green'>Discount: ₦".number_format($discount, 2)."</p>";
 
+            }
         }
         //sold by
         $get_seller = new selects();

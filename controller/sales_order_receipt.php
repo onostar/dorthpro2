@@ -110,26 +110,32 @@ include "../classes/select.php";
            $amount_due = $row->amount_due;
            $discount = $row->discount;
        }
-       //amount due
-       if($discount != 0){
-           echo "<p class='total_amount' style='color:green'>Amount due: ₦".number_format($total_amount, 2)."</p>";
-       }
-       
-       //amount paid
-       echo "<p class='total_amount' style='color:green'>Amount Paid: ₦".number_format($amount_paid, 2)."</p>";
+       //get amount due
+       if($pay_mode == "Credit"){
+        echo "<p class='total_amount' style='color:green'>Amount due: ₦".number_format($total_amount, 2)."</p>";
+        //amount paid
+        echo "<p class='total_amount' style='color:green'>Amount Paid: ₦".number_format($amount_paid, 2)."</p>";
+    }else{
+        //amount due
+        if($discount != 0){
+            echo "<p class='total_amount' style='color:green'>Amount due: ₦".number_format($total_amount, 2)."</p>";
+        }
+        
+        //amount paid
+        echo "<p class='total_amount' style='color:green'>Amount Paid: ₦".number_format($amount_paid, 2)."</p>";
 
-       //discount
-       if($discount != 0){
-           echo "<p class='total_amount' style='color:green'>Discount: ₦".number_format($discount, 2)."</p>";
+        //discount
+        if($discount != 0){
+            echo "<p class='total_amount' style='color:green'>Discount: ₦".number_format($discount, 2)."</p>";
 
-       }
-
-        //sold by
-        $get_seller = new selects();
-        $row = $get_seller->fetch_details_group('users', 'full_name', 'user_id', $user);
-        echo ucwords("<p class='sold_by'>Sold by: <strong>$row->full_name</strong></p>");
-    ?>
-    <p style="margin-top:20px;text-align:center"><strong>Thanks for your patronage!</strong></p>
+        }
+    }
+    //sold by
+    $get_seller = new selects();
+    $row = $get_seller->fetch_details_group('users', 'full_name', 'user_id', $user);
+    echo ucwords("<p class='sold_by'>Sold by: <strong>$row->full_name</strong></p>");
+?>
+<p style="margin-top:20px;text-align:center"><strong>Thanks for your patronage!</strong></p>
 </div> 
    
 <?php

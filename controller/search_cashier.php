@@ -27,6 +27,8 @@
                 <td>Cash</td>
                 <td>POS</td>
                 <td>Transfer</td>
+                <td>Wallet</td>
+                <td>Credit</td>
                 <td>Total</td>
                 
             </tr>
@@ -74,12 +76,47 @@
                         }
                     ?>
                 </td>
+                <td>
+                    <?php
+                        $get_cash = new selects();
+                        $cashs = $get_cash->fetch_sum_2dateCondGr('payments', 'amount_paid', 'payment_mode', 'date(post_date)', 'posted_by', $from, $to, 'Wallet', $detail->posted_by);
+                        foreach($cashs as $cash){
+                            echo "₦".number_format($cash->total, 2);
+                        }
+                    ?>
+                </td>
+                <td>
+                    <?php
+                        $get_cash = new selects();
+                        $cashs = $get_cash->fetch_sum_2dateCondGr('payments', 'amount_due', 'payment_mode', 'date(post_date)', 'posted_by', $from, $to, 'Credit', $detail->posted_by);
+                        foreach($cashs as $cash){
+                            echo "₦".number_format($cash->total, 2);
+                        }
+                    ?>
+                </td>
                 <td style="color:red">
                     <?php
+                        // get sum
                         $get_total = new selects();
-                        $totals = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'posted_by', 'date(post_date)', $from, $to, $detail->posted_by);
-                        foreach($totals as $total){
-                            echo "₦".number_format($total->total, 2);
+                        $amounts = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'posted_by', 'date(post_date)', $from, $to, $detail->posted_by);
+                        foreach($amounts as $amount){
+                            $paid_amount = $amount->total;
+                        }
+                        // if credit was sold
+                        $get_credit = new selects();
+                        $credits = $get_credit->fetch_sum_2date2Cond('payments', 'amount_due', 'date(post_date)', 'payment_mode', 'posted_by', $from, $to, 'Credit', $detail->posted_by);
+                        if(gettype($credits) === "array"){
+                            foreach($credits as $credit){
+                                $owed_amount = $credit->total;
+                            }
+                            $total_revenue = $owed_amount + $paid_amount;
+                            echo "₦".number_format($total_revenue, 2);
+
+                        }
+                        //if no credit sales
+                        if(gettype($credits) == "string"){
+                            echo "₦".number_format($paid_amount, 2);
+                            
                         }
                     ?>
                 </td>
@@ -120,9 +157,44 @@
                 <td style="color:green; font-size:1rem">
                     <?php
                         $get_total = new selects();
-                        $totals = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'store', 'date(post_date)', $from, $to, $store);
+                        $totals = $get_total->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Wallet', $store);
                         foreach($totals as $total){
                             echo "₦".number_format($total->total, 2);
+                        }
+                    ?>
+                </td>
+                <td style="color:green; font-size:1rem">
+                    <?php
+                        $get_total = new selects();
+                        $totals = $get_total->fetch_sum_2date2Cond('payments', 'amount_due', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Credit', $store);
+                        foreach($totals as $total){
+                            echo "₦".number_format($total->total, 2);
+                        }
+                    ?>
+                </td>
+                <td style="color:red; font-size:1rem">
+                    <?php
+                        // get sum
+                        $get_total = new selects();
+                        $amounts = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'store', 'date(post_date)', $from, $to, $store);
+                        foreach($amounts as $amount){
+                            $paid_amount = $amount->total;
+                        }
+                        // if credit was sold
+                        $get_credit = new selects();
+                        $credits = $get_credit->fetch_sum_2date2Cond('payments', 'amount_due', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Credit', $store);
+                        if(gettype($credits) === "array"){
+                            foreach($credits as $credit){
+                                $owed_amount = $credit->total;
+                            }
+                            $total_revenue = $owed_amount + $paid_amount;
+                            echo "₦".number_format($total_revenue, 2);
+
+                        }
+                        //if no credit sales
+                        if(gettype($credits) == "string"){
+                            echo "₦".number_format($paid_amount, 2);
+                            
                         }
                     ?>
                 </td>
