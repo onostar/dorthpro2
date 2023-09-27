@@ -19,6 +19,11 @@
         $get_item = new selects();
         $item = $get_item->fetch_details_group('sales', 'item', 'sales_id', $sales);
         $item_id = $item->item;
+        //get item price
+        $get_price = new selects();
+        $unit_price = $get_price->fetch_details_group('items', 'sales_price', 'item_id', $item_id);
+        $old_price = $unit_price->sales_price;
+        $discount = $old_price - $price;
         $get_qty = new selects();
         $item_qtys = $get_qty->fetch_details_2cond('inventory', 'store', 'item', $store, $item_id);
         foreach($item_qtys as $item_qty){
@@ -34,7 +39,7 @@
         $total_cost = $qty * $cost_price;
         //update quantity and price
         $update = new Update_table();
-        $update->update_tripple('sales', 'quantity', $qty, 'price', $price, 'total_amount', $new_amount, 'sales_id', $sales);
+        $update->update_quadruple('sales', 'quantity', $qty, 'price', $price, 'total_amount', $new_amount, 'discount', $discount, 'sales_id', $sales);
         $update_cost = new Update_table();
         $update_cost->update('sales', 'cost', 'sales_id', $total_cost, $sales);
         // if($update){

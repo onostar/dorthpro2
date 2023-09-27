@@ -3,6 +3,7 @@
     $store = $_SESSION['store_id'];
     include "../classes/dbh.php";
     include "../classes/select.php";
+    $role = $_SESSION['role'];
 
 
 ?>
@@ -97,7 +98,8 @@
             if(gettype($details) == "string"){
                 echo "<p class='no_result'>'$details'</p>";
                 
-            }else{
+            }
+            if($role == "Admin"){
                 // get sum
                 $get_total = new selects();
                 $amounts = $get_total->fetch_sum_2col('inventory', 'cost_price', 'quantity');

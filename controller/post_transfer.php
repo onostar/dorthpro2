@@ -12,6 +12,9 @@
 
         if($update){
 ?>
+            <div id="printBtn">
+                <button onclick="printTransferReceipt('<?php echo $invoice?>')">Print Receipt <i class="fas fa-print"></i></button>
+            </div>
             <div class="notify"><p><i class="fas fa-thumbs-up"></i> Items transferred successfully!</p></div>
 <?php
         }

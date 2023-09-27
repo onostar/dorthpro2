@@ -15,6 +15,8 @@
 
         $change_price = new Update_table();
         $change_price->update_six('items', 'cost_price', $cost_price, 'sales_price', $sales_price, 'pack_price', $pack_price, 'pack_size', $pack_size, 'wholesale', $wholesale, 'wholesale_pack', $wholesale_pack, 'item_id', $item);
+        $update_price = new update_table();
+        $update_price->update('inventory', 'cost_price', 'item', $cost_price, $item);
         if($change_price){
              echo "<div class='success'><p>Price changed successfully! <i class='fas fa-thumbs-up'></i></p></div>";
         }else{

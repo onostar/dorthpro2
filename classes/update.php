@@ -1,5 +1,5 @@
 <?php 
-
+date_default_timezone_set("Africa/Lagos");
     class Update_table extends Dbh{
         public function update($table, $column, $condition, $value, $condition_value){
             $update = $this->connectdb()->prepare("UPDATE $table SET $column = :$column WHERE $condition = :$condition");

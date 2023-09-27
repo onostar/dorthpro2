@@ -5,7 +5,7 @@
         $store = $_SESSION['store_id'];
         if(isset($_GET['item'])){
             $item = $_GET['item'];
-        
+            $date = "05-09-2025";
     
     $invoice = $_SESSION['invoice'];
     $vendor = $_SESSION['vendor'];
@@ -58,7 +58,7 @@
                 </div>
                 <div class="data" style="width:20%; margin:5px;">
                     <label for="expiration_date">Expiration date</label>
-                    <input type="date" name="expiration_date" id="expiration_date" required>
+                    <input type="date" name="expiration_date" id="expiration_date" value="<?php echo date("Y-m-d", strtotime($date))?>" required>
                 </div>
                 <div class="data" style="width:auto; margin:5px;">
                     <button type="submit" id="stockin" name="stockin" title="stockin item" onclick="stockin()"><i class="fas fa-check"></i></button>

@@ -50,7 +50,9 @@
                             <td>Item</td>
                             <td>Quantity</td>
                             <td>Unit price</td>
+                            <td>Discocunt</td>
                             <td>Amount</td>
+                            <td>Total Discount</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,7 +74,11 @@
                             </td>
                             <td style="text-align:center; color:var(--otherColor)"><?php echo $row->quantity?></td>
                             <td><?php echo number_format($row->price, 2);?></td>
+                            <td style='color:red'><?php echo number_format($row->discount, 2);?></td>
                             <td><?php echo number_format($row->total_amount, 2)?></td>
+                            <td style='color:red'><?php 
+                                $total_disc = $row->discount * $row->quantity;
+                            echo number_format($total_disc, 2)?></td>
                             
                         </tr>
                         

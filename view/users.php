@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("Africa/Lagos");
     session_start();
 
     include "../classes/dbh.php";
@@ -16,6 +17,7 @@
             $store_id = $user->store;
         }
         $_SESSION['user_id'] = $user_id;
+        $_SESSION['role'] = $role;
 
         /* get company */
         $fetch_comp = new selects();

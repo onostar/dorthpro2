@@ -17,7 +17,7 @@
     $itemss = $get_item_det->fetch_details_cond('items', 'item_id', $item);
     foreach($itemss as $items){
         $cost_price = $items->cost_price;
-        // $sales_price = $items->sales_price;
+        $price = $items->sales_price;
         $name = $items->item_name;
     }
     // get item previous quantity in inventory;
@@ -59,6 +59,7 @@
     $transfer_data = array(
         'item' => $item,
         'invoice' => $invoice,
+        'sales_price' => $price,
         'cost_price' => $cost_price,
         'quantity' => $quantity,
         'posted_by' => $posted,

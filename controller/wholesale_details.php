@@ -77,8 +77,8 @@
     ?>
     <!-- discount -->
     <section style="float:right;margin:5px;">
-        <label for="discount" style="color:red;">Discount</label><br>
-        <input type="text" name="discount" id="discount" style="padding:5px;border-radius:5px;" value="0">
+        <!-- <label for="discount" style="color:red;">Discount</label><br> -->
+        <input type="hidden" name="discount" id="discount" style="padding:5px;border-radius:5px;" value="0">
     </section>
     <?php
         if(gettype($details) == "array"){

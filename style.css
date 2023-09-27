@@ -701,6 +701,11 @@ main hr{
 .login_page form{
     padding:10px;
     width:90%;
+    height:60%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     margin:20px auto;
 }
 .login_page form .data{
@@ -2807,13 +2812,13 @@ x
 .item_categories .diff_cats{
     display:none;
 }
-#sales_item, #search_results{
+#sales_item, #search_results, #transfer_item{
     background:var(--primaryColor);
     color:#fff;
     max-height: 200px;
     overflow-y: scroll;
 }
-#sales_item option, #search_results option{
+#sales_item option, #search_results option, #transfer_item option{
     background:var(--otherColor);
     color:#fff;
     padding:10px 5px;

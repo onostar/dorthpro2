@@ -36,7 +36,7 @@
                 <td>Type</td>
                 <td>Amount due</td>
                 <td>Amount paid</td>
-                <td>Discount</td>
+                <!-- <td>Discount</td> -->
                 <td>Payment Mode</td>
                 <td>Post Time</td>
                 <td>Posted by</td>
@@ -69,9 +69,9 @@
                         }
                     ?>
                 </td>
-                <td style="color:red">
+                <!-- <td style="color:red">
                     <?php echo "₦".number_format($detail->discount, 2);?>
-                </td>
+                </td> -->
                 <td>
                     <?php 
                         //get payment mode

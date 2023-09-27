@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("Africa/Lagos");
     session_start();
     include "classes/dbh.php";
     include "classes/select.php";
