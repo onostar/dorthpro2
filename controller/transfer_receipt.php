@@ -143,12 +143,20 @@ include "../classes/select.php";
         if(gettype($details) == "string"){
             echo "<p class='no_result'>'$details'</p>";
         }
+        //get total goods
+        $get_goods = new selects();
+        $goods = $get_goods->fetch_sum_single('transfers', 'quantity', 'invoice', $invoice);
+        foreach($goods as $good){
+            $total_goods = $good->total;
+        }
+        echo "<p class='total_amount' style='color:green'>Total product: $total_goods</p>";
         // get sum;
         $get_total = new selects();
         $amounts = $get_total->fetch_sum_con('transfers', 'sales_price', 'quantity', 'invoice', $invoice);
         foreach($amounts as $amount){
             $total_amount = $amount->total;
         }
+        echo "<p class='total_amount' style='color:green'>Total amount: ₦".number_format($total_amount, 2)."</p>";
 /*
         // get amount paid from payments;
         $get_paid = new selects();

@@ -41,7 +41,7 @@
                     <div class="data" id="bar_items" style="width:100%; margin:2px 0">
                         <label for="item"> Search Items</label>
                         <input type="hidden" name="customer" id="customer" value="<?php echo $customer?>">
-                        <input type="hidden" name="sales_invoice" id="sales_invoice" value="<?php echo $invoice?>">
+                        <input type="hidden" name="invoice" id="invoice" value="<?php echo $invoice?>">
                         <input type="text" name="item" id="item" required placeholder="Input item name or barcode" onkeyup="getWholesaleItems(this.value)">
                         <div id="sales_item">
                             

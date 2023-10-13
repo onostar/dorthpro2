@@ -46,6 +46,17 @@ include "../classes/inserts.php";
         //update all items with this invoice
         $update_invoice = new Update_table();
         $update_invoice->update('sales', 'sales_status', 'invoice', 2, $invoice);
+        //update quantity of the items in inventory
+        //get all items first in the invoice
+        $get_items = new selects();
+        $rows = $get_items->fetch_details_cond('sales', 'invoice', $invoice);
+        
+        foreach($rows as $row){
+            //update individual quantity in inventory
+            $update_qty = new Update_table();
+            $update_qty->update_inv_qty($row->quantity, $row->item, $store);
+            
+        }
             if($update_invoice){
                 //insert payment details into payment table
                 //get invoice total amount
@@ -90,17 +101,7 @@ include "../classes/inserts.php";
                 }
                 if($insert_payment){
                 
-                //update quantity of the items in inventory
-                //get all items first in the invoice
-                $get_items = new selects();
-                $rows = $get_items->fetch_details_cond('sales', 'invoice', $invoice);
                 
-                foreach($rows as $row){
-                    //update individual quantity in inventory
-                    $update_qty = new Update_table();
-                    $update_qty->update_inv_qty($row->quantity, $row->item, $store);
-                    
-                }
                 //check if payment is credit and insert into customer trail and debtors list
                 if($payment_type == "Credit"){
                     //insert to customer_trail

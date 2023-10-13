@@ -71,7 +71,7 @@
             </a>
         </div> 
         <div class="cards" id="card0">
-            <!-- <a href="javascript:void(0)" class="page_navs">
+            <a href="javascript:void(0)" class="page_navs">
                 <div class="infos">
                     <p><i class="fas fa-money-check"></i> Net Profit</p>
                     <p>
@@ -100,8 +100,8 @@
                     ?>
                     </p>
                 </div>
-            </a> -->
-            <a href="javascript:void(0)" class="page_navs" onclick="showPage('pay_debt.php')">
+            </a>
+            <!-- <a href="javascript:void(0)" class="page_navs" onclick="showPage('pay_debt.php')">
                 <div class="infos">
                     <p><i class="fas fa-calendar"></i> Receivables</p>
                     <p>
@@ -109,12 +109,12 @@
                         $receivables = new selects();
                         $dues = $receivables->fetch_sum_double('debtors', 'amount', 'debt_status', 0, 'store', $store_id);
                         foreach($dues as $due){
-                            echo "₦".number_format($due->total, 2);
+                            echo "₦".number_format($due->total);
                         }
                     ?>
                     </p>
                 </div>
-            </a>
+            </a> -->
         </div> 
         
         

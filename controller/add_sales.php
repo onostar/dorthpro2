@@ -9,8 +9,8 @@ include "../classes/inserts.php";
     $customer = 0;
     if(isset($_SESSION['user_id'])){
         $user_id = $_SESSION['user_id'];
-        if(isset($_SESSION['invoice'])){
-            $invoice = $_SESSION['invoice'];
+        if(isset($_GET['invoice'])){
+            $invoice = $_GET['invoice'];
         }
         if(isset($_GET['sales_item'])){
             $item = $_GET['sales_item'];

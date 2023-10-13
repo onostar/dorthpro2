@@ -10,7 +10,7 @@
                     <input type="text" name="exp_head" id="exp_head" placeholder="Input expense head" required>
                 </div>
                 <div class="data">
-                    <button type="submit" id="add_exp_head" name="add_exp_head" onclick="addExpHead()">Sae record <i class="fas fa-layer-group"></i></button>
+                    <button type="submit" id="add_exp_head" name="add_exp_head" onclick="addExpHead()">Save record <i class="fas fa-layer-group"></i></button>
 
                 </div>
             </div>

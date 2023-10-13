@@ -1573,8 +1573,8 @@ table tr:nth-child(even){
     margin:auto;
 }
 #dashboard .cards{
-    min-width:23%;
-    height:80px;
+    max-width:24%;
+    height:75px;
     margin: 0;
     box-shadow:2px 2px 2px 2px #c4c4c4;
     border-radius:4px;
@@ -2716,7 +2716,22 @@ table tr:nth-child(even){
 }
 
 x
-
+.all_amounts{
+    display: flex!important;
+    justify-content: space-between;
+    align-items: center;
+}
+.all_modes{
+    display:flex;
+    gap:1rem;
+    margin:15px 0;
+    /* width:50%; */
+}
+.sum_amount{
+    border-radius: 10px;
+    padding:10px;
+    color:#fff;
+}
 #total_amount{
     display:flex!important;
     align-items: center;

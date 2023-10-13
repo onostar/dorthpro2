@@ -19,20 +19,14 @@
                 <label>Select to Date</label><br>
                 <input type="date" name="to_date" id="to_date"><br>
             </div>
-            <div class="data">
+            <div class="data" style="position:relative;">
                 <label for="history_item">Select item</label>
-                <select name="history_item" id="history_item">
-                    <option value="" selected>Select an item</option>
-                    <?php
-                        $get_item = new selects();
-                        $rows = $get_item->fetch_details('items');
-                        foreach($rows as $row){
-                    ?>
-                    <option value="<?php echo $row->item_id?>"><?php echo $row->item_name?></option>
-                    <?php }?>
-                </select>
+                <input type="text" name="history_item" id="history_item" required placeholder="Input item name or barcode" onkeyup="getHistoryItems(this.value)">
+                <div id="sales_item" style="position:absolute; width:100%">
+                    
+                </div>
             </div>
-            <button type="submit" name="search_date" id="search_date" onclick="getItemHistory()">Search <i class="fas fa-search"></i></button>
+            <!-- <button type="submit" name="search_date" id="search_date" onclick="getItemHistory()">Search <i class="fas fa-search"></i></button> -->
 </section>
     </div>
 <div class="displays allResults new_data" style="width:100%!important">

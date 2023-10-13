@@ -139,14 +139,14 @@
     </table>
 <?php
     //get total quantity
-    if(gettype($details) == "array"){
+    // if(gettype($details) == "array"){
     $get_qty = new selects();
     $totals = $get_qty->fetch_details_2cond('inventory', 'item', 'store', $item, $store);
     foreach($totals as $total){
         echo "<p class='total_amount' style='color:green; text-align:center; text-decoration:underline'>Current quantity = ".$total->quantity."</p>";
 
     }
-    }
+    // }
     if(gettype($details) == "string"){
         echo "<p class='no_result'>'$details'</p>";
     }

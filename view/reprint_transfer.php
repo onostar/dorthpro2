@@ -51,7 +51,7 @@ $store_name = $strs->store;
                 foreach($details as $detail):
             ?>
             <tr>
-            <td style="text-align:center; color:red;"><?php echo $n?></td>
+                <td style="text-align:center; color:red;"><?php echo $n?></td>
                 <td style="color:var(--otherColor)"><?php echo $detail->invoice?></td>
                 <td style="color:green; text-align:Center">
                     <?php 

@@ -584,7 +584,7 @@ function postPos(){
      return false;    
 
 }
-/* //post guest Transfer payment
+//post guest Transfer payment
 function postTransfer(){
      let posted_by = document.getElementById("posted_by").value;
      let guest = document.getElementById("guest").value;
@@ -621,7 +621,7 @@ function postTransfer(){
      }
      return false;    
 
-} */
+}
 //post other cash payments for guest
 function postOtherCash(){
      let posted_by = document.getElementById("posted_by").value;
@@ -1370,111 +1370,6 @@ function getItems(item_name){
      }
      
 }
-//get item to transfer to another item
-function getItemsToTransfer(item_name){
-     let item = item_name;
-     // alert(check_room);
-     // return;
-     if(item.length >= 3){
-          if(item){
-               $.ajax({
-                    type : "POST",
-                    url :"../controller/get_item_to_transfer.php",
-                    data : {item:item},
-                    success : function(response){
-                         $("#sales_item").html(response);
-                    }
-               })
-               return false;
-          }else{
-               $("#sales_item").html("<p>Please enter atleast 3 letters</p>");
-          }
-     }
-     
-}
-//add item to transfer to another item and display where to search for item to transfer into
-function addItemToTransfer(id, name){
-     let item = document.getElementById("item");
-     let transfer_qty_from = document.getElementById("transfer_qty_from");
-     let item_name = name;
-     let item_id = id;
-     // alert(check_room);
-     // return;
-     item.value = item_name;
-     transfer_qty_from.value = item_id;
-     document.getElementById("sales_item").style.display = "none";
-              
-     
-}
-//get item to transfer into from another item
-function getItemsToTransferTo(item_name){
-     let item = document.getElementById("item").value;
-     if(item.length == 0 || item.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please enter item to transfer from!");
-          $("#item").focus();
-          return;
-     }else{
-          let item_to = item_name;
-          if(item_to.length >= 3){
-               if(item_to){
-                    $.ajax({
-                         type : "POST",
-                         url :"../controller/get_item_to_transfer_to.php",
-                         data : {item_to:item_to},
-                         success : function(response){
-                              $("#transfer_item").html(response);
-                         }
-                    })
-                    return false;
-               }else{
-                    $("#transfer_item").html("<p>Please enter atleast 3 letters</p>");
-               }
-          }
-     }
-     
-}
-//add item to transfer into from another and display quantitities
-function addItemToTransferTo(id, name){
-     let transfer_qty_to = document.getElementById("transfer_qty_to");
-     let item_to = document.getElementById("item_to");
-     let item_name = name;
-     let item_id = id;
-     // alert(check_room);
-     // return;
-     transfer_qty_to.value = item_id;
-     item_to.value = item_name;
-     document.getElementById("transfer_item").style.display = "none";
-     
-}
-function transferQty(){
-     let transfer_qty_from = document.getElementById("transfer_qty_from").value;
-     let transfer_qty_to = document.getElementById("transfer_qty_to").value;
-     let remove_qty = document.getElementById("remove_qty").value;
-     let add_qty = document.getElementById("add_qty").value;
-     //authentification
-     if(remove_qty.length == 0 || remove_qty.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please enter quantity to remove!");
-          $("#remove_qty").focus();
-          return;
-     }else if(add_qty.length == 0 || add_qty.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please enter quantity to add!");
-          $("#add_qty").focus();
-          return;
-     }else{
-          $.ajax({
-               type : "POST",
-               url : "../controller/transfer_quantity.php",
-               data : {transfer_qty_from:transfer_qty_from, transfer_qty_to:transfer_qty_to, remove_qty:remove_qty, add_qty:add_qty},
-               success : function(response){
-                    $("#transfer_quantities").html(response);
-               }
-          })
-          setTimeout(function(){
-               $("#transfer_quantities").load("transfer_qty.php #transfer_quantities");
-          }, 1500)
-          return false;
-     }
-}
 //get item for sales order
 function getItemsOrder(item_name){
      let item = item_name;
@@ -1695,9 +1590,10 @@ function vendorHistory(){
 //add direct sales 
 function addSales(item_id){
      let item = item_id;
+     let $invoice = document.getElementById("invoice").value;
      $.ajax({
           type : "GET",
-          url : "../controller/add_sales.php?sales_item="+item,
+          url : "../controller/add_sales.php?sales_item="+item+"&invoice="+$invoice,
           success : function(response){
                $(".sales_order").html(response);
           }
@@ -1723,9 +1619,10 @@ function addSalesOrder(item_id){
 function addWholeSales(item_id){
      let item = item_id;
      let customer = document.getElementById("customer").value;
+     let $invoice = document.getElementById("invoice").value;
      $.ajax({
           type : "GET",
-          url : "../controller/add_wholesale.php?sales_item="+item+"&customer="+customer,
+          url : "../controller/add_Wholesale.php?sales_item="+item+"&customer="+customer+"&invoice="+invoice,
           success : function(response){
                $(".sales_order").html(response);
           }
@@ -2502,23 +2399,6 @@ function printSalesReceipt(invoice){
      return false;
  
  }
-// prinit sales receipt for direct sales
-function printTransferReceipt(invoice){
-     window.open("../controller/transfer_receipt.php?receipt="+invoice);
-     // alert(item_id);
-     /* $.ajax({
-          type : "GET",
-          url : "../controller/sales_receipt.php?receipt="+invoice,
-          success : function(response){
-               $("#direct_sales").html(response);
-          }
-     }) */
-     setTimeout(function(){
-          $("#direct_sales").load("direct_sales.php #direct_sales");
-     }, 100);
-     return false;
- 
- }
 // prinit sales receipt for sales order
 function printSalesOrderReceipt(invoice){
      window.open("../controller/sales_order_receipt.php?receipt="+invoice);
@@ -2676,10 +2556,10 @@ function addReason(){
      return false;
 }
 //  get item history
-function getItemHistory(){
+function getItemHistory(item){
      let from_date = document.getElementById('from_date').value;
      let to_date = document.getElementById('to_date').value;
-     let history_item = document.getElementById('history_item').value;
+     let history_item = item;
      /* authentication */
      if(from_date.length == 0 || from_date.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please select a date!");
@@ -2702,6 +2582,7 @@ function getItemHistory(){
                $(".new_data").html(response);
                }
           });
+          $("#sales_item").html('');
      }
      return false;
 }
@@ -3254,3 +3135,23 @@ function printDepositReceipt(invoice){
      return false;
  
  }
+ //get item to check history
+function getHistoryItems(item_name){
+     let item = item_name;
+     if(item.length >= 3){
+          if(item){
+               $.ajax({
+                    type : "POST",
+                    url :"../controller/get_history_items.php",
+                    data : {item:item},
+                    success : function(response){
+                         $("#sales_item").html(response);
+                    }
+               })
+               return false;
+          }else{
+               $("#sales_item").html("<p>Please enter atleast 3 letters</p>");
+          }
+     }
+     
+}

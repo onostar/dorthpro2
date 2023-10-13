@@ -1,6 +1,6 @@
 <?php
-    $store = $_SESSION['store_id'];
-    $customer = $_SESSION['customer'];
+    // $store = $_SESSION['store_id'];
+    // $customer = $_SESSION['customer'];
 ?>
 <div class="displays allResults" id="stocked_items">
     <!-- <h2>Items in sales order</h2> -->

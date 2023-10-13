@@ -108,10 +108,11 @@ date_default_timezone_set("Africa/Lagos");
             } */
         }
         //update quantity (subtraction) for stockin
-        public function subtract_quantity($value, $condition_value){
-            $update = $this->connectdb()->prepare("UPDATE items SET quantity = quantity - :quantity WHERE item_id = :item_id");
+        public function subtract_quantity($value, $condition_value, $store){
+            $update = $this->connectdb()->prepare("UPDATE inventory SET quantity = quantity - :quantity WHERE item = :item AND store = :store");
             $update->bindValue("quantity", $value);
-            $update->bindValue("item_id", $condition_value);
+            $update->bindValue("store", $store);
+            $update->bindValue("item", $condition_value);
             $update->execute();
             /* if($update){
                 echo "<div class='info'><p>Updated successfully! <i class='fas fa-check'></i></p></div>";

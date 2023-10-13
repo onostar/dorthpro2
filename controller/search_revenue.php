@@ -92,6 +92,33 @@
     }else{
         echo "<p class='no_result'>'$details'</p>";
     }
+?>
+<div class="all_modes">
+    <?php
+    //get cash
+    $get_cash = new selects();
+    $cashs = $get_cash->fetch_sum_2date2Cond('payments', 'amount_due', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Cash', $store);
+    if(gettype($cashs) === "array"){
+        foreach($cashs as $cash){
+            echo "<p class='sum_amount' style='background:var(--otherColor)'><strong>Cash</strong>: ₦".number_format($cash->total, 2)."</p>";
+        }
+    }
+    //get POS
+    $get_pos = new selects();
+    $poss = $get_pos->fetch_sum_2date2Cond('payments', 'amount_due', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'POS', $store);
+    if(gettype($poss) === "array"){
+        foreach($poss as $pos){
+            echo "<p class='sum_amount' style='background:var(--secondaryColor)'><strong>POS</strong>: ₦".number_format($pos->total, 2)."</p>";
+        }
+    }
+    //get transfer
+    $get_transfer = new selects();
+    $trfs = $get_transfer->fetch_sum_2date2Cond('payments', 'amount_due', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'POS', $store);
+    if(gettype($trfs) === "array"){
+        foreach($trfs as $trf){
+            echo "<p class='sum_amount' style='background:var(--primaryColor)'><strong>Transfer</strong>: ₦".number_format($trf->total, 2)."</p>";
+        }
+    }
     // get sum
     $get_total = new selects();
     $amounts = $get_total->fetch_sum_2dateCond('payments', 'amount_paid', 'store', 'date(post_date)', $from, $to, $store);
@@ -106,12 +133,13 @@
             $owed_amount = $credit->total;
         }
         $total_revenue = $owed_amount + $paid_amount;
-        echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($total_revenue, 2)."</p>";
+        echo "<p class='sum_amount' style='background:green; margin-left:250px; font-size:1rem;'><strong>Total</strong>: ₦".number_format($total_revenue, 2)."</p>";
 
     }
     //if no credit sales
     if(gettype($credits) == "string"){
-        echo "<p class='total_amount' style='color:green'>Total: ₦".number_format($paid_amount, 2)."</p>";
+        echo "<p class='sum_amount' style='background:green; margin-left:100px;'><strong>Total</strong>: ₦".number_format($paid_amount, 2)."</p>";
         
     }
 ?>
+</div>

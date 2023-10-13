@@ -6,6 +6,8 @@
     
     include "../classes/dbh.php";
     include "../classes/inserts.php";
-
-    $add_item = new add_single_item('expense_heads', 'expense_head', $exp_head);
-    $add_item->create_single_item();
+    $data = array(
+        'expense_head' => $exp_head,
+    );
+    $add_item = new add_data('expense_heads', $data);
+    $add_item->create_data();
