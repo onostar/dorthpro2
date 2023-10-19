@@ -1590,15 +1590,17 @@ function vendorHistory(){
 //add direct sales 
 function addSales(item_id){
      let item = item_id;
-     let $invoice = document.getElementById("invoice").value;
+     let invoice = document.getElementById("invoice").value;
      $.ajax({
           type : "GET",
-          url : "../controller/add_sales.php?sales_item="+item+"&invoice="+$invoice,
+          url : "../controller/add_sales.php?sales_item="+item+"&invoice="+invoice,
           success : function(response){
                $(".sales_order").html(response);
           }
      })
      $("#sales_item").html("");
+     $("#item").val('');
+
      return false;
 }
 
@@ -1613,13 +1615,15 @@ function addSalesOrder(item_id){
           }
      })
      $("#sales_item").html("");
+     $("#item").val('');
+
      return false;
 }
 //add direct wholesales 
 function addWholeSales(item_id){
      let item = item_id;
      let customer = document.getElementById("customer").value;
-     let $invoice = document.getElementById("invoice").value;
+     let invoice = document.getElementById("invoice").value;
      $.ajax({
           type : "GET",
           url : "../controller/add_Wholesale.php?sales_item="+item+"&customer="+customer+"&invoice="+invoice,
@@ -1628,6 +1632,8 @@ function addWholeSales(item_id){
           }
      })
      $("#sales_item").html("");
+     $("#item").val('');
+
      return false;
 }
 //delete individual items from direct sales
@@ -1644,6 +1650,26 @@ function deleteSales(sales, item){
                
           })
           return false;
+     }else{
+          return;
+     }
+}
+//delete item
+function deleteItem(item){
+     let confirmDel = confirm("Are you sure you want to delete this item?", "");
+     if(confirmDel){
+          $.ajax({
+               type : "GET",
+               url : "../controller/delete_item.php?item="+item,
+               success : function(response){
+                    $("#delete_item").html(response);
+               }
+          })
+          setTimeout(function(){
+               $("#delete_item").load("delete_item.php #delete_item");
+          }, 1500);
+          return false;
+          
      }else{
           return;
      }

@@ -15,7 +15,7 @@
 }
 body{
     position:relative;
-    font:13px/1.5 'Poppins', Sans-serif;
+    font:12px/1.4 'Poppins', Sans-serif;
     color:#222;
     background:#fcfafa;
     /* overflow: hidden; */
@@ -1150,7 +1150,7 @@ table tr:nth-child(even){
     background: var(--moreColor);
 }
 .allResults table thead tr td{
-    padding:10px;
+    padding:7px;
     font-weight: bold;
     text-transform: uppercase;
 
@@ -1163,7 +1163,7 @@ table tr:nth-child(even){
     padding:5px;
 }
 .allResults table tbody td{
-    padding:10px;
+    padding:7px;
 }
 .amount_due{
     background: #fff;
@@ -1574,7 +1574,7 @@ table tr:nth-child(even){
 }
 #dashboard .cards{
     max-width:24%;
-    height:75px;
+    min-height:70px;
     margin: 0;
     box-shadow:2px 2px 2px 2px #c4c4c4;
     border-radius:4px;
@@ -2063,7 +2063,7 @@ table tr:nth-child(even){
     text-align:center;
     font-size: 1rem;
     text-transform: uppercase;
-    background:linear-gradient(45deg, rgba(212, 0, 35, 0.8), rgba(184, 11, 83, 0.8));
+    background:linear-gradient(45deg, rgba(212, 46, 0, 0.8), rgba(92, 33, 11, 0.8));
     
 }
 .daily_monthly div{

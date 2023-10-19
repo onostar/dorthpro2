@@ -7,7 +7,7 @@
     <div class="add_user_form">
         <h3>Add Users</h3>
         <!-- <form method="POST" id="addUserForm"> -->
-        <form class="addUserForm">
+        <section class="addUserForm">
             <div class="inputs">
                 <input type="text" name="full_name" id="full_name" placeholder="Enter full name" required>
                 <input type="text" name="username" id="username" placeholder="Enter username" required>
@@ -31,7 +31,7 @@
                 </select>
                 <button type="submit" id="add_user" name="add_user" title="add user" onclick="addUser()"><i class="fas fa-plus"></i></button>
             </div>
-        </form>    
+        </section>    
         <!-- </form> -->
     </div>
 </div>

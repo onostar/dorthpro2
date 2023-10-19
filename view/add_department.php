@@ -10,7 +10,7 @@
                     <input type="text" name="department" id="department" placeholder="Input department" required>
                 </div>
                 <div class="data">
-                    <button type="submit" id="add_dep" name="add_dep" onclick="addDepartment()">Sae record <i class="fas fa-layer-group"></i></button>
+                    <button type="submit" id="add_dep" name="add_dep" onclick="addDepartment()">Save record <i class="fas fa-layer-group"></i></button>
                 </div>
             </div>
             
