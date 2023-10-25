@@ -17,14 +17,14 @@
                     <option value="cashier">Cashier</option>
                     <option value="sales rep">Sales Rep</option>
                 </select>
-                <select name="store" id="store" style="padding:10px; border-radius:10px">
+                <select name="store_id" id="store_id" style="padding:10px; border-radius:10px">
                     <option value=""selected required>select store</option>
                     <?php
                         $get_str = new selects();
                         $rows = $get_str->fetch_details('stores');
                         foreach($rows as $row){
                     ?>
-                    <option value="<?php echo $row->store_id?>"><?php echo $row->store_id?></option>
+                    <option value="<?php echo $row->store_id?>"><?php echo $row->store?></option>
                     <?php } ?>
                 </select>
                 <button type="submit" id="add_user" name="add_user" title="add user" onclick="addUser()"><i class="fas fa-plus"></i></button>

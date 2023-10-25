@@ -138,9 +138,9 @@ function addUser(){
      let username = document.getElementById("username").value;
      let full_name = document.getElementById("full_name").value;
      let user_role = document.getElementById("user_role").value;
-     let store = document.getElementById("store").value;
-     alert(store);
-     /* if(full_name.length == 0 || full_name.replace(/^\s+|\s+$/g, "").length == 0){
+     let store_id = document.getElementById("store_id").value;
+     // alert(store);
+     if(full_name.length == 0 || full_name.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please enter user full name!");
           $("#full_name").focus();
           return;
@@ -152,7 +152,7 @@ function addUser(){
           alert("Please select user role!");
           $("#user_role").focus();
           return;
-     }else if(store.length == 0 || store.replace(/^\s+|\s+$/g, "").length == 0){
+     }else if(store_id.length == 0 || store_id.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please select store!");
           $("#store").focus();
           return;
@@ -160,7 +160,7 @@ function addUser(){
           $.ajax({
                type : "POST",
                url : "../controller/add_users.php",
-               data : {username:username, full_name:full_name, user_role:user_role, store:store},
+               data : {username:username, full_name:full_name, user_role:user_role, store_id:store_id},
                success : function(response){
                $(".info").html(response);
                }
@@ -170,7 +170,7 @@ function addUser(){
      $("#full_name").val('');
      $("#user_role").val('');
      $("#store").val('');
-     $("#full_name").focus(); */
+     $("#full_name").focus();
      return false;
 }
 
