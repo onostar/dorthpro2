@@ -89,7 +89,7 @@
         if($role == "Admin"){
             // get sum
             $get_total = new selects();
-            $amounts = $get_total->fetch_sum_2colCond('inventory', 'cost_price', 'quantity', 'store', $detail->store);
+            $amounts = $get_total->fetch_sum_2colCond('inventory', 'cost_price', 'quantity', 'store', $store);
             foreach($amounts as $amount){
                 $total_amount = $amount->total;
             }

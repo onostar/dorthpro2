@@ -41,9 +41,16 @@ include "../classes/inserts.php";
         }
         $sales_cost = $quantity * $cost;
             if($qty == 0){
-                echo "<div class='notify'><p><span>$name</span> has zero quantity! Cannot proceed</p>";
+                /* echo "<div class='notify'><p><span>$name</span> has zero quantity! Cannot proceed</p>"; */
+                echo "<script>
+                    alert('$name has zero quantity! Cannot proceed');
+                    </script>";
+    include "sales_details.php";
+
             }else if($price == 0){
                 echo "<div class='notify'><p><span>$name</span> does not have selling price! Cannot proceed</p></div>";
+    include "sales_details.php";
+
             }else{
                 //insert into sales order
                 $sell_item = new post_sales($item, $invoice, $quantity, $price, $price, $user_id, $sales_cost, $store, $sales_type, $customer);

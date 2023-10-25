@@ -9,7 +9,7 @@
     include "../classes/select.php";
 
     $get_receipts = new selects();
-    $details = $get_receipts->fetch_details_2condNegDateGroup('transfers', 'from_store', 'transfer_status', $store, 0, 'post_date', $from, $to, 'invoice');
+    $details = $get_receipts->fetch_details_2condNeg2DateGroup('transfers', 'from_store', 'transfer_status', $store, 0, 'date(post_date)', $from, $to, 'invoice');
     $n = 1;  
 ?>
 <h2>Reprint transfer receipt between '<?php echo date("jS M, Y", strtotime($from)) . "' and '" . date("jS M, Y", strtotime($to))?>'</h2>

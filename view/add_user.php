@@ -18,16 +18,14 @@
                     <option value="sales rep">Sales Rep</option>
                 </select>
                 <select name="store" id="store" style="padding:10px; border-radius:10px">
-                    <option value=""selected>Select Store</option>
-                    <!-- get stores -->
+                    <option value=""selected required>select store</option>
                     <?php
-                        $get_stores = new selects();
-                        $rows = $get_stores->fetch_details('stores');
+                        $get_str = new selects();
+                        $rows = $get_str->fetch_details('stores');
                         foreach($rows as $row){
-
                     ?>
-                    <option value="<?php echo $row->store_id?>"><?php echo $row->store?></option>
-                    <?php }?>
+                    <option value="<?php echo $row->store_id?>"><?php echo $row->store_id?></option>
+                    <?php } ?>
                 </select>
                 <button type="submit" id="add_user" name="add_user" title="add user" onclick="addUser()"><i class="fas fa-plus"></i></button>
             </div>

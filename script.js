@@ -139,8 +139,8 @@ function addUser(){
      let full_name = document.getElementById("full_name").value;
      let user_role = document.getElementById("user_role").value;
      let store = document.getElementById("store").value;
-     // alert(hotel_address);
-     if(full_name.length == 0 || full_name.replace(/^\s+|\s+$/g, "").length == 0){
+     alert(store);
+     /* if(full_name.length == 0 || full_name.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please enter user full name!");
           $("#full_name").focus();
           return;
@@ -170,7 +170,7 @@ function addUser(){
      $("#full_name").val('');
      $("#user_role").val('');
      $("#store").val('');
-     $("#full_name").focus();
+     $("#full_name").focus(); */
      return false;
 }
 
@@ -782,6 +782,8 @@ function displayStockinForm(item_id){
                }
           })
           $("#sales_item").html("");
+          $("#item").val('');
+
           return false;
      // }
      
@@ -1792,6 +1794,7 @@ function showMore(sales){
           url : "../controller/edit_price_qty.php?item="+sales,
           success : function(response){
                $(".show_more").html(response);
+               window.scrollTo(0, 0);
           }
           
      })
@@ -1804,6 +1807,8 @@ function showMoreOrder(sales){
           url : "../controller/edit_price_qty_order.php?item="+sales,
           success : function(response){
                $(".show_more").html(response);
+               window.scrollTo(0, 0);
+
           }
           
      })
@@ -1816,6 +1821,8 @@ function showMoreWholesale(sales){
           url : "../controller/edit_price_qty_wholesale.php?item="+sales,
           success : function(response){
                $(".show_more").html(response);
+               window.scrollTo(0, 0);
+
           }
           
      })
@@ -2252,7 +2259,23 @@ function printSalesOrder(){
           return false; */
      }
 }
-
+// prinit transfer receipt
+function printTransferReceipt(invoice){
+     window.open("../controller/transfer_receipt.php?receipt="+invoice);
+     // alert(item_id);
+     /* $.ajax({
+          type : "GET",
+          url : "../controller/sales_receipt.php?receipt="+invoice,
+          success : function(response){
+               $("#direct_sales").html(response);
+          }
+     }) */
+     setTimeout(function(){
+          $("#direct_sales").load("direct_sales.php #direct_sales");
+     }, 100);
+     return false;
+ 
+ }
 //post direct wholesale payment
 function postWholesale(){
      let confirmPost = confirm("Are you sure you want to post this sales?", "");
