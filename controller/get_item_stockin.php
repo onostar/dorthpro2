@@ -1,6 +1,7 @@
 <?php
     session_start();
     $item = htmlspecialchars(stripslashes($_POST['item']));
+    $store = $_SESSION['store_id'];
     // instantiate class
     include "../classes/dbh.php";
     include "../classes/select.php";
