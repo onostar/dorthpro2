@@ -5,13 +5,14 @@
         $menu = htmlspecialchars(stripslashes($_POST['menu']));
         $sub_menu = ucwords(htmlspecialchars(stripslashes($_POST['sub_menu'])));
         $url = htmlspecialchars(stripslashes($_POST['url']));
+        $status = htmlspecialchars(stripslashes($_POST['status']));
 
         // instantiate classes
         include "../classes/dbh.php";
         include "../classes/update.php";
 
         $update = new Update_table();
-        $update->update_tripple('sub_menus', 'menu', $menu, 'sub_menu', $sub_menu, 'url', $url, 'sub_menu_id', $id);
+        $update->update_quadruple('sub_menus', 'menu', $menu, 'sub_menu', $sub_menu, 'url', $url, 'status', $status, 'sub_menu_id', $id);
         if($update){
              echo "<div class='success'><p>Sub-menu updated successfully! <i class='fas fa-thumbs-up'></i></p></div>";
         }else{

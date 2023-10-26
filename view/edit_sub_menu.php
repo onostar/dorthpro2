@@ -10,7 +10,7 @@
 
 ?>
 
-    <div class="info"></div>
+    <div class="info" style="width:80%"></div>
     <div class="displays allResults">
         <h2>Update sub-menu details</h2>
         <hr>
@@ -24,6 +24,7 @@
                     <td>Menu</td>
                     <td>Sub-menu</td>
                     <td>Url</td>
+                    <td>status</td>
                     <td></td>
                 </tr>
             </thead>
@@ -53,6 +54,15 @@
                         ?>
                     </td>
                     <td><?php echo $row->url?>.php</td>
+                    <td>
+                        <?php
+                            if($row->status == 1){
+                                echo "<p style='color:red'>Inactive</p>";
+                            }else{
+                                echo "<p style='color:green'>Activated</p>";
+                            }
+                        ?>
+                    </td>
                     <td class="prices">
                         <a style="background:var(--moreColor)!important; color:#fff!important; padding:5px 6px; border-radius:5px;" href="javascript:void(0)"class="each_prices" onclick="getForm('<?php echo $row->sub_menu_id?>', 'get_sub_menu.php');"><i class="fas fa-pen"></i></a>
                     </td>

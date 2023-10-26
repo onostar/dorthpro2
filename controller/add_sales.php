@@ -3,6 +3,9 @@
 include "../classes/dbh.php";
 include "../classes/select.php";
 include "../classes/inserts.php";
+
+// date_default_timezone_set("Australia/Sydney");
+
     session_start();
     $store = $_SESSION['store_id'];
     $sales_type = "Retail";

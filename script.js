@@ -2632,6 +2632,7 @@ function getItemHistory(item){
                }
           });
           $("#sales_item").html('');
+          $("#history_item").val('');
      }
      return false;
 }
@@ -2996,6 +2997,7 @@ function updateSubMenu(){
      let menu = document.getElementById("menu").value;
      let sub_menu = document.getElementById("sub_menu").value;
      let url = document.getElementById("url").value;
+     let status = document.getElementById("status").value;
      if(menu.length == 0 || menu.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please select menuy!");
           $("#menu").focus();
@@ -3008,11 +3010,15 @@ function updateSubMenu(){
           alert("Please input sub-menu url!");
           $("#url").focus();
           return;
+     }else if(status.length == 0 || status.replace(/^\s+|\s+$/g, "").length == 0){
+          alert("Please input sub-menu status!");
+          $("#status").focus();
+          return;
      }else{
           $.ajax({
                type : "POST",
                url : "../controller/update_submenu.php",
-               data: {sub_menu_id:sub_menu_id, menu:menu, sub_menu:sub_menu, url:url},
+               data: {sub_menu_id:sub_menu_id, menu:menu, sub_menu:sub_menu, url:url, status:status},
                success : function(response){
                     $("#change_sub_menu").html(response);
                }

@@ -729,7 +729,7 @@ main hr{
     background:var(--primaryColor);
     color:#fff;
     width:50%;
-    font-size:.9rem;
+    font-size:.8rem;
     border-radius: 20px;
     padding:10px;
     text-align:center;
@@ -1513,19 +1513,11 @@ table tr:nth-child(even){
 .change_dashboard select{
     padding:5px 10px;
 }
-#dashboard{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content: space-around;
-    margin:10px auto 20px!important;
-    width:90%;
-    gap:2rem;
 
-}
 #dashboard{
     display:flex;
     justify-content: space-around;
-    margin:40px auto 10px;
+    margin:10px auto 10px;
     flex-wrap:wrap;
     width:90%;
     gap:1rem;
@@ -1601,7 +1593,7 @@ table tr:nth-child(even){
     text-transform: capitalize;
 }
 #dashboard .cards p:nth-child(2){
-    font-size: 1rem;
+    font-size: .9rem;
 }
 #dashboard .cards .infos{
     /* margin-top:20px; */
@@ -1611,7 +1603,7 @@ table tr:nth-child(even){
     gap:1rem;
 }
 .cards .infos i{
-    font-size:1.2rem;
+    font-size:1rem;
 }
 #dashboard #card1{
     background:linear-gradient(45deg, hsla(120, 100%, 50%, 0.7), hsla(120, 100%, 25%, 0.8));
