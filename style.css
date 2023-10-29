@@ -729,7 +729,7 @@ main hr{
     background:var(--primaryColor);
     color:#fff;
     width:50%;
-    font-size:.8rem;
+    font-size:.9rem;
     border-radius: 20px;
     padding:10px;
     text-align:center;
@@ -998,6 +998,15 @@ main hr{
 }
 .download_slip{
     display:none;
+}
+.company_logo{
+    width:50px;
+    height:50px;
+    margin:5px auto;
+}
+.company_logo img{
+    width:100%;
+    height:100%;
 }
 .logos{
     display:flex;
@@ -2723,6 +2732,7 @@ x
     border-radius: 10px;
     padding:10px;
     color:#fff;
+    cursor: pointer;
 }
 #total_amount{
     display:flex!important;

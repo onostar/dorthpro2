@@ -3,13 +3,11 @@
 include "../classes/dbh.php";
 include "../classes/select.php";
 include "../classes/inserts.php";
-
-// date_default_timezone_set("Australia/Sydney");
-
     session_start();
     $store = $_SESSION['store_id'];
     $sales_type = "Retail";
     $customer = 0;
+    $date = date("Y-m-d H:i:m");
     if(isset($_SESSION['user_id'])){
         $user_id = $_SESSION['user_id'];
         if(isset($_GET['invoice'])){
@@ -49,14 +47,13 @@ include "../classes/inserts.php";
                     alert('$name has zero quantity! Cannot proceed');
                     </script>";
     include "sales_details.php";
-
             }else if($price == 0){
                 echo "<div class='notify'><p><span>$name</span> does not have selling price! Cannot proceed</p></div>";
     include "sales_details.php";
 
             }else{
                 //insert into sales order
-                $sell_item = new post_sales($item, $invoice, $quantity, $price, $price, $user_id, $sales_cost, $store, $sales_type, $customer);
+                $sell_item = new post_sales($item, $invoice, $quantity, $price, $price, $user_id, $sales_cost, $store, $sales_type, $customer, $date);
                 $sell_item->add_sales();
                 if($sell_item){
 

@@ -8,6 +8,7 @@
         $quantity = htmlspecialchars(stripslashes($_POST['quantity']));
         $store = htmlspecialchars(stripslashes($_POST['store']));
         $reason = ucwords(htmlspecialchars(stripslashes($_POST['reason'])));
+        $date = date("Y-m-d H:i:m");
         
         // instantiate classes
         include "../classes/dbh.php";
@@ -15,6 +16,7 @@
         include "../classes/update.php";
         include "../classes/inserts.php";
         include "../classes/delete.php";
+date_default_timezone_set("Africa/Lagos");
         
         
         //get item name
@@ -67,10 +69,20 @@
         $new_inv_due = $invoice_due - $removed_amount;
         $update_payment = new Update_table();
         $update_payment->update_double('payments', 'amount_paid', $new_inv_amount, 'amount_due', $new_inv_due, 'invoice', $invoice);
+        $data = array(
+            'item' => $item,
+            'quantity' => $quantity,
+            'amount' => $removed_amount,
+            'reason' => $reason,
+            'returned_by' => $user,
+            'invoice' => $invoice,
+            'store' => $store,
+            'return_date' => $date,
+        );
         // if($update_payment){
             //insert into sales return table
-            $sales_return = new sales_return($item, $quantity, $removed_amount, $reason, $user, $invoice, $store);
-            $sales_return->return_sales();
+            $sales_return = new add_data('sales_returns', $data);
+            $sales_return->create_data();
             if($sales_return){
                 //check if payment mode is wallet and add money back to wallet balance
                 if($payment_type == "Wallet"){

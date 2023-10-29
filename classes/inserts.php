@@ -51,8 +51,8 @@ date_default_timezone_set("Africa/Lagos");
         }
         
         //insert multiple payment
-        protected function multiple_pay($posted, $invoice, $cash, $pos, $transfer, $bank, $store){
-            $check_in = $this->connectdb()->prepare("INSERT INTO multiple_payments (posted_by, invoice, cash, pos, transfer, bank, store) VALUES (:posted_by, :invoice, :cash, :pos, :transfer, :bank, :store)");
+        protected function multiple_pay($posted, $invoice, $cash, $pos, $transfer, $bank, $store, $date){
+            $check_in = $this->connectdb()->prepare("INSERT INTO multiple_payments (posted_by, invoice, cash, pos, transfer, bank, store, post_date) VALUES (:posted_by, :invoice, :cash, :pos, :transfer, :bank, :store, :post_date)");
             $check_in->bindvalue("invoice", $invoice);
             $check_in->bindvalue("cash", $cash);
             $check_in->bindvalue("pos", $pos);
@@ -60,13 +60,14 @@ date_default_timezone_set("Africa/Lagos");
             $check_in->bindvalue("bank", $bank);
             $check_in->bindvalue("store", $store);
             $check_in->bindvalue("posted_by",$posted);
+            $check_in->bindvalue("post_date",$date);
             $check_in->execute();
             
         }
         //post payment
-        protected function post_payment($posted, $mode, $bank, $amount_due, $amount_paid, $discount, $invoice, $store, $type, $customer){
+        protected function post_payment($posted, $mode, $bank, $amount_due, $amount_paid, $discount, $invoice, $store, $type, $customer, $date){
             
-            $payment = $this->connectdb()->prepare("INSERT INTO payments (amount_due, amount_paid, discount, bank, payment_mode, posted_by, invoice, store, sales_type, customer) VALUES (:amount_due, :amount_paid, :discount, :bank, :payment_mode, :posted_by, :invoice, :store, :sales_type, :customer)");
+            $payment = $this->connectdb()->prepare("INSERT INTO payments (amount_due, amount_paid, discount, bank, payment_mode, posted_by, invoice, store, sales_type, customer, post_date) VALUES (:amount_due, :amount_paid, :discount, :bank, :payment_mode, :posted_by, :invoice, :store, :sales_type, :customer, :post_date)");
             $payment->bindValue("amount_due", $amount_due);
             $payment->bindValue("amount_paid", $amount_paid);
             $payment->bindValue("discount", $discount);
@@ -77,6 +78,7 @@ date_default_timezone_set("Africa/Lagos");
             $payment->bindValue("store", $store);
             $payment->bindValue("sales_type", $type);
             $payment->bindValue("customer", $customer);
+            $payment->bindValue("post_date", $date);
             $payment->execute();
             
         }
@@ -96,14 +98,14 @@ date_default_timezone_set("Africa/Lagos");
         
         
         //add item to sales
-        protected function post_sales($posted, $item, $invoice, $quantity, $price, $amount, $cost, $store, $type, $customer){
+        protected function post_sales($posted, $item, $invoice, $quantity, $price, $amount, $cost, $store, $type, $customer, $date){
             // check if item already exist
             $confirm_check  = $this->connectdb()->prepare("SELECT * FROM sales WHERE invoice = :invoice AND item = :item");
             $confirm_check->bindValue("invoice", $invoice);
             $confirm_check->bindValue("item", $item);
             $confirm_check->execute();
             if(!$confirm_check->rowCount() > 0){
-                $add_sales = $this->connectdb()->prepare("INSERT INTO sales (item, invoice, price, total_amount, quantity, posted_by, cost, store, sales_type, customer) VALUES (:item, :invoice, :price, :total_amount, :quantity, :posted_by, :cost, :store, :sales_type, :customer)");
+                $add_sales = $this->connectdb()->prepare("INSERT INTO sales (item, invoice, price, total_amount, quantity, posted_by, cost, store, sales_type, customer, post_date) VALUES (:item, :invoice, :price, :total_amount, :quantity, :posted_by, :cost, :store, :sales_type, :customer, :post_date)");
                 $add_sales->bindvalue("item", $item);
                 $add_sales->bindvalue("invoice", $invoice);
                 $add_sales->bindvalue("price", $price);
@@ -114,6 +116,7 @@ date_default_timezone_set("Africa/Lagos");
                 $add_sales->bindvalue("store", $store);
                 $add_sales->bindvalue("sales_type", $type);
                 $add_sales->bindvalue("customer", $customer);
+                $add_sales->bindvalue("post_date", $date);
                 $add_sales->execute();
             }else{
                 echo "<div class='notify'><p>Item already exists in sales order</p></div>";
@@ -185,7 +188,8 @@ date_default_timezone_set("Africa/Lagos");
         private $transfer;
         private $bank;
         private $store;
-        public function __construct($posted, $invoice, $cash, $pos, $transfer, $bank, $store)
+        private $date;
+        public function __construct($posted, $invoice, $cash, $pos, $transfer, $bank, $store, $date)
         {
             $this->posted = $posted;
             $this->invoice = $invoice;
@@ -194,10 +198,11 @@ date_default_timezone_set("Africa/Lagos");
             $this->transfer = $transfer;
             $this->bank = $bank;
             $this->store = $store;
+            $this->date = $date;
         }
 
         public function multi_pay(){
-            $this->multiple_pay($this->posted, $this->invoice, $this->cash, $this->pos, $this->transfer, $this->bank, $this->store);
+            $this->multiple_pay($this->posted, $this->invoice, $this->cash, $this->pos, $this->transfer, $this->bank, $this->store, $this->date);
         }
     }
 
@@ -213,8 +218,9 @@ date_default_timezone_set("Africa/Lagos");
         private $store;
         private $type;
         private $customer;
+        private $date;
 
-        public function __construct($posted, $mode, $bank, $amount_due, $amount_paid, $discount, $invoice, $store, $type, $customer)
+        public function __construct($posted, $mode, $bank, $amount_due, $amount_paid, $discount, $invoice, $store, $type, $customer, $date)
         {
             $this->posted = $posted;
             $this->mode = $mode;
@@ -226,10 +232,11 @@ date_default_timezone_set("Africa/Lagos");
             $this->store = $store;
             $this->type = $type;
             $this->customer = $customer;
+            $this->date = $date;
         }
 
         public function payment(){
-            $this->post_payment($this->posted, $this->mode, $this->bank, $this->amount_due, $this->amount_paid, $this->discount, $this->invoice, $this->store, $this->type, $this->customer);
+            $this->post_payment($this->posted, $this->mode, $this->bank, $this->amount_due, $this->amount_paid, $this->discount, $this->invoice, $this->store, $this->type, $this->customer, $this->date);
         }
     }
     //controller for payments
@@ -309,8 +316,9 @@ date_default_timezone_set("Africa/Lagos");
         private $store;
         private $type;
         private $customer;
+        private $date;
 
-        public function __construct($item, $invoice, $quantity, $price, $amount, $posted, $cost, $store, $type, $customer)
+        public function __construct($item, $invoice, $quantity, $price, $amount, $posted, $cost, $store, $type, $customer, $date)
         {
             $this->item = $item;
             // $this->staff = $staff;
@@ -323,10 +331,11 @@ date_default_timezone_set("Africa/Lagos");
             $this->store = $store;
             $this->type = $type;
             $this->customer = $customer;
+            $this->date = $date;
         }
 
         public function add_sales(){
-            $this->post_sales($this->posted, $this->item, $this->invoice, $this->quantity, $this->price, $this->amount, $this->cost, $this->store, $this->type, $this->customer);
+            $this->post_sales($this->posted, $this->item, $this->invoice, $this->quantity, $this->price, $this->amount, $this->cost, $this->store, $this->type, $this->customer, $this->date);
         }
     }
 

@@ -112,7 +112,10 @@
         $cashs = $get_cash->fetch_sum_curdate2Con('payments', 'amount_due', 'post_date', 'payment_mode', 'Cash', 'store', $store);
         if(gettype($cashs) === "array"){
             foreach($cashs as $cash){
-                echo "<p class='sum_amount' style='background:var(--otherColor)'><strong>Cash</strong>: ₦".number_format($cash->total, 2)."</p>";
+            ?>
+                <p class="sum_amount" onclick="showPage('cash_list.php')"style="background:var(--otherColor)"><strong>Cash</strong>: ₦ <?php echo number_format($cash->total, 2)?></p>
+
+            <?php
             }
         }
         //get pos
@@ -120,7 +123,10 @@
         $poss = $get_pos->fetch_sum_curdate2Con('payments', 'amount_due', 'post_date', 'payment_mode', 'POS', 'store', $store);
         if(gettype($poss) === "array"){
             foreach($poss as $pos){
-                echo "<p class='sum_amount' style='background:var(--secondaryColor)'><strong>POS</strong>: ₦".number_format($pos->total, 2)."</p>";
+                ?>
+                <p class="sum_amount" onclick="showPage('pos_list.php')"style="background:var(--secondaryColor)"><strong>POS</strong>: ₦ <?php echo number_format($pos->total, 2)?></p>
+
+            <?php
             }
         }
         //get transfer
@@ -128,7 +134,10 @@
         $trfs = $get_transfer->fetch_sum_curdate2Con('payments', 'amount_due', 'post_date', 'payment_mode', 'Transfer', 'store', $store);
         if(gettype($trfs) === "array"){
             foreach($trfs as $trf){
-                echo "<p class='sum_amount' style='background:var(--primaryColor)'><strong>Transfer</strong>: ₦".number_format($trf->total, 2)."</p>";
+                ?>
+                <p class="sum_amount" onclick="showPage('transfer_list.php')"style="background:var(--primaryColor)"><strong>Transfer</strong>: ₦ <?php echo number_format($trf->total, 2)?></p>
+
+            <?php
             }
         }
         ?>

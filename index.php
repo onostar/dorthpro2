@@ -41,9 +41,12 @@ date_default_timezone_set("Africa/Lagos");
             </div> -->
             <div class="login_page">
                 
-                <h3 class="mobile_company"><?php echo $row->company?></h3>
+                <!-- <h3 class="mobile_company"><?php echo $row->company?></h3> -->
+                <div class="company_logo">
+                    <img src="<?php echo 'images/'.$row->logo?>" alt="<?php echo $row->company?>">
+                </div>
                 <!-- <h2>Welcome User!</h2> -->
-                <p style="color:var(--secondaryColor)">Sign in to continue</p>
+                <p style="#222"><?php echo $row->company?></p>
                 <?php
                     if(isset($_SESSION['success'])){
                         echo "<p class='success succeed' style='color:green'>" . $_SESSION['success']. "</p>
