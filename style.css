@@ -12,6 +12,7 @@
     --otherColor: rgb(3, 69, 75);
     --moreColor:rgba(11, 99, 134, 0.7);
     --background:linear-gradient(45deg, hsla(202, 81%, 22%, .9), hsl(189, 54%, 59%), rgb(3, 69, 75));
+    --menuColor:#494848;
 }
 body{
     position:relative;
@@ -1332,7 +1333,7 @@ table tr:nth-child(even){
     
 } */
 .admin_main aside nav h3{
-    font-size:1rem;
+    font-size:.9rem;
     text-transform:capitalize;
     font-family: "Lora";
     /* font-family:'Lora'; */
@@ -1444,7 +1445,7 @@ table tr:nth-child(even){
     color:var(--secondaryColor)!important;
 }
 .admin_main aside nav ul li .more_option{
-    color:#695b5b!important;
+    color:#868585!important;
     background:transparent!important;
     box-shadow:none!important;
     float:right!important;
@@ -1522,14 +1523,16 @@ table tr:nth-child(even){
 .change_dashboard select{
     padding:5px 10px;
 }
-
+.dashboard_all{
+    margin:40px 0 0;
+}
 #dashboard{
     display:flex;
     justify-content: space-around;
     margin:10px auto 10px;
     flex-wrap:wrap;
     width:90%;
-    gap:1rem;
+    gap:.5rem;
 }
 #dashboard #userSummary{
     min-height:300px;
@@ -1574,8 +1577,8 @@ table tr:nth-child(even){
     margin:auto;
 }
 #dashboard .cards{
-    max-width:24%;
-    min-height:70px;
+    width:24%;
+    min-height:60px;
     margin: 0;
     box-shadow:2px 2px 2px 2px #c4c4c4;
     border-radius:4px;
