@@ -215,6 +215,7 @@ date_default_timezone_set("Africa/Lagos");
     <script src="../jquery.js"></script>
     <script src="../jquery.table2excel.js"></script>
     <script src="../select2.min.js"></script>
+    <script src="../Chart.min.js"></script> 
     <script src="../script.js"></script>
     <script>
         
@@ -230,11 +231,39 @@ date_default_timezone_set("Africa/Lagos");
             //toggle mobile menu
 
             //search item with select drop down
-            $("#customer").select2( {
+            /* $("#customer").select2( {
                 placeholder: "Select customer",
                 allowClear: true
-            } );
-            
+            } ); */
+            var ctx = document.getElementById("chartjs_bar2").getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels:<?php echo json_encode($month); ?>,
+                        datasets: [{
+                            backgroundColor: [
+                               "#fff",
+                               "#0f8ca1",
+                               "rgb(3, 69, 75)",
+                            ],
+                            data:<?php echo json_encode($revenue); ?>,
+                        }]
+                    },
+                    options: {
+                           legend: {
+                        display: true,
+                        position: 'bottom',
+ 
+                        labels: {
+                            fontColor: 'white',
+                            fontFamily: 'Circular Std Book',
+                            fontSize: 14,
+                        }
+                    },
+ 
+ 
+                }
+            });
     </script>
 </body>
 </html>

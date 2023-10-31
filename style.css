@@ -2074,6 +2074,7 @@ table tr:nth-child(even){
     width:48%;
     max-height:400px;
     overflow-y: scroll;
+    border-radius: 20px;
 }
 .daily_monthly h3{
     text-align: center;
@@ -3071,6 +3072,27 @@ x
 }
 #payment_form label{
     text-align:left!important;
+}
+.chart{
+    margin:20px 0;
+    width:100%!important;
+    /* height:400px!important; */
+    box-shadow: 2px 2px 2px #c4c4c4!important;
+    background:#000;
+    border-radius: 20px;
+}
+.chart canvas{
+    height:auto;
+    margin:10px 0;
+    width:100%;
+    color:#fff!important;
+}
+.chart h3{
+    color:#fff;
+    background:var(--primaryColor);
+    padding:8px;
+    font-size:.9rem;
+    text-transform: uppercase;
 }
 @media screen and (max-width: 800px){
     #topHeader{

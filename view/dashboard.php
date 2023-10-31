@@ -277,6 +277,21 @@
                     echo "<p class='no_result'>'$monthlys'</p>";
                 }
             ?>
+            <div class="chart">
+                <!-- chart for technical group -->
+                <?php
+                $get_monthly = new selects();
+                $monthlys = $get_monthly->fetch_monthly_sales($store_id);
+                if(gettype($monthlys) == "array"){
+                    foreach($monthlys as $monthly){
+                        $revenue[] = $monthly->revenue;
+                        $month[] = date("M, Y", strtotime($monthly->post_date));
+                    }
+                }
+                ?>
+                <h3 style="background:var(--moreColor)">Monthly statistics</h3>
+                <canvas id="chartjs_bar2"></canvas>
+            </div>
         </div>
         
     </div>
