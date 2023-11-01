@@ -72,15 +72,15 @@ include "../classes/inserts.php";
                 if($payment_type == "Multiple"){
                     //insert into payments
                     if($cash !== '0'){
-                        $insert_payment = new payments($user, 'Cash', $bank, $inv_amount, $cash, $discount, $invoice, $store, $type, $customer, $date);
+                        $insert_payment = new payments($user, 'Cash', $bank, $cash, $cash, $discount, $invoice, $store, $type, $customer, $date);
                         $insert_payment->payment();
                     }
                     if($pos !== '0'){
-                        $insert_payment = new payments($user, 'POS', $bank, $inv_amount, $pos, $discount, $invoice, $store, $type, $customer, $date);
+                        $insert_payment = new payments($user, 'POS', $bank, $pos, $pos, $discount, $invoice, $store, $type, $customer, $date);
                         $insert_payment->payment();
                     }
                     if($transfer !== '0'){
-                        $insert_payment = new payments($user, 'Transfer', $bank, $inv_amount, $transfer, $discount, $invoice, $store, $type, $customer, $date);
+                        $insert_payment = new payments($user, 'Transfer', $bank, $transfer, $transfer, $discount, $invoice, $store, $type, $customer, $date);
                         $insert_payment->payment();
                     }
                     //

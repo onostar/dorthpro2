@@ -97,7 +97,7 @@
     <?php
     //get cash
     $get_cash = new selects();
-    $cashs = $get_cash->fetch_sum_2date2Cond('payments', 'amount_due', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Cash', $store);
+    $cashs = $get_cash->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Cash', $store);
     if(gettype($cashs) === "array"){
         foreach($cashs as $cash){
             echo "<p class='sum_amount' style='background:var(--otherColor)'><strong>Cash</strong>: ₦".number_format($cash->total, 2)."</p>";
@@ -105,7 +105,7 @@
     }
     //get POS
     $get_pos = new selects();
-    $poss = $get_pos->fetch_sum_2date2Cond('payments', 'amount_due', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'POS', $store);
+    $poss = $get_pos->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'POS', $store);
     if(gettype($poss) === "array"){
         foreach($poss as $pos){
             echo "<p class='sum_amount' style='background:var(--secondaryColor)'><strong>POS</strong>: ₦".number_format($pos->total, 2)."</p>";
@@ -113,7 +113,7 @@
     }
     //get transfer
     $get_transfer = new selects();
-    $trfs = $get_transfer->fetch_sum_2date2Cond('payments', 'amount_due', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'POS', $store);
+    $trfs = $get_transfer->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'POS', $store);
     if(gettype($trfs) === "array"){
         foreach($trfs as $trf){
             echo "<p class='sum_amount' style='background:var(--primaryColor)'><strong>Transfer</strong>: ₦".number_format($trf->total, 2)."</p>";

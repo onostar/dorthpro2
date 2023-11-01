@@ -2072,9 +2072,8 @@ table tr:nth-child(even){
 }
 .daily_monthly div{
     width:48%;
-    max-height:400px;
+    max-height:700px;
     overflow-y: scroll;
-    border-radius: 20px;
 }
 .daily_monthly h3{
     text-align: center;
@@ -2082,6 +2081,15 @@ table tr:nth-child(even){
 }
 .amount h4{
     font-size:1rem;
+}
+.daily_report, .monthly_encounter{
+    border-radius:20px;
+}
+.monthly_encounter{
+    margin:20px 0;
+}
+.monthly_encounter{
+    width:100%!important;
 }
 #addCatForm button{
     background:rgb(197, 75, 37)!important;
@@ -3074,7 +3082,7 @@ x
     text-align:left!important;
 }
 .chart{
-    margin:20px 0;
+    margin:0;
     width:100%!important;
     /* height:400px!important; */
     box-shadow: 2px 2px 2px #c4c4c4!important;
@@ -3082,14 +3090,14 @@ x
     border-radius: 20px;
 }
 .chart canvas{
-    height:auto;
+    height:200px!important;
     margin:10px 0;
     width:100%;
     color:#fff!important;
 }
 .chart h3{
     color:#fff;
-    background:var(--primaryColor);
+    background:rgb(117, 32, 12)!important;
     padding:8px;
     font-size:.9rem;
     text-transform: uppercase;
