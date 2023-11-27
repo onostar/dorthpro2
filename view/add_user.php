@@ -4,7 +4,7 @@
 ?>
 <div id="addUser" class="displays">
     <div class="info"></div>
-    <div class="add_user_form">
+    <div class="add_user_form" style="width:90%">
         <h3>Add Users</h3>
         <!-- <form method="POST" id="addUserForm"> -->
         <section class="addUserForm">
@@ -16,6 +16,7 @@
                     <option value="Admin">Admin</option>
                     <option value="cashier">Cashier</option>
                     <option value="sales rep">Sales Rep</option>
+                    <option value="Inventory Officer">Inventory Officer</option>
                 </select>
                 <select name="store_id" id="store_id" style="padding:10px; border-radius:10px">
                     <option value=""selected required>select store</option>

@@ -16,7 +16,7 @@
         <thead>
             <tr>
                 <td>S/N</td>
-                <td>FUll Name</td>
+                <td>Full Name</td>
                 <td>Username</td>
                 <td>User role</td>
                 <td>Date created</td>
@@ -27,7 +27,7 @@
             <?php
                 $n = 1;
                 $get_users = new selects();
-                $details = $get_users->fetch_details_2cond1neg('users', 'status', 'username', 0, "Admin");
+                $details = $get_users->fetch_details_2cond1neg('users', 'status', 'user_role', 0, "Admin");
                 if(gettype($details) === 'array'){
                 foreach($details as $detail):
             ?>

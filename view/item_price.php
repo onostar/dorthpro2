@@ -16,6 +16,7 @@
         <hr>
         <div class="search">
             <input type="search" id="searchGuestPayment" placeholder="Enter keyword" onkeyup="searchData(this.value)">
+            <a class="download_excel" href="javascript:void(0)" onclick="convertToExcel('priceTable', 'Item Price list')"title="Download to excel"><i class="fas fa-file-excel"></i></a>
         </div>
         <table id="priceTable" class="searchTable">
             <thead>
@@ -24,11 +25,11 @@
                     <!-- <td>Category</td> -->
                     <td>item</td>
                     <td>pack size</td>
-                    <td>Cost Price</td>
-                    <td>Retail Price</td>
-                    <td>Retail pack</td>
-                    <td>Wholesale</td>
-                    <td>Wholesale Pack</td>
+                    <td>Cost Price (₦)</td>
+                    <td>Retail Price (₦)</td>
+                    <td>Retail pack (₦)</td>
+                    <td>Wholesale (₦)</td>
+                    <td>Wholesale Pack (₦)</td>
                     <td></td>
                 </tr>
             </thead>
@@ -55,19 +56,19 @@
                     <td><?php echo $row->item_name?></td>
                     <td style="color:otherColor; text-align:center"><?php echo $row->pack_size?></td>
                     <td>
-                        <?php echo "₦ ". number_format($row->cost_price);?>
+                        <?php echo number_format($row->cost_price);?>
                     </td>
                     <td>
-                        <?php echo "₦ ". number_format($row->sales_price);?>
+                        <?php echo number_format($row->sales_price);?>
                     </td>
                     <td>
-                        <?php echo "₦ ". number_format($row->pack_price);?>
+                        <?php echo number_format($row->pack_price);?>
                     </td>
                     <td>
-                        <?php echo "₦ ". number_format($row->wholesale);?>
+                        <?php echo number_format($row->wholesale);?>
                     </td>
                     <td>
-                        <?php echo "₦ ". number_format($row->wholesale_pack);?>
+                        <?php echo number_format($row->wholesale_pack);?>
                     </td>
                     <td class="prices">
                         <a style="background:var(--moreColor)!important; color:#fff!important; padding:5px 8px; border-radius:5px;" href="javascript:void(0)" title="modify price" data-form="check<?php echo $row->item_id?>" class="each_prices" onclick="getForm('<?php echo $row->item_id?>', 'get_item_details.php');"><i class="fas fa-pen"></i></a>

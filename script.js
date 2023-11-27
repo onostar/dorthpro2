@@ -369,12 +369,12 @@ function addItem(){
 }
 // add stores
 function addStore(){
-     let store = document.getElementById("store").value;
+     let store_name = document.getElementById("store_name").value;
      let store_address = document.getElementById("store_address").value;
      let phone = document.getElementById("phone").value;
-     if(store.length == 0 || store.replace(/^\s+|\s+$/g, "").length == 0){
+     if(store_name.length == 0 || store_name.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please enter store name!");
-          $("#store").focus();
+          $("#store_name").focus();
           return;
      }else if(store_address.length == 0 || store_address.replace(/^\s+|\s+$/g, "").length == 0){
           alert("Please enter store address");
@@ -388,14 +388,14 @@ function addStore(){
           $.ajax({
                type : "POST",
                url : "../controller/add_store.php",
-               data : {store:store, store_address:store_address, phone:phone},
+               data : {store_name:store_name, store_address:store_address, phone:phone},
                success : function(response){
                $(".info").html(response);
                }
           })
      }
      // $("#room_category").val('');
-     $("#store").val('');
+     $("#store_name").val('');
      $("#store_address").val('');
      $("#phone").val('');
      $("#store").focus();
@@ -1127,12 +1127,12 @@ function roomPriceForm(item_id){
      let pack_size = document.getElementById("pack_size").value;
      let wholesale_price = document.getElementById("wholesale_price").value;
      let wholesale_pack = document.getElementById("wholesale_pack").value;
-     if(cost_price >= sales_price){
+     if(parseInt(cost_price) >= parseInt(sales_price)){
           alert("Selling price can not be lesser than cost price!");
           $("#sales_price").focus();
           return;
-     }else if(cost_price >= wholesale_price){
-          alert("Wholesale price can not be lesser than cost price!");
+     }else if(parseInt(cost_price) >= parseInt(wholesale_price)){
+          alert("Guest price can not be lesser than cost price!");
           $("#wholesale_price").focus();
           return;
      }else if(cost_price.length == 0 || cost_price.replace(/^\s+|\s+$/g, "").length == 0){
@@ -2153,7 +2153,7 @@ function postSales(){
           let multi_transfer = document.getElementById("multi_transfer").value;
           let sum_amount = parseInt(multi_cash) + parseInt(multi_pos) + parseInt(multi_transfer);
           if(document.getElementById("multiples").style.display == "block"){
-               if(sum_amount != (total_amount - discount)){
+               if(sum_amount != (parseInt(total_amount) - parseInt(discount))){
                     alert("Amount entered is not equal to total amount");
                     $("#multi_cash").focus();
                     return;
@@ -2293,7 +2293,7 @@ function postWholesale(){
           let wallet = document.getElementById("wallet").value;
           let sum_amount = parseInt(multi_cash) + parseInt(multi_pos) + parseInt(multi_transfer);
           if(document.getElementById("multiples").style.display == "block"){
-               if(sum_amount != (total_amount - discount)){
+               if(sum_amount != (parseInt(total_amount) - parseInt(discount))){
                     alert("Amount entered is not equal to total amount");
                     $("#multi_cash").focus();
                     return;

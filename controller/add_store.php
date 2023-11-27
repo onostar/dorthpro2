@@ -1,7 +1,7 @@
 <?php
     session_start();
     $company = $_SESSION['company_id'];
-    $store = ucwords(htmlspecialchars(stripslashes($_POST['store'])));
+    $store = ucwords(htmlspecialchars(stripslashes($_POST['store_name'])));
     $store_address = htmlspecialchars(stripslashes($_POST['store_address']));
     $phone = htmlspecialchars(stripslashes(($_POST['phone'])));
 

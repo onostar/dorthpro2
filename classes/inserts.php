@@ -122,20 +122,7 @@ date_default_timezone_set("Africa/Lagos");
                 echo "<div class='notify'><p>Item already exists in sales order</p></div>";
             }
         }
-        //sales return
-        protected function sales_return($value1, $value2, $value3, $value4, $value5, $value6, $value7){
-            $return_sales = $this->connectdb()->prepare("INSERT INTO sales_returns (item, quantity, amount, reason, returned_by, invoice, store) VALUES (:item, :quantity, :amount, :reason, :returned_by, :invoice, :store)");
-            $return_sales->bindValue("item", $value1);
-            $return_sales->bindValue("quantity", $value2);
-            $return_sales->bindValue("amount", $value3);
-            $return_sales->bindValue("reason", $value4);
-            $return_sales->bindValue("returned_by", $value5);
-            $return_sales->bindValue("invoice", $value6);
-            $return_sales->bindValue("store", $value7);
-            $return_sales->execute();
         
-            
-        }
     }
 
     
@@ -339,27 +326,4 @@ date_default_timezone_set("Africa/Lagos");
         }
     }
 
-    // controller for sales return
-    class sales_return extends inserts{
-        private $value1;
-        private $value2;
-        private $value3;
-        private $value4;
-        private $value5;
-        private $value6;
-        private $value7;
-
-        public function __construct($value1, $value2, $value3, $value4, $value5, $value6, $value7)
-        {
-            $this->value1 = $value1;
-            $this->value2 = $value2;
-            $this->value3 = $value3;
-            $this->value4 = $value4;
-            $this->value5 = $value5;
-            $this->value6 = $value6;
-            $this->value7 = $value7;
-        }
-        public function return_sales(){
-            $this->sales_return($this->value1, $this->value2, $this->value3, $this->value4, $this->value5, $this->value6, $this->value7);
-        }
-    }
+    

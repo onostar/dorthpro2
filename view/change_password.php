@@ -24,14 +24,14 @@
 </head>
 <body>
     <main id="reg_body">
-        <div class="header">
+       <!--  <div class="header">
             <h1>
                 <a href="index.php">
                     <img src="../images/logo.png" alt="logo">
                 </a>
             </h1>
             <h3><?php echo $row->company?></h3>
-           
+            -->
         </div>
         <section class="reg_log">
             
@@ -110,7 +110,7 @@
                 
                 ?>
                 <div id="foot">
-                    <p >&copy;<?php echo Date("Y");?> Hotel. All Rights Reserved.</p>
+                    <p >&copy;<?php echo Date("Y");?> Dorthpro digitals. All Rights Reserved.</p>
 
                 </div>
 

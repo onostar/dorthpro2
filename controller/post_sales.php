@@ -19,7 +19,7 @@ include "../classes/inserts.php";
             $store = htmlspecialchars(stripslashes($_POST['store']));
             $type = "Retail";
             $customer = 0;
-            $date = date("Y-m-d H:i:m");
+            $date = date("Y-m-d H:i:s");
             //insert into audit trail
             //get items and quantity sold in the invoice
             $get_item = new selects();
@@ -71,15 +71,15 @@ include "../classes/inserts.php";
                 //insert payments
                 if($payment_type == "Multiple"){
                     //insert into payments
-                    if($cash !== '0'){
+                    if($cash !== 0){
                         $insert_payment = new payments($user, 'Cash', $bank, $cash, $cash, $discount, $invoice, $store, $type, $customer, $date);
                         $insert_payment->payment();
                     }
-                    if($pos !== '0'){
+                    if($pos !== 0){
                         $insert_payment = new payments($user, 'POS', $bank, $pos, $pos, $discount, $invoice, $store, $type, $customer, $date);
                         $insert_payment->payment();
                     }
-                    if($transfer !== '0'){
+                    if($transfer !== 0){
                         $insert_payment = new payments($user, 'Transfer', $bank, $transfer, $transfer, $discount, $invoice, $store, $type, $customer, $date);
                         $insert_payment->payment();
                     }

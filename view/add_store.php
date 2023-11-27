@@ -11,8 +11,8 @@
         <section class="addUserForm">
             <div class="inputs">
                 <div class="data" style="width:100%; margin:10px 0">
-                    <label for="store"> Store name</label>
-                    <input type="text" name="store" id="store" required>
+                    <label for="store"> Location</label>
+                    <input type="text" name="store_name" id="store_name" required>
                 </div>
                 <div class="data" style="width:100%; margin:10px 0">
                     <label for="store_address"> Address</label>
@@ -25,7 +25,7 @@
             </div>
             <div class="inputs">
                 <div class="data">
-                    <button type="submit" id="add_store" name="add_store" onclick="addStore()">Create store <i class="fas fa-save"></i></button>
+                    <button type="submit" id="add_store" name="add_store" onclick="addStore()">Create location <i class="fas fa-save"></i></button>
                 </div>
             </div>
         </section>    

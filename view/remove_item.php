@@ -60,7 +60,7 @@
                         <?php echo "₦ ". number_format($row->cost_price);?>
                     </td>
                     <td class="prices">
-                        <a style="background:var(--moreColor)!important; color:#fff!important; padding:8px; border-radius:5px;" href="javascript:void(0)" class="each_prices" onclick="getForm('<?php echo $row->item?>', 'get_removal.php');">Remove <i class="fas fa-eject"></i></a>
+                        <a style="background:var(--moreColor)!important; color:#fff!important; padding:5px 8px; border-radius:5px;" href="javascript:void(0)" class="each_prices" onclick="getForm('<?php echo $row->item?>', 'get_removal.php');"><i class="fas fa-eject"></i></a>
                     </td>
                 </tr>
             <?php $n++; endforeach; }?>
