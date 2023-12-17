@@ -245,6 +245,7 @@ date_default_timezone_set("Africa/Lagos");
                                "#0f8ca1",
                                "rgb(3, 69, 75)",
                                "#ffffff",
+                               "red",
                             ],
                             data:<?php echo json_encode($revenue); ?>,
                         }]

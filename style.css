@@ -13,6 +13,8 @@
     --moreColor:rgba(11, 99, 134, 0.7);
     --background:linear-gradient(45deg, hsla(202, 81%, 22%, .9), hsl(189, 54%, 59%), rgb(3, 69, 75));
     --menuColor:#494848;
+    --tertiaryColor: rgb(4, 141, 118);
+
 }
 body{
     position:relative;
@@ -265,10 +267,10 @@ header{
     display:flex;
     justify-content: space-between;
     align-items:center;
-    min-height:10vh;
+    min-height:7vh;
     box-shadow: 2px 2px 2px 2px #c4c4c4;
     z-index:2;
-    padding:5px 10px;
+    padding:0 10px;
 }
 .logo{
     width:15vw;
@@ -318,10 +320,10 @@ header h2{
 .other_menu{
     border-radius:10px;
     box-shadow:2px 2px 2px 2px #c4c4c4;
-    padding:8px;
+    padding:5px;
     /* background:var(--secondaryColor); */
     color:var(--sotherColor);
-    margin:10px;
+    margin:0 10px;
     text-transform: uppercase;
     transition:.2s all ease-in-out;
 }
@@ -361,7 +363,7 @@ header h2{
     right:0;
     background:#fff;
     min-width:15vw;
-    padding:10px 0;
+    padding:5px 0;
     z-index:2;
     box-shadow: 1px 1px 1px 1px #c4c4c4;
 }
@@ -846,7 +848,7 @@ main hr{
     padding:10px;
 }
 .reg_form button{
-    padding:10px;
+    padding:5px 8px;
 }
 #loginForm h3, #exh_loginForm h3, #exh_register h3{
     color:rgb(233, 132, 73);
@@ -876,7 +878,7 @@ main hr{
     align-items: center;
 }
 #loginForm .new button, #exh_loginForm .new button{
-    font-size: 1rem;
+    font-size: .9rem;
     text-transform: capitalize;
 }
 #loginForm .new a, #exh_loginForm .new a{
@@ -1524,7 +1526,7 @@ table tr:nth-child(even){
     padding:5px 10px;
 }
 .dashboard_all{
-    margin:40px 0 0;
+    margin:20px 0 0;
 }
 #dashboard{
     display:flex;
@@ -1654,7 +1656,7 @@ table tr:nth-child(even){
     justify-content: space-between;
 }
 .options button{
-    padding:10px;
+    padding:5px 10px;
 }
 .options .downloadTags{
     background:hsla(202, 81%, 42%, .9);
@@ -1771,8 +1773,8 @@ table tr:nth-child(even){
 .add_user_form button{
     background:green;
     color:#fff;
-    padding:10px;
-    font-size:1rem;
+    padding:8px 10px;
+    font-size:.9rem;
     border:none;
     border-radius: 5px;
     transition: .3s all ease-in-out;
@@ -2176,11 +2178,11 @@ table tr:nth-child(even){
     width:30%;
 }
 .select_date section .from_to_date label{
-    font-size:1rem;
+    font-size:.9rem;
 }
 .select_date section input, .select_date section select{
     width:100%;
-    padding:10px;
+    padding:5px 10px;
     border-radius: 5px;
     background:#fff;
 }
@@ -2191,7 +2193,7 @@ table tr:nth-child(even){
     font-size:1rem;
     text-transform:capitalize;
     margin:0;
-    padding:10px;
+    padding:5px 10px;
     border-radius: 5px;
 }
 .new_data{
@@ -2444,7 +2446,7 @@ table tr:nth-child(even){
 }
 .change_password form button, .change_password section button{
     border:none;
-    padding:10px;
+    padding:5px 10px;
     margin:20px 0;
     font-size:.9rem;
     width:100%;
@@ -2650,7 +2652,7 @@ table tr:nth-child(even){
     background:var(--otherColor);
     margin:30px;
     width:auto;
-    font-size:1rem;
+    font-size:.9rem;
     box-shadow:2px 2px 2px #807e7e;
     padding:20px;
     transition:.2s all ease-in-out;
@@ -2786,9 +2788,9 @@ x
 }
 #printBtn button{
     background:green!important;
-    padding:10px 20px;
+    padding:5px 10px;
     border-radius: 5px;
-    font-size:1rem;
+    font-size:.9rem;
 }
 #change_price{
     background:var(--otherColor);
@@ -3101,6 +3103,19 @@ x
     padding:8px;
     font-size:.9rem;
     text-transform: uppercase;
+}
+.add_btn{
+    width:50%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.add_btn button{
+    background:brown;
+    border-radius: 20px;
+    box-shadow: 2px 2px 2px #222;
+    text-align: center;
+    width:auto;
 }
 @media screen and (max-width: 800px){
     #topHeader{

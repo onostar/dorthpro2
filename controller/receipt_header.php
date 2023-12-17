@@ -1,4 +1,5 @@
 
+<div class='receipt_logo'><img src="../images/logo.jpg" title="logo"></div>
     <h2><?php echo $_SESSION['company'];?></h2>
     <p><?php echo $address?></p>
     <p>Tel: <?php echo $phone?></p>

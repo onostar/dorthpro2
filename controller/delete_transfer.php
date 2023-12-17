@@ -24,8 +24,10 @@
         }
         //get previous quantity in inventory
         $get_inv = new selects();
-        $inv = $get_inv->fetch_details_group('inventory', 'quantity', 'item', $item);
-        $prev_qty = $inv->quantity;
+        $invs = $get_inv->fetch_details_2cond('inventory', 'item', 'store', $item, $store);
+        foreach($invs as $inv){
+            $prev_qty = $inv->quantity;
+        }
         //add previous quantity to curent quantity transfered
         $new_qty = $prev_qty + $quantity;
         //delete from transfer

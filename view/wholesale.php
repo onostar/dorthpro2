@@ -10,8 +10,10 @@
 ?>
 <div id="direct_sales">
 <div id="sales_form" class="displays all_details">
-    
-    
+    <div class="add_btn">
+        <button class="add_btn" onclick="showPage('add_customer.php')">Add New Customer <i class="fas fa-user-plus"></i></button>
+        <div class="clear"></div>
+    </div>
     <div class="add_user_form" style="width:50%; margin:10px 0;">
         <h3 style="background:var(--primaryColor); color:#fff; text-align:left!important;">Wholesale order</h3>
         
@@ -20,15 +22,12 @@
             <section class="addUserForm">
                 <div class="inputs">
                     <!-- bar items form -->
-                    <div class="data" style="width:60%; position:relative">
+                    <div class="data" style="width:90%; position:relative">
                     <label for="customer">Select customer</label>
                         <input type="text" name="customer" id="customer" oninput="getCustomers(this.value)" placeholder="Enter customer name or phone number">
                         <div class="search_results" id="search_results">
 
                         </div>
-                    </div>
-                    <div class="data" style="width:35%">
-                        <button onclick="showPage('add_customer.php')">Add customer <i class="fas fa-user-plus"></i></button>
                     </div>
                     
                     

@@ -584,44 +584,7 @@ function postPos(){
      return false;    
 
 }
-//post guest Transfer payment
-function postTransfer(){
-     let posted_by = document.getElementById("posted_by").value;
-     let guest = document.getElementById("guest").value;
-     let payment_mode = document.getElementById("transfer_mode").value;
-     let bank_paid = document.getElementById("transfer_bank_paid").value;
-     let sender = document.getElementById("transfer_sender").value;
-     let guest_amount = document.getElementById("guest_amount").value;
-     let amount_paid = document.getElementById("transfer_amount").value;
-     
-     if(amount_paid.length == 0 || amount_paid.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please input amount paid!");
-          $("#transfer_amount").focus();
-          return;
-     }else if(bank_paid.length == 0 || bank_paid.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please select Bank Transferred to!");
-          $("#transfer_bank_paid").focus();
-          return;
-     }else if(sender.length == 0 || sender.replace(/^\s+|\s+$/g, "").length == 0){
-          alert("Please Input Name of sender!");
-          $("#transfer_sender").focus();
-          return;
-     }else{
-     $.ajax({
-          type : "POST",
-          url : "../controller/post_payments.php",
-          data : {posted_by:posted_by, guest:guest, payment_mode:payment_mode, bank_paid:bank_paid, sender:sender, guest_amount:guest_amount, amount_paid:amount_paid},
-          success : function(response){
-               $("#all_payments").html(response);
-          }
-     })
-          setTimeout(function(){
-               $('#all_payments').load("post_payment.php?guest_id=+"+guest + "#all_payments");
-          }, 3000);
-     }
-     return false;    
 
-}
 //post other cash payments for guest
 function postOtherCash(){
      let posted_by = document.getElementById("posted_by").value;
@@ -897,7 +860,7 @@ function stockin(){
           alert("Please input quantity purchased!");
           $("#quantity").focus();
           return;
-     }else if(quantity == "0"){
+     }else if(quantity <= 0){
           alert("Please input quantity purchased!");
           $("#quantity").focus();
           return;

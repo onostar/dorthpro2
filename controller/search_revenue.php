@@ -85,11 +85,12 @@
                 </td>
                 
             </tr>
-            <?php $n++; }?>
+            <?php $n++; }}?>
         </tbody>
     </table>
 <?php
-    }else{
+    
+    if(gettype($details) == 'string'){
         echo "<p class='no_result'>'$details'</p>";
     }
 ?>
@@ -113,7 +114,7 @@
     }
     //get transfer
     $get_transfer = new selects();
-    $trfs = $get_transfer->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'POS', $store);
+    $trfs = $get_transfer->fetch_sum_2date2Cond('payments', 'amount_paid', 'date(post_date)', 'payment_mode', 'store', $from, $to, 'Transfer', $store);
     if(gettype($trfs) === "array"){
         foreach($trfs as $trf){
             echo "<p class='sum_amount' style='background:var(--primaryColor)'><strong>Transfer</strong>: ₦".number_format($trf->total, 2)."</p>";

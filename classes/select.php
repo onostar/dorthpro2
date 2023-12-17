@@ -1179,7 +1179,7 @@
         }
         //fetch monthly sales
         public function fetch_monthly_sales($store){
-            $get_monthly = $this->connectdb()->prepare("SELECT COUNT(distinct invoice) AS customers, SUM(amount_due) AS revenue, post_date, COUNT(post_date) AS arrivals, COUNT(DISTINCT post_date) AS daily_average FROM payments WHERE store = :store GROUP BY MONTH(post_date) ORDER BY post_date DESC");
+            $get_monthly = $this->connectdb()->prepare("SELECT COUNT(distinct invoice) AS customers, SUM(amount_due) AS revenue, post_date, COUNT(post_date) AS arrivals, COUNT(DISTINCT post_date) AS daily_average FROM payments WHERE store = :store GROUP BY MONTH(post_date) ORDER BY MONTH(post_date)");
             $get_monthly->bindValue('store', $store);
             $get_monthly->execute();
             if($get_monthly->rowCount() > 0){
