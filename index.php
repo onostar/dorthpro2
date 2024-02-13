@@ -24,6 +24,26 @@ date_default_timezone_set("Africa/Lagos");
 
 </head>
 <body>
+    <!-- show package soon to expire -->
+    <?php
+            //get date to shut down
+            $reg_date = $row->date_created;
+            $expiration = date("Y-m-d", strtotime("+1 year", strtotime($reg_date)));
+            $current_date = date("Y-m-d");
+            $interval = abs(strtotime($expiration) - strtotime($current_date));
+            $days = $interval/86400;
+           
+            if($days < 7){
+        ?>
+    <div class="about_expire">
+        
+        <marquee behavior="smooth" direction="left">
+            <?php echo "This software will shutdown in $days day(s), kindly renew your package"?>
+        </marquee>
+    </div>
+    <?php }
+        if(strtotime($current_date) < strtotime($expiration)){
+    ?>
     <main id="reg_body">
         
         <!-- <div class="header">
@@ -113,4 +133,12 @@ date_default_timezone_set("Africa/Lagos");
     <script src="script.js"></script>
 </body>
 </html>
-<?php }?>
+<?php 
+            }else{
+?>
+            <div class="expired_package">
+                <p>Your software package has expired.<br>Kindly contact your service provider for more details</p>
+            </div>
+<?php
+    }
+}?>

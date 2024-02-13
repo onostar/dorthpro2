@@ -23,6 +23,26 @@ body{
     background:#fcfafa;
     /* overflow: hidden; */
 }
+.about_expire{
+    background:red;
+    color:#fff;
+    font-weight:bold;
+}
+.expired_package{
+    background:var(--primaryColor);
+    color:#fff;
+    box-shadow: 3px 3px 3px #c4c4c4;
+    padding:20px;
+    border-radius: 10px;
+    width:50%;
+    height:auto;
+    margin:50px auto;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
 a{
     text-decoration: none;
 }
@@ -2744,10 +2764,12 @@ x
     /* width:50%; */
 }
 .sum_amount{
-    border-radius: 10px;
-    padding:10px;
+    border-radius: 15px;
+    padding:8px 10px;
     color:#fff;
     cursor: pointer;
+    box-shadow: 2px 2px 2px #222;
+
 }
 #total_amount{
     display:flex!important;

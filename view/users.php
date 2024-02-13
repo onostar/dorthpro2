@@ -25,6 +25,7 @@ date_default_timezone_set("Africa/Lagos");
         foreach($comps as $com){
             $company = $com->company;
             $comp_id = $com->company_id;
+            $date_created = $com->date_created;
         }
         $_SESSION['company_id'] = $comp_id;
         $_SESSION['company'] = $company;
@@ -62,6 +63,24 @@ date_default_timezone_set("Africa/Lagos");
 </head>
 <body>
     <main>
+        <!-- show package soon to expire -->
+    <?php
+            //get date to shut down
+            $reg_date = $date_created;
+            $expiration = date("Y-m-d", strtotime("+1 year", strtotime($reg_date)));
+            $current_date = date("Y-m-d");
+            $interval = abs(strtotime($expiration) - strtotime($current_date));
+            $days = $interval/86400;
+           
+            if($days < 7){
+        ?>
+    <div class="about_expire">
+        
+        <marquee behavior="smooth" direction="left">
+            <?php echo "This software will shutdown in $days day(s), kindly renew your package"?>
+        </marquee>
+    </div>
+    <?php }?>
         <header>
             <div class="menu_icon" id="menu_icon">
                 <a href="javascript:void(0)"><i class="fas fa-bars"></i></a>
@@ -103,25 +122,15 @@ date_default_timezone_set("Africa/Lagos");
                     <div class="quick_links">
                         <!-- check if sales right exist -->
                         <?php 
-                            $get_rights = new selects();
-                            $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "12");
-                            if($row > 0 || $role == "Admin"){
+                             
+                            if($role == "Cashier"|| $role == "Sales Rep"){
                         ?>
                         <div class="links page_navs" onclick="showPage('direct_sales.php')" title="Make Direct retail sales">
                             <i class="fas fa-pen-alt"></i>
                             <!-- <p>Direct sales</p> -->
                         </div>
                         <?php }?>
-                        <?php 
-                            $get_rights = new selects();
-                            $row = $get_rights->fetch_count_2cond('rights', 'user', $user_id, 'sub_menu', "13");
-                            if($row > 0){
-                        ?>
-                        <div class="links page_navs" onclick="showPage('sales_order.php')" title="Make a sales order">
-                            <i class="fas fa-pen-alt"></i>
-                            <!-- <p>Direct sales</p> -->
-                        </div>
-                        <?php }?>
+                        
                         <div class="links page_navs" onclick="showPage('expire_soon.php')" title="Soon to expire">
                             <i class="fas fa-chart-line" style="color:green"></i>
                             <p>
