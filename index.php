@@ -3,7 +3,9 @@ date_default_timezone_set("Africa/Lagos");
     session_start();
     include "classes/dbh.php";
     include "classes/select.php";
-
+    if(isset($_SESSION['user'])){
+        header("Location: view/users.php");
+    }else{
     $get_company = new selects();
     $rows = $get_company->fetch_details('companies');
     foreach($rows as $row){
@@ -33,7 +35,7 @@ date_default_timezone_set("Africa/Lagos");
             $interval = abs(strtotime($expiration) - strtotime($current_date));
             $days = $interval/86400;
            
-            if($days < 7){
+            if($days < 30){
         ?>
     <div class="about_expire">
         
@@ -121,7 +123,7 @@ date_default_timezone_set("Africa/Lagos");
                     <img src="images/logo.png" alt="logo">
                 </div>
                 <div id="foot">
-                    <p >&copy;<?php echo Date("Y");?> Dorthpro Digitals. All Rights Reserved.</p>
+                    <p >&copy;<?php echo Date("Y");?> Onostar Media. All Rights Reserved.</p>
 
                 </div>
 
@@ -141,4 +143,4 @@ date_default_timezone_set("Africa/Lagos");
             </div>
 <?php
     }
-}?>
+}}?>

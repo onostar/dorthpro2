@@ -116,7 +116,7 @@ date_default_timezone_set("Africa/Lagos");
             <!-- main contents -->
             <section id="contents">
                 <!-- header -->
-                
+            <?php include "loading.php"?>
                 <!-- quick links -->
                 <div id="quickLinks">
                     <div class="quick_links">
